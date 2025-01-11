@@ -1,1 +1,14 @@
-@import './base.css';
+@import 'css/flex.css';
+@import 'css/text.css';
+@import 'css/width.css';
+@import 'css/height.css';
+@import 'css/colors.css';
+@import 'css/margin.css';
+@import 'primeicons/primeicons.css';
+@import 'css/overridePrime.css';
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: "League Spartan", serif;
+}

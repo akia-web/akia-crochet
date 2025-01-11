@@ -1,0 +1,7 @@
+.width-file-input {
+    width: calc(100% - 40px)
+}
+
+.preview {
+    width: 100px;
+}
