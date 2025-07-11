@@ -4,7 +4,7 @@ export interface PeluchesDto {
   presentationImage?: string;
   description?: string;
   images?: string[];
-  realisationTime?: string;
+  realisationTime?: number;
   creationDate?: Date;
   video?: string
 }

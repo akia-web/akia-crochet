@@ -5,6 +5,12 @@
         <p class="m-0">
           {{ peluche.name }}
         </p>
+
+        <img v-if="peluche.presentationImage"
+             :src="peluche.presentationImage"
+             alt="illustration"
+             class="w-200px"
+        />
       </template>
     </Card>
 
@@ -18,52 +24,20 @@ import {Card} from "primevue";
 const peluches = ref<PeluchesDto[]>([]);
 
 onMounted(async () => {
-  peluches.value = await getPeluches('tous les produits');
+  await getPeluches('tous les produits');
+  console.log(peluches.value)
 })
 
-const getPeluches = async (category: string): Promise<PeluchesDto[]> => {
-  return [
-    {
-      id: 1,
-      name: 'Lapin',
-      images: ['lala', 'lolo', 'lili'],
-      realisationTime: 120,
-      colors: ['lala', 'lolo', 'lili'],
-      creationDate: new Date()
-    },
-    {
-      id: 2,
-      name: 'Chien',
-      images: ['lala', 'lolo', 'lili'],
-      realisationTime: 120,
-      colors: ['lala', 'lolo', 'lili'],
-      creationDate: new Date()
-    },
-    {
-      id: 3,
-      name: 'Chat',
-      images: ['lala', 'lolo', 'lili'],
-      realisationTime: 120,
-      colors: ['lala', 'lolo', 'lili'],
-      creationDate: new Date(),
-    },
-    {
-      id: 1,
-      name: 'Éléphant',
-      images: ['lala', 'lolo', 'lili'],
-      realisationTime: 120,
-      colors: ['lala', 'lolo', 'lili'],
-      creationDate: new Date()
-    },
-    {
-      id: 1,
-      name: 'Pingouin',
-      images: ['lala', 'lolo', 'lili'],
-      realisationTime: 120,
-      colors: ['lala', 'lolo', 'lili'],
-      creationDate: new Date(),
-    }
-  ]
+const getPeluches = async (category: string):Promise<any>=> {
+  fetch('http://localhost:3001/peluches')
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        peluches.value = data
+      })
+      .catch(error => {
+        console.error('Erreur :', error);
+      });
 };
 
 </script>
