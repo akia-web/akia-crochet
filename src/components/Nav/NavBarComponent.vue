@@ -1,7 +1,9 @@
 <template>
   <div class="flex bg-dark-pink w-100 justify-between align-center">
     <RouterLink to="/">
-      <img class="logo ml-0_5" src="@/assets/logo.png">
+      <img class="logo ml-0_5"
+           alt="logo Akia"
+           src="@/assets/logo.png">
     </RouterLink>
     <div class="flex align-center">
       <RouterLink to="/peluches"
@@ -11,7 +13,7 @@
         </span>
       </RouterLink>
 
-      <RouterLink class="text-decoration-none font-spartan font-size-1_5em">
+      <RouterLink to="/" class="text-decoration-none font-spartan font-size-1_5em">
         <span class="text-black bold">
           Patrons
         </span>
