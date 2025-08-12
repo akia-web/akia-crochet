@@ -1,9 +1,11 @@
 <template>
   <div class="flex bg-dark-pink w-100 justify-between align-center">
-    <img class="logo ml-0_5" src="@/assets/logo.png">
+    <RouterLink to="/">
+      <img class="logo ml-0_5" src="@/assets/logo.png">
+    </RouterLink>
     <div class="flex align-center">
       <RouterLink to="/peluches"
-                  class="mr-1 text-decoration-none font-spartan font-size-1_5em" >
+                  class="mr-1 text-decoration-none font-spartan font-size-1_5em">
         <span class="text-black bold">
           Peluches
         </span>
@@ -42,28 +44,24 @@
 }
 </style>
 <script lang="ts" setup>
-import {onMounted, ref} from 'vue';
-import type {UserDto} from '@/interfaces/user.dto.ts';
-import {useRouter} from 'vue-router';
-import {useUserStore} from '@/stores/user.ts';
-const storeUser = useUserStore();
-const user = ref<UserDto | undefined>()
-const router = useRouter();
+  import { onMounted, ref } from 'vue';
+  import type { UserDto } from '@/interfaces/user.dto.ts';
+  import { useRouter } from 'vue-router';
+  import { useUserStore } from '@/stores/user.ts';
+
+  const storeUser = useUserStore();
+  const user = ref<UserDto | undefined>();
+  const router = useRouter();
 
 
-const loginWithGoogle = async (): Promise<void> => {
-  window.location.href = 'http://localhost:3001/auth/google';
-}
+  const loginWithGoogle = async (): Promise<void> => {
+    window.location.href = 'http://localhost:3001/auth/google';
+  };
 
+  onMounted(async () => {
+  });
 
-onMounted(async () => {
-})
-
-const goToProfile = () => {
-  console.log('lala')
-  router.push('/profile')
-  // window.location.href = '/profile'
-}
-
-
+  const goToProfile = () => {
+    router.push('/profile');
+  };
 </script>

@@ -7,7 +7,7 @@ import App from './App.vue'
 import router from './router'
 import { PrimeVue } from '@primevue/core'
 import Button from "primevue/button";
-import { Card, Checkbox, InputGroup, InputNumber, InputText, Menu, Toast, ToastService } from 'primevue';
+import { Card, Dialog, DialogService, Divider, DynamicDialog, InputGroup, InputNumber, InputText, Menu, Select, Step, StepList, Stepper, Toast, ToastService } from 'primevue';
 import Editor from 'primevue/editor';
 
 const app = createApp(App)
@@ -20,6 +20,7 @@ app.use(PrimeVue, {
     }
 })
 app.use(ToastService);
+app.use(DialogService)
 
 
 const components = {
@@ -30,7 +31,14 @@ const components = {
     Toast,
     Menu,
     Editor,
-    InputGroup
+    InputGroup,
+    Select,
+    Stepper,
+    StepList,
+    Step,
+    Divider,
+    Dialog,
+    DynamicDialog
 
 };
 

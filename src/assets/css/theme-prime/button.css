@@ -1,0 +1,8 @@
+:root {
+    --p-button-primary-background: var(--action-color) !important;
+    --p-button-primary-hover-background: var(--action-color-hover) !important;
+    --p-button-primary-border-color: var(--action-color) !important;
+    --p-button-primary-hover-border-color: var(--action-color-hover) !important;
+    --p-button-primary-active-background: var(--action-color-hover) !important;
+    --p-button-primary-active-border-color: var(--action-color-hover) !important;
+}

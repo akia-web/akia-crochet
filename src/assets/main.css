@@ -6,9 +6,22 @@
 @import 'css/margin.css';
 @import 'primeicons/primeicons.css';
 @import 'css/overridePrime.css';
+@import "css/theme-prime/stepper.css";
+@import "css/theme-prime/button.css";
+@import "css/theme-prime/input-text.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 *{
     margin: 0;
     padding: 0;
     font-family: "League Spartan", serif;
+}
+
+:root{
+    --action-color : #D4AF37;
+    --action-color-hover : #ab8d2e;
+    --p-select-focus-border-color: var(--action-color) !important;
+
 }

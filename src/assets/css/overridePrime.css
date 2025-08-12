@@ -9,15 +9,36 @@
     border: 1px solid transparent !important;
 }
 
+.button-action-transparent {
+    background: transparent !important;
+    color: var(--action-color) !important;
+    padding: 2px;
+    width: 35px;
+    border: none !important;
+}
 
-.p-menu{
+.button-action-transparent:hover {
+    border: none !important;
+    background: var(--action-color-hover) !important;
+    color: white !important;
+}
+
+.p-menu {
     min-width: auto !important;
 }
 
-.p-button-label{
+.p-button-label {
     margin-top: 5px;
 }
 
-.p-inputtext{
-    padding: 20px !important;
+.p-inputtext, .p-select-label {
+    padding: 10px !important;
+}
+
+.p-dialog-header {
+    color: var(--action-color);
+}
+
+.p-step-number {
+    padding-top: 5px;
 }

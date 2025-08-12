@@ -1,0 +1,12 @@
+:root{
+    --p-stepper-separator-size: 2px !important;
+    --p-stepper-separator-background: var(--action-color) !important;
+    --p-stepper-step-title-active-color: var(--action-color) !important;
+    --p-stepper-step-number-active-color: white !important;
+    --p-stepper-step-number-color:var(--action-color) !important;
+    --p-stepper-step-title-color:var(--action-color) !important;
+    --p-stepper-step-number-border-color: var(--action-color) !important;
+    --p-stepper-step-number-active-background: var(--action-color) !important;
+    --p-stepper-step-number-active-border-color: var(--action-color) !important;
+    --p-stepper-separator-active-background: var(--action-color) !important;
+}

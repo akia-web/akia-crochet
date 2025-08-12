@@ -2,7 +2,7 @@
   <div class="flex">
     <Card v-for="peluche in peluches" :key="peluche.id">
       <template #content>
-        <p class="m-0">
+        <p class="m-0 bg-fuchsia-300">
           {{ peluche.name }}
         </p>
 

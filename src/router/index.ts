@@ -24,7 +24,7 @@ const router = createRouter({
         {
           path: 'add-peluches',
           name: 'AdminAddPeluches',
-          component: () => import('../components/Admin/Peluches/AddPelucheComponent.vue'),
+          component: () => import('../components/Admin/Peluches/edit-plushies/edit-plushies-container.vue'),
         },
         {
           path: 'patrons',
@@ -39,7 +39,6 @@ const router = createRouter({
       children: [
         {
           path: '',
-          name: 'peluches',
           component: () => import('../components/Peluches/PeluchesComponent.vue'),
         },
         {
@@ -55,31 +54,29 @@ const router = createRouter({
       ],
     },
   ],
-})
+});
 
-router.beforeEach(async (to,from,next)=>{
-  const userStore = useUserStore()
-  await updatePinia(userStore)
+router.beforeEach(async (to, from, next) => {
+  const userStore = useUserStore();
+  await updatePinia(userStore);
 
-  const user: UserDto | null = userStore.user
-  console.log(user)
+  const user: UserDto | null = userStore.user;
   if (to.path === '/profile') {
     if (user) {
-      next()
+      next();
     } else {
-      next('/')
+      next('/');
     }
-  } else if(to.path.startsWith('/admin')){
+  } else if (to.path.startsWith('/admin')) {
     if (user && user.role === RoleEnum.ADMIN) {
-      next()
+      next();
     } else {
-      next('/')
+      next('/');
     }
   } else {
-    next()
+    next();
   }
-})
+});
 
 
-
-export default router
+export default router;
