@@ -22,7 +22,7 @@
       class="text-red ml-2">Renseignez la description</span>
       </label>
       <Editor
-          :value="description"
+          :modelValue="description"
           @update:modelValue="val => emit('update:description', val)"
           editorStyle="height: 320px"
       />

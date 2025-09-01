@@ -38,19 +38,20 @@
                 @click="activeInput($event, 'uploadImages')"
         />
       </div>
-        <div v-if="thumbnailsImages.length>0"
-             class="mt-2">
-          <label class="font-size-0_8em italic">Autres images</label>
-          <div class="flex">
-            <div v-for="(image, index) in thumbnailsImages" :key="index"
-            class="relative">
-              <img v-if="image" :src="image as string"
-                   class="preview mb-4"
-                   alt="image du produit"/>
-              <p class="pi pi-times absolute right-[5px] top-[5px] rounded-full p-[10px] bg-white hover:bg-actionColorHover hover:cursor-pointer hover:text-white" @click="deleteFile(image, index)"></p>
-            </div>
+      <div v-if="thumbnailsImages.length>0"
+           class="mt-2">
+        <label class="font-size-0_8em italic">Autres images</label>
+        <div class="flex">
+          <div v-for="(image, index) in thumbnailsImages" :key="index"
+               class="relative">
+            <img v-if="image" :src="image as string"
+                 class="preview mb-4"
+                 alt="image du produit"/>
+            <p class="pi pi-times absolute right-[5px] top-[5px] rounded-full p-[10px] bg-white hover:bg-actionColorHover hover:cursor-pointer hover:text-white"
+               @click="deleteFile(image, index)"></p>
           </div>
         </div>
+      </div>
       <div>
       </div>
     </div>
@@ -58,77 +59,88 @@
   </form>
 </template>
 <script lang="ts" setup>
-  import { ref } from 'vue';
+import { onMounted, ref, toRef, watch } from 'vue';
 
-  const imagesName = ref<string[]>([]);
-  const imagesFiles = ref<File[]>([]);
-  const thumbnailsImages = ref<(string | ArrayBuffer)[]>([]);
-  const presentationImage = ref<string>('');
-  const filePresentation = ref<File>();
-  const thumbnailPresention = ref();
+const props = defineProps({
+  imagesFiles: {
+    type: Array as () => File[],
+    default: () => []
+  },
+  filePresentation: File,
+  presentationImage: String
+});
 
-  const deleteFile = (image: any, index: number) => {
-    const deleteImage = imagesFiles.value[index];
-    imagesFiles.value = imagesFiles.value.filter((element) => element !== deleteImage);
-    thumbnailsImages.value = thumbnailsImages.value.filter((element) => element !== image);
+const presentationImage = toRef(props, 'presentationImage');
+const filePresentation = toRef(props, 'filePresentation');
+const imagesFiles = toRef(props, 'imagesFiles');
+
+const imagesName = ref<string[]>([]);
+const thumbnailsImages = ref<(string | ArrayBuffer)[]>([]);
+const thumbnailPresention = ref();
+
+const createThumbnail = (file: File, selectGroup: 'uploadImages' | 'uploadPresentationImage') => {
+  const objectUrl = URL.createObjectURL(file);
+
+  if (selectGroup === 'uploadPresentationImage') {
+    thumbnailPresention.value = objectUrl;
+  } else {
+    thumbnailsImages.value.push(objectUrl);
+  }
+};
+
+const deleteFile = (image: any, index: number) => {
+  URL.revokeObjectURL(thumbnailsImages.value[index] as string);
+  const deleteImage = imagesFiles.value[index];
+  // imagesFiles.value = imagesFiles.value.filter((element) => element !== deleteImage);
+  thumbnailsImages.value = thumbnailsImages.value.filter((element) => element !== image);
+  emit('update:imagesFiles', imagesFiles.value.filter((element) => element !== deleteImage));
+};
+
+const activeInput = (event: Event, selectInput: 'uploadImages' | 'uploadPresentationImage') => {
+  const buttonUpload = document.getElementById(selectInput);
+  if (buttonUpload) {
+    buttonUpload.click();
+  }
+};
+
+const emit = defineEmits([
+  'update:filePresentation',
+  'update:imagesFiles',
+  'update:presentationImage',
+]);
+
+
+watch(filePresentation, (newFile: File | undefined) => {
+  if (newFile) {
+    createThumbnail(newFile, 'uploadPresentationImage');
+  }
+});
+
+watch(imagesFiles, (newFile: File[] | undefined) => {
+  if (newFile && newFile.length > 0 && newFile.length !== thumbnailsImages.value.length) {
+    imagesFiles.value.forEach(file => createThumbnail(file, 'uploadImages'));
+  }
+});
+
+const onFileSelect = async (event: Event, selectFile: 'uploadImages' | 'uploadPresentationImage') => {
+  const target = event.target as HTMLInputElement;
+  if (!target.files || target.files.length === 0) return;
+
+  const file = target.files[0];
+
+  if (selectFile === 'uploadImages') {
+    imagesName.value.push(file.name);
+    imagesFiles.value.push(file);
+    createThumbnail(file, 'uploadImages');
     emit('update:imagesFiles', imagesFiles.value);
-  };
-
-  const activeInput = (event: Event, selectInput: 'uploadImages' | 'uploadPresentationImage') => {
-    const buttonUpload = document.getElementById(selectInput);
-    if (buttonUpload) {
-      buttonUpload.click();
-    }
-  };
-
-  const emit = defineEmits([
-    'update:filePresentation',
-    'update:imagesFiles',
-    'update:presentationImage',
-  ]);
-
-  const props = defineProps({
-    imagesFiles: {
-      type: Array as () => File[],
-      default: () => []
-    },
-    filePresentation: File,
-    presentationImage: String
-  });
+  } else {
+    createThumbnail(file, 'uploadPresentationImage');
+    emit('update:filePresentation', file);
+    emit('update:presentationImage', file.name);
+  }
+};
 
 
-  const onFileSelect = async (event: Event, selectFile: 'uploadImages' | 'uploadPresentationImage') => {
-    const target = event.target as HTMLInputElement;
-    if (!target.files || target.files.length === 0) return;
-
-    if (selectFile === 'uploadImages') {
-      imagesName.value.push(target.files[0].name);
-      imagesFiles.value.push(target.files[0]);
-      createThumbnail(target.files[0], 'uploadImages');
-      emit('update:imagesFiles', imagesFiles.value);
-    } else {
-      presentationImage.value = target.files[0].name;
-      filePresentation.value = target.files[0];
-      createThumbnail(target.files[0], 'uploadPresentationImage');
-      emit('update:filePresentation', filePresentation.value);
-      emit('update:presentationImage', presentationImage.value);
-    }
-  };
-
-  const createThumbnail = (file: File, selectGroup: 'uploadImages' | 'uploadPresentationImage') => {
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      if (e.target && e.target.result) {
-        if (selectGroup === 'uploadPresentationImage') {
-          thumbnailPresention.value = e.target.result as string;
-        } else {
-          thumbnailsImages.value.push(e.target.result);
-        }
-      }
-    };
-    reader.readAsDataURL(file);
-  };
 </script>
 
 <style scoped src="./style.css"></style>

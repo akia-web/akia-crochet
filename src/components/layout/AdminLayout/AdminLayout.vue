@@ -8,6 +8,7 @@
     <div class="flex mt-1">
       <LeftBarComponent></LeftBarComponent>
       <div class="ml-2 mr-2 w-100">
+        <Toast></Toast>
         <RouterView/>
       </div>
 

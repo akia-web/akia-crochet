@@ -6,9 +6,9 @@
       </div>
     </header>
 
-    <div class="w-80">
+    <div class="w-[80%] mx-auto">
       <Toast></Toast>
-      <div class="mt-1">
+      <div class="mt-4">
         <RouterView/>
       </div>
 

@@ -9,19 +9,30 @@
 @import "css/theme-prime/stepper.css";
 @import "css/theme-prime/button.css";
 @import "css/theme-prime/input-text.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-*{
+* {
     margin: 0;
     padding: 0;
+
+}
+
+p, span {
     font-family: "League Spartan", serif;
 }
 
-:root{
-    --action-color : #D4AF37;
-    --action-color-hover : #ab8d2e;
+
+h1 {
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+}
+
+:root {
+    --action-color: #D4AF37;
+    --action-color-hover: #ab8d2e;
     --p-select-focus-border-color: var(--action-color) !important;
 
 }

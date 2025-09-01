@@ -45,7 +45,7 @@
                     icon="pi pi-arrow-left"
                     @click="activateCallback('2')"
             />
-            <Button label="Valider"
+            <Button :label="id? 'Éditer':'Valider'"
                     icon="pi pi-arrow-right"
                     iconPos="right"
                     :disabled="!form3IsValid"
@@ -66,38 +66,71 @@ import StepPanels from 'primevue/steppanels';
 import Step from 'primevue/step';
 import StepPanel from 'primevue/steppanel';
 import Form1 from '@/components/Admin/Peluches/edit-plushies/form-1.vue';
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import Form2 from '@/components/Admin/Peluches/edit-plushies/form-2.vue';
 import type { LinkDto } from '@/interfaces/link.dto.ts';
 import Form3 from '@/components/Admin/Peluches/edit-plushies/form-3.vue';
 import { checkInputIsNotNull } from '@/functions/check-forms.ts';
+import { usePlushieEditStore } from '@/stores/edit-peluche.ts';
+import type { PeluchesDto } from '@/interfaces/peluchesDto.ts';
+import { getImageName, getMimeType, urlToFile } from '@/functions/images.ts';
+import { useToast } from 'primevue';
+import { useRouter } from 'vue-router';
 
+const storeEditPeluche = usePlushieEditStore();
 const name = ref<string>('');
 const description = ref<string>('');
 const videoLinks = ref<LinkDto[]>([]);
 const imagesFiles = ref<File[]>([]);
 const filePresentation = ref<File>();
 const presentationImage = ref<string>('');
-
 const isValidName = ref<boolean>(true);
 const isValidDescription = ref<boolean>(true);
-
 const form1IsValid = ref<boolean>(false);
 const form3IsValid = ref<boolean>(false);
+const toast = useToast();
+const router = useRouter();
+
+const id = ref<number | undefined>(undefined);
 
 watch([name, description], ([newName, newDescription]) => {
-  const nameIsValid = checkInputIsNotNull(newName)
-  const descriptionIsValid = checkInputIsNotNull(newDescription)
-  form1IsValid.value = nameIsValid && descriptionIsValid
+  const nameIsValid = checkInputIsNotNull(newName);
+  const descriptionIsValid = checkInputIsNotNull(newDescription);
+  form1IsValid.value = nameIsValid && descriptionIsValid;
   isValidName.value = nameIsValid;
   isValidDescription.value = descriptionIsValid;
 });
 
-
 watch(filePresentation, (newFile) => {
-  form3IsValid.value = newFile !== undefined
+  form3IsValid.value = newFile !== undefined;
 
 });
+
+
+onMounted(async () => {
+
+  if (storeEditPeluche.peluche) {
+    const peluche: PeluchesDto = storeEditPeluche.peluche;
+    name.value = peluche.name!;
+    description.value = peluche.description!;
+    videoLinks.value = peluche.links!;
+    filePresentation.value = await urlToFile(peluche.presentationImage!, getImageName(peluche.presentationImage!), getMimeType(peluche.presentationImage!));
+
+    const otherImage = [];
+    if (peluche.images && peluche.images.length > 0) {
+      for (const item of peluche.images) {
+        const newImage = await urlToFile(item.url, getImageName(item.url!), getMimeType(item.url!));
+        otherImage.push(newImage);
+      }
+    }
+    imagesFiles.value = otherImage;
+    presentationImage.value = getImageName(peluche.presentationImage!);
+
+    storeEditPeluche.updatePeluche(null);
+    id.value = peluche.id;
+  }
+});
+
 
 const send = async () => {
   const allImage = [...imagesFiles.value, filePresentation.value];
@@ -114,10 +147,13 @@ const send = async () => {
     formData.append(`links`, JSON.stringify(videoLinks.value));
   }
 
-  await fetch('http://localhost:3001/peluches', {
-    method: 'POST',
+  fetch('http://localhost:3001/peluches', {
+    method: id.value ? 'PATCH' : 'POST',
     body: formData,
-  });
+  }).then(() => {
+    toast.add({ severity: 'success', summary: 'Peluche enregistrée', life: 3000 });
+    router.push({ name: 'AdminPeluches' })
+  }).catch(e => toast.add({ severity: 'error', summary: `Erreur lors de l'enregistrement de la peluche`, life: 3000 }));
 
 };
 </script>

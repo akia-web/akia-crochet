@@ -25,6 +25,7 @@ const router = createRouter({
           path: 'add-peluches',
           name: 'AdminAddPeluches',
           component: () => import('../components/Admin/Peluches/edit-plushies/edit-plushies-container.vue'),
+          props: true
         },
         {
           path: 'patrons',
@@ -39,7 +40,7 @@ const router = createRouter({
       children: [
         {
           path: '',
-          component: () => import('../components/Peluches/PeluchesComponent.vue'),
+          component: () => import('../components/Home/HomeComponent.vue'),
         },
         {
           path: 'peluches',

@@ -20,7 +20,7 @@ app.use(PrimeVue, {
     }
 })
 app.use(ToastService);
-app.use(DialogService)
+app.use(DialogService);
 
 
 const components = {
@@ -38,7 +38,7 @@ const components = {
     Step,
     Divider,
     Dialog,
-    DynamicDialog
+    DynamicDialog,
 
 };
 
