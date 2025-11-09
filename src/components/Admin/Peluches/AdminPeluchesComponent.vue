@@ -38,6 +38,7 @@ import { onMounted, ref } from 'vue';
 import { useUserStore } from '@/stores/user.ts';
 import { usePlushieEditStore } from '@/stores/edit-peluche.ts';
 import { apiGet } from '@/services/request-service.ts';
+import { ADMIN_ADD_PLUSHIES_ROUTE } from '@/router/routes-name.ts';
 
 const storeEditPeluche = usePlushieEditStore();
 
@@ -46,7 +47,7 @@ const router = useRouter();
 const plushies = ref<PeluchesDto[]>([]);
 
 const goToAddPeluche = () => {
-  router.push({ name: 'AdminAddPeluches' });
+  router.push({ name: ADMIN_ADD_PLUSHIES_ROUTE });
 };
 
 onMounted(async () => {

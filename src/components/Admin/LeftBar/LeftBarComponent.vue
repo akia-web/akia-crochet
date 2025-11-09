@@ -12,6 +12,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter()
 const items = ref([
   { label: 'Dashboard', icon: 'pi pi-chart-line', command: () => navigateTo('/Dashboard') },
+  { label: 'Createurs', icon: 'pi pi-verified', command: () => navigateTo('/creators') },
   { label: 'Peluches', icon: 'pi pi-camera', command: () => navigateTo('/Peluches') },
   { label: 'Patrons', icon: 'pi pi-file-edit', command: () => navigateTo('/Patrons') },
 ]);

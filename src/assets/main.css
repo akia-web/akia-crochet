@@ -31,8 +31,9 @@ h1 {
 }
 
 :root {
-    --action-color: #D4AF37;
-    --action-color-hover: #ab8d2e;
+    --action-color: #803256;
+    --action-color-hover: #391421;
+    --action-color-light-hover: #decdd3;
     --p-select-focus-border-color: var(--action-color) !important;
 
 }

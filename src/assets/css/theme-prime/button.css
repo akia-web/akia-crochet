@@ -5,4 +5,10 @@
     --p-button-primary-hover-border-color: var(--action-color-hover) !important;
     --p-button-primary-active-background: var(--action-color-hover) !important;
     --p-button-primary-active-border-color: var(--action-color-hover) !important;
+    --p-button-text-primary-color: var(--action-color-hover) !important;
+    --p-button-text-primary-hover-background: var(--action-color-light-hover) !important;
+}
+
+.p-button.menu .p-button-icon {
+    font-size: 12px !important;
 }

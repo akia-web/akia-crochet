@@ -3,6 +3,7 @@ import { updatePinia } from '@/functions/auth.ts';
 import { useUserStore } from '@/stores/user.ts';
 import type { UserDto } from '@/interfaces/user.dto.ts';
 import { RoleEnum } from '@/enum/role.enum.ts';
+import { ADMIN_ADD_CREATOR_ROUTE, ADMIN_ADD_PLUSHIES_ROUTE, ADMIN_CREATOR_ROUTE, ADMIN_DASHBORD_ROUTE, ADMIN_PATTERN_ROUTE, ADMIN_PLUSHIES_ROUTE, PLUSHIES_ROUTE } from '@/router/routes-name.ts';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,23 +14,33 @@ const router = createRouter({
       children: [
         {
           path: 'dashboard',
-          name: 'AdminDashboard',
+          name: ADMIN_DASHBORD_ROUTE,
           component: () => import('../components/Admin/Dashboard/AdminDashboardComponent.vue'),
         },
         {
+          path: 'creators',
+          name: ADMIN_CREATOR_ROUTE,
+          component: () => import('@/components/Admin/Creators/CreatorsComponent.vue'),
+        },
+        {
+          path: 'add-creator',
+          name: ADMIN_ADD_CREATOR_ROUTE,
+          component: () => import('@/components/Admin/Creators/edit-creator.vue'),
+        },
+        {
           path: 'peluches',
-          name: 'AdminPeluches',
+          name: ADMIN_PLUSHIES_ROUTE,
           component: () => import('../components/Admin/Peluches/AdminPeluchesComponent.vue'),
         },
         {
           path: 'add-peluches',
-          name: 'AdminAddPeluches',
+          name: ADMIN_ADD_PLUSHIES_ROUTE,
           component: () => import('../components/Admin/Peluches/edit-plushies/edit-plushies-container.vue'),
           props: true
         },
         {
-          path: 'patrons',
-          name: 'AdminPatrons',
+          path: 'pattern',
+          name: ADMIN_PATTERN_ROUTE,
           component: () => import('../components/Admin/Patron/AdminPatronComponent.vue'),
         },
       ],
@@ -40,7 +51,7 @@ const router = createRouter({
       children: [
         {
           path: '',
-          component: () => import('../components/Home/HomeComponent.vue'),
+          component: () => import('@/ pages/Home/HomeComponent.vue'),
         },
         {
           path: 'peluches',
@@ -49,7 +60,7 @@ const router = createRouter({
         },
         {
           path: '/profile',
-          name: 'profile',
+          name: PLUSHIES_ROUTE,
           component: () => import('../components/Profile/ProfileComponent.vue'),
         },
       ],

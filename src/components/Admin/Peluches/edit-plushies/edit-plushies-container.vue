@@ -10,8 +10,10 @@
         <div class="p-[10px]">
           <form1 v-model:name="name"
                  v-model:description="description"
+                 v-model:price="price"
                  :isValidName="isValidName"
                  :isValidDescription="isValidDescription"
+                 :isValidPrice="isValidPrice"
           >
           </form1>
           <div class="flex pt-6 justify-end">
@@ -70,15 +72,17 @@ import { onMounted, ref, watch } from 'vue';
 import Form2 from '@/components/Admin/Peluches/edit-plushies/form-2.vue';
 import type { LinkDto } from '@/interfaces/link.dto.ts';
 import Form3 from '@/components/Admin/Peluches/edit-plushies/form-3.vue';
-import { checkInputIsNotNull } from '@/functions/check-forms.ts';
+import { checkInputIsNotNull, checkInputIsNotNullAndANumber } from '@/functions/check-forms.ts';
 import { usePlushieEditStore } from '@/stores/edit-peluche.ts';
 import type { PeluchesDto } from '@/interfaces/peluchesDto.ts';
 import { getImageName, getMimeType, urlToFile } from '@/functions/images.ts';
 import { useToast } from 'primevue';
 import { useRouter } from 'vue-router';
+import { ADMIN_PLUSHIES_ROUTE } from '@/router/routes-name.ts';
 
 const storeEditPeluche = usePlushieEditStore();
 const name = ref<string>('');
+const price = ref<number>(0);
 const description = ref<string>('');
 const videoLinks = ref<LinkDto[]>([]);
 const imagesFiles = ref<File[]>([]);
@@ -86,6 +90,7 @@ const filePresentation = ref<File>();
 const presentationImage = ref<string>('');
 const isValidName = ref<boolean>(true);
 const isValidDescription = ref<boolean>(true);
+const isValidPrice = ref<boolean>(true);
 const form1IsValid = ref<boolean>(false);
 const form3IsValid = ref<boolean>(false);
 const toast = useToast();
@@ -93,12 +98,14 @@ const router = useRouter();
 
 const id = ref<number | undefined>(undefined);
 
-watch([name, description], ([newName, newDescription]) => {
+watch([name, description, price], ([newName, newDescription, newPrice]) => {
   const nameIsValid = checkInputIsNotNull(newName);
   const descriptionIsValid = checkInputIsNotNull(newDescription);
+  const priceIsValid = checkInputIsNotNullAndANumber(newPrice);
   form1IsValid.value = nameIsValid && descriptionIsValid;
   isValidName.value = nameIsValid;
   isValidDescription.value = descriptionIsValid;
+  isValidPrice.value = priceIsValid;
 });
 
 watch(filePresentation, (newFile) => {
@@ -112,6 +119,7 @@ onMounted(async () => {
   if (storeEditPeluche.peluche) {
     const peluche: PeluchesDto = storeEditPeluche.peluche;
     name.value = peluche.name!;
+    price.value = peluche.price!;
     description.value = peluche.description!;
     videoLinks.value = peluche.links!;
     filePresentation.value = await urlToFile(peluche.presentationImage!, getImageName(peluche.presentationImage!), getMimeType(peluche.presentationImage!));
@@ -140,8 +148,8 @@ const send = async () => {
   });
   formData.append('name', name.value);
   formData.append('description', description.value);
-  formData.append('realisationTime', '0');
   formData.append('presentationImage', presentationImage.value);
+  formData.append('price', price.value.toString());
 
   if (videoLinks.value && videoLinks.value.length > 0) {
     formData.append(`links`, JSON.stringify(videoLinks.value));
@@ -152,7 +160,7 @@ const send = async () => {
     body: formData,
   }).then(() => {
     toast.add({ severity: 'success', summary: 'Peluche enregistrée', life: 3000 });
-    router.push({ name: 'AdminPeluches' })
+    router.push({ name: ADMIN_PLUSHIES_ROUTE });
   }).catch(e => toast.add({ severity: 'error', summary: `Erreur lors de l'enregistrement de la peluche`, life: 3000 }));
 
 };

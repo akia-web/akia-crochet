@@ -1,0 +1,37 @@
+
+.crop {
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+
+}
+
+.crop img {
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+
+@media (min-width: 768px) {
+    .crop {
+        width: auto;
+        height: 200px;
+    }
+}
+
+.youtube-video{
+    width: 100%;
+    height: 400px;
+    aspect-ratio: 9 / 16;
+}
+
+
+@media (min-width: 840px) {
+    .youtube-video {
+        width: calc((112.5px * 5) + 17px);
+        height: 400px;
+    }
+}

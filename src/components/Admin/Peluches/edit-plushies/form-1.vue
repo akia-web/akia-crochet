@@ -27,19 +27,42 @@
           editorStyle="height: 320px"
       />
     </div>
+
+    <div class="flex column mb-6">
+      <label class="font-size-0_8em italic">Prix (en centimes)
+        <span v-if="!isValidPrice"
+              class="text-red ml-2">
+          Renseignez le prix
+        </span>
+      </label>
+      <InputNumber
+          v-model="priceProxy"
+          placeholder="prix"
+      />
+    </div>
   </form>
 </template>
 
 <script lang="ts" setup>
+  import { computed } from 'vue';
+
   const props = defineProps({
     name: String,
+    price: Number,
     description: String,
     isValidName: Boolean,
     isValidDescription: Boolean,
+    isValidPrice: Boolean,
   });
 
   const emit = defineEmits([
     'update:name',
-    'update:description'
+    'update:description',
+    'update:price'
   ]);
+
+  const priceProxy = computed({
+    get: () => props.price,
+    set: value => emit('update:price', value!.toString())
+  })
 </script>

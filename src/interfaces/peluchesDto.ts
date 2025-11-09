@@ -8,6 +8,6 @@ export interface PeluchesDto {
   description?: string;
   images?: ImagesDto[];
   links?: LinkDto[];
-  realisationTime?: number;
+  price?: number;
   creationDate?: Date;
 }

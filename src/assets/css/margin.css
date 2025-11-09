@@ -1,34 +1,7 @@
-.mr-0_5{
-    margin-right:0.5em ;
-}
-.mr-1{
-    margin-right:1em ;
-}
-
-.mr-2{
-    margin-right:2em ;
+.m-0-auto{
+    margin: 0 auto;
 }
 
 .ml-0_5{
     margin-left:0.5em ;
-}
-
-.ml-1{
-    margin-left: 1em;
-}
-
-.ml-2{
-    margin-left: 2em;
-}
-
-.mt-1{
-    margin-top: 1em;
-}
-
-.mt-2{
-    margin-top: 1em;
-}
-
-.mb-1{
-    margin-bottom: 1em;
 }
