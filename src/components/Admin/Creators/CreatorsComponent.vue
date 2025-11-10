@@ -9,10 +9,10 @@
 
     </div>
 
-    <div class="flex">
-      <Card v-for="(creator, index) in creators" :key="creator.id">
+    <div class="flex gap-2">
+      <Card v-for="(creator, index) in creators" :key="creator.id" class="min-w-[250px]">
         <template #title>
-          <div class="flex align-center">
+          <div class="flex align-center justify-between">
             <h2>{{ creator.name }}</h2>
             <Button variant="text"
                     rounded
@@ -32,10 +32,12 @@
           </div>
         </template>
         <template #content>
-          <ul>
+          <ul class="flex gap-2">
             <li v-for="socialMedia in creator.socialMedia">
-              <a :href="socialMedia.url" target="_blank">
-                <span class="pi" :class="getMedialSocialIcon(socialMedia.type)"></span>
+              <a :href="socialMedia.url" target="_blank" class="hover:text-actionColor">
+                <span class="pi border border-transparent rounded p-[5px] hover:text-white hover:bg-[var(--action-color-hover)] hover:border-[var(--action-color-hover)] transition ease-in-out duration-100"
+                      :class="getMedialSocialIcon(socialMedia.type)">
+                </span>
               </a>
             </li>
           </ul>

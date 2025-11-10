@@ -11,6 +11,7 @@
           <form1 v-model:name="name"
                  v-model:description="description"
                  v-model:price="price"
+                 v-model:selectedCreator="selectedCreator"
                  :isValidName="isValidName"
                  :isValidDescription="isValidDescription"
                  :isValidPrice="isValidPrice"
@@ -79,6 +80,10 @@ import { getImageName, getMimeType, urlToFile } from '@/functions/images.ts';
 import { useToast } from 'primevue';
 import { useRouter } from 'vue-router';
 import { ADMIN_PLUSHIES_ROUTE } from '@/router/routes-name.ts';
+import type { PlushieCreatorDto } from '@/interfaces/plushie-creator.dto.ts';
+import { apiPost } from '@/services/request-service.ts';
+import { api } from '@/functions/api.ts';
+import { env } from '@/environnement.ts';
 
 const storeEditPeluche = usePlushieEditStore();
 const name = ref<string>('');
@@ -95,14 +100,15 @@ const form1IsValid = ref<boolean>(false);
 const form3IsValid = ref<boolean>(false);
 const toast = useToast();
 const router = useRouter();
+const selectedCreator = ref<PlushieCreatorDto>();
 
 const id = ref<number | undefined>(undefined);
 
 watch([name, description, price], ([newName, newDescription, newPrice]) => {
   const nameIsValid = checkInputIsNotNull(newName);
   const descriptionIsValid = checkInputIsNotNull(newDescription);
-  const priceIsValid = checkInputIsNotNullAndANumber(newPrice);
-  form1IsValid.value = nameIsValid && descriptionIsValid;
+  const priceIsValid = newPrice > 0;
+  form1IsValid.value = nameIsValid && descriptionIsValid && priceIsValid;
   isValidName.value = nameIsValid;
   isValidDescription.value = descriptionIsValid;
   isValidPrice.value = priceIsValid;
@@ -123,6 +129,9 @@ onMounted(async () => {
     description.value = peluche.description!;
     videoLinks.value = peluche.links!;
     filePresentation.value = await urlToFile(peluche.presentationImage!, getImageName(peluche.presentationImage!), getMimeType(peluche.presentationImage!));
+    if (peluche.plushieCreator) {
+      selectedCreator.value = peluche.plushieCreator;
+    }
 
     const otherImage = [];
     if (peluche.images && peluche.images.length > 0) {
@@ -137,6 +146,7 @@ onMounted(async () => {
     storeEditPeluche.updatePeluche(null);
     id.value = peluche.id;
   }
+
 });
 
 
@@ -155,13 +165,20 @@ const send = async () => {
     formData.append(`links`, JSON.stringify(videoLinks.value));
   }
 
-  fetch('http://localhost:3001/peluches', {
-    method: id.value ? 'PATCH' : 'POST',
-    body: formData,
-  }).then(() => {
-    toast.add({ severity: 'success', summary: 'Peluche enregistrée', life: 3000 });
-    router.push({ name: ADMIN_PLUSHIES_ROUTE });
-  }).catch(e => toast.add({ severity: 'error', summary: `Erreur lors de l'enregistrement de la peluche`, life: 3000 }));
+  if (selectedCreator.value) {
+    formData.append('plushieCreator', JSON.stringify(selectedCreator.value));
+  }
+
+  const method: 'PATCH' | 'POST' = id.value ? 'PATCH' : 'POST';
+  apiPost(api(env.plushies.crud), method, formData, true)
+      .then(() => {
+        toast.add({ severity: 'success', summary: 'Peluche enregistrée', life: 3000 });
+        router.push({ name: ADMIN_PLUSHIES_ROUTE });
+      }).catch(e => toast.add({
+    severity: 'error',
+    summary: `Erreur lors de l'enregistrement de la peluche`,
+    life: 3000
+  }));
 
 };
 </script>

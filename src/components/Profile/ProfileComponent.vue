@@ -14,13 +14,15 @@ const router = useRouter()
 
 import {onMounted} from 'vue';
 import {useRouter} from 'vue-router';
+import { api } from '@/functions/api.ts';
+import { env } from '@/environnement.ts';
 
 onMounted(async () => {
 })
 
 const disconnect = async () => {
   const disconnectUser = await fetch(
-      'http://localhost:3001/auth/revoke-google',
+      api(env.auth.revoque),
       {
         method: 'GET',
         credentials: 'include',

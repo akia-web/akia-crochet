@@ -7,6 +7,7 @@
         <InputText id="uploadPresentationImage"
                    hidden
                    type="file"
+                   accept="image/png, image/jpeg"
                    @change="onFileSelect($event, 'uploadPresentationImage')">
         </InputText>
 
@@ -31,6 +32,7 @@
         <InputText :id="`uploadImages`"
                    hidden
                    type="file"
+                   accept="image/png, image/jpeg"
                    @change="onFileSelect($event, 'uploadImages')"/>
         <Button label="Ajouter une autre image"
                 v-if="thumbnailPresention"

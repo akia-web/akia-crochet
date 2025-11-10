@@ -1,10 +1,12 @@
 import type { UserDto } from '@/interfaces/user.dto.ts';
+import { api } from '@/functions/api.ts';
+import { env } from '@/environnement.ts';
 
 export const updatePinia = async (storeUser: any): Promise<void> => {
 
   if (!storeUser.user) {
     const connectedUser: Response = await fetch(
-      'http://localhost:3001/auth/is-authenticated',
+      api(env.auth.isAuthenticated),
       {
         method: 'GET',
         credentials: 'include',
