@@ -8,6 +8,7 @@ export const env = {
     crud: 'plushie-creator'
   },
   plushies: {
-    crud: 'peluches'
+    crud: 'peluches',
+    byName: 'peluches/by-name'
   }
 }
