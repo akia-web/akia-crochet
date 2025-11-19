@@ -9,6 +9,8 @@
 @import "css/theme-prime/stepper.css";
 @import "css/theme-prime/button.css";
 @import "css/theme-prime/input-text.css";
+@import "css/theme-prime/badge.css";
+@import "css/theme-prime/drawer.css";
 
 @tailwind base;
 @tailwind components;

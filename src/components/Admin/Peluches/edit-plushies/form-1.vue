@@ -53,6 +53,23 @@
         />
       </div>
     </div>
+    <div class="flex column">
+        <label class="font-size-0_8em italic">Hauteur (en mm)
+        </label>
+        <InputNumber
+            v-model="heightProxy"
+            placeholder="Hauteur"
+        />
+      </div>
+
+          <div class="flex column">
+        <label class="font-size-0_8em italic">Largeur (en mm)
+        </label>
+        <InputNumber
+            v-model="widthProxy"
+            placeholder="Largeur"
+        />
+      </div>
   </form>
 </template>
 
@@ -76,6 +93,8 @@ const props = defineProps({
   name: String,
   price: Number,
   description: String,
+  height : Number,
+  width: Number,
   isValidName: Boolean,
   isValidDescription: Boolean,
   isValidPrice: Boolean,
@@ -86,12 +105,25 @@ const emit = defineEmits([
   'update:name',
   'update:description',
   'update:price',
+  'update:height',
+  'update:width',
   'update:selectedCreator',
 ]);
 
 const priceProxy = computed({
   get: () => props.price,
   set: value => emit('update:price', value? value:0)
+});
+
+
+const heightProxy = computed({
+  get: () =>props.height,
+  set: value => emit('update:height', value)
+});
+
+const widthProxy = computed({
+  get: () => props.width,
+  set: value => emit('update:width', value)
 });
 
 const selectedCreatorProxyProxy = computed({

@@ -76,9 +76,7 @@ const deletePlushie = (peluche: PeluchesDto) => {
   const url = `${import.meta.env.VITE_BASE_URL_BACK}peluches?id=${peluche.id}`;
   apiGet(url, 'DELETE', true)
       .then(response => response.json())
-      .then(data => {
-        plushies.value = data;
-      })
+      .then(plushies.value = plushies.value.filter((element)=> element.id !== peluche.id))
       .catch(error => {
         console.error('Erreur :', error);
       });

@@ -12,6 +12,8 @@
                  v-model:description="description"
                  v-model:price="price"
                  v-model:selectedCreator="selectedCreator"
+                 v-model:height="height"
+                 v-model:width="width"
                  :isValidName="isValidName"
                  :isValidDescription="isValidDescription"
                  :isValidPrice="isValidPrice"
@@ -88,6 +90,8 @@ import { env } from '@/environnement.ts';
 const storeEditPeluche = usePlushieEditStore();
 const name = ref<string>('');
 const price = ref<number>(0);
+const height = ref<number>(0);
+const width = ref<number>(0);
 const description = ref<string>('');
 const videoLinks = ref<LinkDto[]>([]);
 const imagesFiles = ref<File[]>([]);
@@ -128,7 +132,10 @@ onMounted(async () => {
     price.value = peluche.price!;
     description.value = peluche.description!;
     videoLinks.value = peluche.links!;
+    height.value = peluche.height === undefined ? 0 : peluche.height
+    width.value = peluche.width === undefined ? 0 : peluche.width
     filePresentation.value = await urlToFile(peluche.presentationImage!, getImageName(peluche.presentationImage!), getMimeType(peluche.presentationImage!));
+    
     if (peluche.plushieCreator) {
       selectedCreator.value = peluche.plushieCreator;
     }
@@ -160,6 +167,19 @@ const send = async () => {
   formData.append('description', description.value);
   formData.append('presentationImage', presentationImage.value);
   formData.append('price', price.value.toString());
+  if(height.value){
+    formData.append('height',  height.value.toString());
+  }
+
+  if(width.value){
+    formData.append('width', width.value.toString());
+
+  }
+
+  if(id.value){
+    formData.append('id', id.value.toString())
+  }
+
 
   if (videoLinks.value && videoLinks.value.length > 0) {
     formData.append(`links`, JSON.stringify(videoLinks.value));

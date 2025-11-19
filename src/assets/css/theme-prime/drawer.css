@@ -1,0 +1,13 @@
+:root{
+     --p-drawer-header-padding: 10px !important;
+     --p-drawer-border-color:  var(--action-color) !important;
+}
+
+.p-drawer-header{
+    background-color: var(--action-color);
+    color: white;
+}
+
+.p-drawer-header .p-button{
+    color: white !important;
+}

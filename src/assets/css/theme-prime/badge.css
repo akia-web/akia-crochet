@@ -1,0 +1,4 @@
+:root{
+    --p-badge-secondary-background: var(--action-color) !important;
+    --p-badge-secondary-color: white !important;
+}

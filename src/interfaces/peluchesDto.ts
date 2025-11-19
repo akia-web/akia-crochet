@@ -12,4 +12,6 @@ export interface PeluchesDto {
   price?: number;
   creationDate?: Date;
   plushieCreator?: PlushieCreatorDto;
+  height?: number;
+  width?: number;
 }

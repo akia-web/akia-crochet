@@ -44,6 +44,9 @@
               icon="pi pi-google"
               v-if="!storeUser.user"
               @click="loginWithGoogle"></Button>
+
+      <ShopCard></ShopCard>
+
     </div>
 
   </div>
@@ -62,6 +65,8 @@
   import { useUserStore } from '@/stores/user.ts';
   import { api } from '@/functions/api.ts';
   import { env } from '@/environnement.ts';
+  import ShopCard from '@/components/ShopCard/ShopCardComponent.vue';
+
 
   const storeUser = useUserStore();
   const user = ref<UserDto | undefined>();
