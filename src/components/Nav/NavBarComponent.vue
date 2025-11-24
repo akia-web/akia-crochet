@@ -31,6 +31,12 @@
           Patrons
         </span>
       </RouterLink>
+
+        <RouterLink :to="{ name: SIMULATOR_ROUTE  }" class="text-decoration-none font-spartan font-size-1_5em">
+        <span class="text-black bold">
+          Simulateur
+        </span>
+      </RouterLink>
     </div>
 
     <div class="flex align-center">
@@ -66,6 +72,7 @@
   import { api } from '@/functions/api.ts';
   import { env } from '@/environnement.ts';
   import ShopCard from '@/components/ShopCard/ShopCardComponent.vue';
+import { SIMULATOR_ROUTE } from '@/router/routes-name';
 
 
   const storeUser = useUserStore();

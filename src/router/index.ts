@@ -3,7 +3,7 @@ import { updatePinia } from '@/functions/auth.ts';
 import { useUserStore } from '@/stores/user.ts';
 import type { UserDto } from '@/interfaces/user.dto.ts';
 import { RoleEnum } from '@/enum/role.enum.ts';
-import { ADMIN_ADD_CREATOR_ROUTE, ADMIN_ADD_PLUSHIES_ROUTE, ADMIN_CREATOR_ROUTE, ADMIN_DASHBORD_ROUTE, ADMIN_PATTERN_ROUTE, ADMIN_PLUSHIES_ROUTE, PLUSHIES_DETAIL_ROUTE, PLUSHIES_ROUTE, PROFILE_ROUTE } from '@/router/routes-name.ts';
+import { ADMIN_ADD_CREATOR_ROUTE, ADMIN_ADD_PLUSHIES_ROUTE, ADMIN_CREATOR_ROUTE, ADMIN_DASHBORD_ROUTE, ADMIN_PATTERN_ROUTE, ADMIN_PLUSHIES_ROUTE, PLUSHIES_DETAIL_ROUTE, PLUSHIES_ROUTE, PROFILE_ROUTE, SIMULATOR_ROUTE } from '@/router/routes-name.ts';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -68,6 +68,11 @@ const router = createRouter({
           path: 'profile',
           name: PROFILE_ROUTE,
           component: () => import('../components/Profile/ProfileComponent.vue'),
+        },
+        {
+          path: 'simulator',
+          name: SIMULATOR_ROUTE,
+          component: () => import('@/pages/Simulator/SimulatorVue.vue'),
         },
       ],
     },
