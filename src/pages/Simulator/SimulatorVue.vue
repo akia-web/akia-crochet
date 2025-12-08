@@ -3,8 +3,8 @@
 
 <div class="flex mt-4">
 <FormSimulatorComponent/>
-<!-- <SimulatorComponent/> -->
- <Test2></Test2>
+ <SimulatorComponent/>
+<!-- <Test2></Test2>-->
 </div>
 
 

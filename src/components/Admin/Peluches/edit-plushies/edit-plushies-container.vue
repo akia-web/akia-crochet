@@ -3,7 +3,7 @@
     <StepList>
       <Step value="1">Général</Step>
       <Step value="2">Vidéos</Step>
-      <Step value="3">Photos</Step>
+      <Step value="3">Variants</Step>
     </StepList>
     <StepPanels>
       <StepPanel v-slot="{ activateCallback }" value="1">
@@ -40,9 +40,7 @@
       </StepPanel>
       <StepPanel v-slot="{ activateCallback }" value="3">
         <div class="p-[10px]">
-          <form3 v-model:imagesFiles="imagesFiles"
-                 v-model:filePresentation="filePresentation"
-                 v-model:presentationImage="presentationImage">
+          <form3 v-model:variants="variants">
           </form3>
           <div class="pt-6 flex justify-between">
             <Button label="Précédent"
@@ -77,7 +75,7 @@ import type { LinkDto } from '@/interfaces/link.dto.ts';
 import Form3 from '@/components/Admin/Peluches/edit-plushies/form-3.vue';
 import { checkInputIsNotNull, checkInputIsNotNullAndANumber } from '@/functions/check-forms.ts';
 import { usePlushieEditStore } from '@/stores/edit-peluche.ts';
-import type { PeluchesDto } from '@/interfaces/peluchesDto.ts';
+import type { PlushieDto } from '@/interfaces/plushieDto.ts';
 import { getImageName, getMimeType, urlToFile } from '@/functions/images.ts';
 import { useToast } from 'primevue';
 import { useRouter } from 'vue-router';
@@ -86,6 +84,17 @@ import type { PlushieCreatorDto } from '@/interfaces/plushie-creator.dto.ts';
 import { apiPost } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
+import type { PlushieVariantDto } from '@/interfaces/plushie-variant.dto.ts';
+
+const variants = ref<PlushieVariantDto[]>([{
+  name: '',
+  color: '#000000',
+  materials: [],
+  imagesFiles: [],
+  stock: 0,
+  randomId: crypto.randomUUID(),
+  images: [],
+}]);
 
 const storeEditPeluche = usePlushieEditStore();
 const name = ref<string>('');
@@ -94,14 +103,11 @@ const height = ref<number>(0);
 const width = ref<number>(0);
 const description = ref<string>('');
 const videoLinks = ref<LinkDto[]>([]);
-const imagesFiles = ref<File[]>([]);
-const filePresentation = ref<File>();
-const presentationImage = ref<string>('');
 const isValidName = ref<boolean>(true);
 const isValidDescription = ref<boolean>(true);
 const isValidPrice = ref<boolean>(true);
 const form1IsValid = ref<boolean>(false);
-const form3IsValid = ref<boolean>(false);
+const form3IsValid = ref<boolean>(true);
 const toast = useToast();
 const router = useRouter();
 const selectedCreator = ref<PlushieCreatorDto>();
@@ -118,8 +124,8 @@ watch([name, description, price], ([newName, newDescription, newPrice]) => {
   isValidPrice.value = priceIsValid;
 });
 
-watch(filePresentation, (newFile) => {
-  form3IsValid.value = newFile !== undefined;
+watch(variants, (newVariant) => {
+  form3IsValid.value = newVariant.length > 0 && (newVariant[0].name !== undefined || newVariant[0].name !== '');
 
 });
 
@@ -127,57 +133,80 @@ watch(filePresentation, (newFile) => {
 onMounted(async () => {
 
   if (storeEditPeluche.peluche) {
-    const peluche: PeluchesDto = storeEditPeluche.peluche;
-    name.value = peluche.name!;
-    price.value = peluche.price!;
-    description.value = peluche.description!;
-    videoLinks.value = peluche.links!;
-    height.value = peluche.height === undefined ? 0 : peluche.height
-    width.value = peluche.width === undefined ? 0 : peluche.width
-    filePresentation.value = await urlToFile(peluche.presentationImage!, getImageName(peluche.presentationImage!), getMimeType(peluche.presentationImage!));
-    
-    if (peluche.plushieCreator) {
-      selectedCreator.value = peluche.plushieCreator;
+    const plushie: PlushieDto = storeEditPeluche.peluche;
+    name.value = plushie.name!;
+    price.value = plushie.price!;
+    description.value = plushie.description!;
+    videoLinks.value = plushie.links!;
+    height.value = plushie.height === undefined ? 0 : plushie.height;
+    width.value = plushie.width === undefined ? 0 : plushie.width;
+
+    if (plushie.plushieCreator) {
+      selectedCreator.value = plushie.plushieCreator;
     }
 
-    const otherImage = [];
-    if (peluche.images && peluche.images.length > 0) {
-      for (const item of peluche.images) {
-        const newImage = await urlToFile(item.url, getImageName(item.url!), getMimeType(item.url!));
-        otherImage.push(newImage);
+    if (plushie.plushieVariants) {
+      variants.value = plushie.plushieVariants;
+
+
+      for (const variant of variants.value) {
+        const images = [];
+        for (const image of variant.images) {
+          const newImage = await urlToFile(image.url, getImageName(image.url), getMimeType(image.url));
+          images.push(newImage);
+        }
+        variant.imagesFiles = images;
       }
     }
-    imagesFiles.value = otherImage;
-    presentationImage.value = getImageName(peluche.presentationImage!);
 
     storeEditPeluche.updatePeluche(null);
-    id.value = peluche.id;
+    id.value = plushie.id;
   }
 
 });
 
 
 const send = async () => {
-  const allImage = [...imagesFiles.value, filePresentation.value];
+  const allImage: File[] = [];
   const formData = new FormData();
+
+  for (const variant of variants.value) {
+    if (variant.imagesFiles) {
+      for (const file of variant.imagesFiles) {
+        const isAlreadyPresent = variant.images.some(img => {
+          const filename = img.url.split('/images/')[1];
+          return (filename === file.name) || file.name === img.url;
+        });
+
+        if (!isAlreadyPresent) {
+          allImage.push(file);
+          variant.images.push({ url: file.name });
+        }
+      }
+    }
+
+  }
+
+
   allImage.forEach((file) => {
     formData.append('images', file as File);
   });
+
   formData.append('name', name.value);
   formData.append('description', description.value);
-  formData.append('presentationImage', presentationImage.value);
   formData.append('price', price.value.toString());
-  if(height.value){
-    formData.append('height',  height.value.toString());
+
+  if (height.value) {
+    formData.append('height', height.value.toString());
   }
 
-  if(width.value){
+  if (width.value) {
     formData.append('width', width.value.toString());
 
   }
 
-  if(id.value){
-    formData.append('id', id.value.toString())
+  if (id.value) {
+    formData.append('id', id.value.toString());
   }
 
 
@@ -189,16 +218,22 @@ const send = async () => {
     formData.append('plushieCreator', JSON.stringify(selectedCreator.value));
   }
 
+  formData.append('plushieVariants', JSON.stringify(variants.value));
+
   const method: 'PATCH' | 'POST' = id.value ? 'PATCH' : 'POST';
-  apiPost(api(env.plushies.crud), method, formData, true)
+  console.warn(variants.value);
+  apiPost(api(env.plushies.crud), method, formData, false, true)
       .then(() => {
         toast.add({ severity: 'success', summary: 'Peluche enregistrée', life: 3000 });
         router.push({ name: ADMIN_PLUSHIES_ROUTE });
-      }).catch(e => toast.add({
-    severity: 'error',
-    summary: `Erreur lors de l'enregistrement de la peluche`,
-    life: 3000
-  }));
+      })
+      .catch(e => {
+        toast.add({
+          severity: 'error',
+          summary: e,
+          life: 3000
+        });
+      });
 
 };
 </script>

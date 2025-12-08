@@ -1,4 +1,4 @@
-export const apiGet = (url: string, method: 'GET' | 'DELETE', auth?: boolean) => {
+export const apiGet = async (url: string, method: 'GET' | 'DELETE', auth?: boolean) => {
   const headers: { 'Content-Type': string, 'Authorization'?: string } = { 'Content-Type': 'application/json', };
 
   if (auth) {
@@ -7,14 +7,20 @@ export const apiGet = (url: string, method: 'GET' | 'DELETE', auth?: boolean) =>
       headers['Authorization'] = `Bearer ${token}`;
     }
   }
-  return fetch(url, {
+  const res: Response = await fetch(url, {
     method: method,
     headers
   });
+
+  if (!res.ok) {
+    throw await res.json().catch(() => ({}));
+  }
+
+  return res;
 };
 
 
-export const apiPost = (url: string, method: 'POST' | 'PATCH' | 'PUT', body: any, auth?: boolean) => {
+export const apiPost = async (url: string, method: 'POST' | 'PATCH' | 'PUT', body: any, credentials: boolean = false, auth?: boolean) => {
   const headers: { 'Content-Type'?: string, 'Authorization'?: string } = {};
 
   if (auth) {
@@ -29,9 +35,22 @@ export const apiPost = (url: string, method: 'POST' | 'PATCH' | 'PUT', body: any
     body = JSON.stringify(body);
   }
 
-  return fetch(url, {
-    method: method,
+
+  const res: Response = await fetch(url, {
+    method,
     headers,
-    body: body
+    body,
+    credentials: credentials ? 'include' : undefined,
   });
+
+  if (!res.ok) {
+    throw await res.json().catch(() => ({}));
+  }
+
+  return res.json().catch(() => ({}));
+
 };
+
+export const apiDelete = () => {
+
+}

@@ -15,12 +15,12 @@
   </Card>
 </template>
 <script lang="ts" setup>
-import type { PeluchesDto } from '@/interfaces/peluchesDto.ts';
+import type { PlushieDto } from '@/interfaces/plushieDto.ts';
 import { Card } from 'primevue';
 import { computed } from 'vue';
 
 const props = defineProps<{
-  plushie: PeluchesDto
+  plushie: PlushieDto
 }>();
 
 const price = computed(() => {

@@ -1,8 +1,12 @@
 export const env = {
-  auth:{
+  auth: {
     revoque: 'auth/revoke-google',
     isAuthenticated: 'auth/is-authenticated',
-    google: 'auth/google'
+    google: 'auth/google',
+    createAccount: 'auth/create-account',
+    confirmEmail: 'auth/verify-email',
+    resendConfirmEmail: 'auth/resend-verify-email',
+    login: 'auth/login'
   },
   plushieCreator: {
     crud: 'plushie-creator'
@@ -11,4 +15,4 @@ export const env = {
     crud: 'peluches',
     byName: 'peluches/by-name'
   }
-}
+};

@@ -1,0 +1,7 @@
+:root{
+    --p-divider-border-color:var(--action-color) !important;
+}
+
+.divider-connexion {
+    margin: 60px 0 !important;
+}

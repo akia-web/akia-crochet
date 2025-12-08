@@ -29,7 +29,6 @@ const disconnect = async () => {
       }
   ).then(() => {
     useUser.updateUser(null);
-    console.log(import.meta.env.VITE_AUTH_STORAGE)
     localStorage.removeItem(import.meta.env.VITE_AUTH_STORAGE)
     router.push('/')
   })

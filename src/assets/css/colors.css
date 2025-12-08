@@ -11,7 +11,7 @@
 }
 
 .bg-site {
-    background: #fff4f7;
+    background: var(--bg-site);
 }
 
 .action-color {

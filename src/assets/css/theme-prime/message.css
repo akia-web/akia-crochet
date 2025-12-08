@@ -1,0 +1,10 @@
+:root {
+    --p-message-error-background: var(--bg-site) !important;
+    --p-message-error-border-color: var(--bg-site) !important;
+    --p-message-error-color: var(--action-color) !important;
+    --p-message-error-shadow: transparent !important;
+}
+
+.p-message{
+    outline-style: none;
+}

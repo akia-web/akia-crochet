@@ -3,7 +3,7 @@ import { updatePinia } from '@/functions/auth.ts';
 import { useUserStore } from '@/stores/user.ts';
 import type { UserDto } from '@/interfaces/user.dto.ts';
 import { RoleEnum } from '@/enum/role.enum.ts';
-import { ADMIN_ADD_CREATOR_ROUTE, ADMIN_ADD_PLUSHIES_ROUTE, ADMIN_CREATOR_ROUTE, ADMIN_DASHBORD_ROUTE, ADMIN_PATTERN_ROUTE, ADMIN_PLUSHIES_ROUTE, PLUSHIES_DETAIL_ROUTE, PLUSHIES_ROUTE, PROFILE_ROUTE, SIMULATOR_ROUTE } from '@/router/routes-name.ts';
+import { ADMIN_ADD_CREATOR_ROUTE, ADMIN_ADD_PLUSHIES_ROUTE, ADMIN_CREATOR_ROUTE, ADMIN_DASHBORD_ROUTE, ADMIN_PATTERN_ROUTE, ADMIN_PLUSHIES_ROUTE, CONFIRM_EMAIL_ROUTE, CONNEXION_ROUTE, INSCRIPTION_ROUTE, PLUSHIES_DETAIL_ROUTE, PLUSHIES_ROUTE, PROFILE_ROUTE, SIMULATOR_ROUTE } from '@/router/routes-name.ts';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,7 +30,7 @@ const router = createRouter({
         {
           path: 'peluches',
           name: ADMIN_PLUSHIES_ROUTE,
-          component: () => import('../components/Admin/Peluches/AdminPeluchesComponent.vue'),
+          component: () => import('../components/Admin/Peluches/AdminTablePeluchesComponent.vue'),
         },
         {
           path: 'add-peluches',
@@ -70,10 +70,26 @@ const router = createRouter({
           component: () => import('../components/Profile/ProfileComponent.vue'),
         },
         {
+          path: 'connexion',
+          name: CONNEXION_ROUTE,
+          component: () => import('../components/Connexion/ConnexionComponent.vue'),
+        },
+        {
+          path: 'inscription',
+          name: INSCRIPTION_ROUTE,
+          component: () => import('../components/createAccount/CreateAccountComponent.vue'),
+        },
+        {
+          path: 'confirm-email',
+          name: CONFIRM_EMAIL_ROUTE,
+          component: () => import('../components/ConfirmEmail/ConfirmEmail.vue'),
+        },
+        {
           path: 'simulator',
           name: SIMULATOR_ROUTE,
           component: () => import('@/pages/Simulator/SimulatorVue.vue'),
         },
+
       ],
     },
   ],

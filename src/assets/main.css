@@ -11,6 +11,10 @@
 @import "css/theme-prime/input-text.css";
 @import "css/theme-prime/badge.css";
 @import "css/theme-prime/drawer.css";
+@import "css/theme-prime/divider.css";
+@import "css/theme-prime/message.css";
+@import "css/theme-prime/accordion.css";
+
 
 @tailwind base;
 @tailwind components;
@@ -22,7 +26,7 @@
 
 }
 
-p, span {
+p, span, label {
     font-family: "League Spartan", serif;
 }
 
@@ -37,5 +41,6 @@ h1 {
     --action-color-hover: #391421;
     --action-color-light-hover: #decdd3;
     --p-select-focus-border-color: var(--action-color) !important;
-
+    --bg-site: #fff4f7;
+    --height-nav: 93px
 }

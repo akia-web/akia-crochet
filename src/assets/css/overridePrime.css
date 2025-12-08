@@ -9,6 +9,23 @@
     border: 1px solid transparent !important;
 }
 
+.p-button-white {
+    background: white !important;
+    border: 1px solid lightgray !important;
+    color: var(--action-color) !important;
+
+}
+
+.p-button-bg-site {
+    background: var(--bg-site) !important;
+    color: var(--action-color) !important;
+}
+
+.p-button-bg-site:hover {
+    background: var(--action-color-hover) !important;
+    color: white !important;
+}
+
 .button-action-transparent {
     background: transparent !important;
     color: var(--action-color) !important;

@@ -35,8 +35,9 @@
           <ul class="flex gap-2">
             <li v-for="socialMedia in creator.socialMedia">
               <a :href="socialMedia.url" target="_blank" class="hover:text-actionColor">
-                <span class="pi border border-transparent rounded p-[5px] hover:text-white hover:bg-[var(--action-color-hover)] hover:border-[var(--action-color-hover)] transition ease-in-out duration-100"
-                      :class="getMedialSocialIcon(socialMedia.type)">
+                <span
+                    class="pi border border-transparent rounded p-[5px] hover:text-white hover:bg-[var(--action-color-hover)] hover:border-[var(--action-color-hover)] transition ease-in-out duration-100"
+                    :class="getMedialSocialIcon(socialMedia.type)">
                 </span>
               </a>
             </li>
@@ -86,7 +87,7 @@ const toggle = (event: any, index: number, creator: PlushieCreatorDto): void => 
     {
       label: 'Supprimer',
       icon: 'pi pi-trash',
-      command: () => editCreator(creator)
+      command: () => deleteCreator(creator)
     }
   ];
 
@@ -96,5 +97,15 @@ const toggle = (event: any, index: number, creator: PlushieCreatorDto): void => 
 const editCreator = (creator: PlushieCreatorDto): void => {
   storeEditCreator.updateCreator(creator);
   router.push({ name: ADMIN_ADD_CREATOR_ROUTE });
+};
+
+const deleteCreator = (creator: PlushieCreatorDto) => {
+  const url = `${api(env.plushieCreator.crud)}?id=${creator.id}`;
+  apiGet(url, 'DELETE', true)
+      .then(response => response.json())
+      .then(creators.value = creators.value.filter((element: PlushieCreatorDto) => element.id !== creator.id))
+      .catch(error => {
+        console.error('Erreur :', error);
+      });
 };
 </script>

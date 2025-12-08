@@ -88,11 +88,14 @@ onMounted(() => {
   if (storeEditCreator.creator) {
     const creator: PlushieCreatorDto = storeEditCreator.creator;
     creatorId.value = creator.id;
+    console.warn(creator.id)
     name.value = creator.name;
     if (creator.socialMedia) {
       mediaUrls.value = creator.socialMedia;
     }
 
+  }else{
+    console.warn('pas de CreatorId')
   }
 });
 
@@ -107,11 +110,11 @@ const save = () => {
     socialMedia: mediaUrls.value
   };
 
-  apiPost(api(env.plushieCreator.crud), creatorId ? 'PATCH' : 'POST', JSON.stringify(newCreator))
+  apiPost(api(env.plushieCreator.crud), creatorId.value ? 'PATCH' : 'POST', newCreator, false, true)
       .then(() => {
         toast.add({
           severity: 'success',
-          summary: `${creatorId ? 'Créateur modifié' : 'Créateur enregistrée'}`,
+          summary: `${creatorId.value ? 'Créateur modifié' : 'Créateur enregistrée'}`,
           life: 3000
         });
         storeEditCreator.updateCreator(null);

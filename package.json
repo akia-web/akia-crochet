@@ -12,7 +12,7 @@
     "type-check": "vue-tsc --build"
   },
   "dependencies": {
-    "@primevue/forms": "^4.3.7",
+    "@primevue/forms": "^4.5.0",
     "@primevue/themes": "^4.3.7",
     "js-cookie": "^3.0.5",
     "pinia": "^3.0.3",

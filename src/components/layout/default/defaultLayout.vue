@@ -6,7 +6,7 @@
       </div>
     </header>
 
-    <div class="w-[80%] mx-auto">
+    <div class="w-[90%] md:w-1/2 mx-auto">
       <Toast></Toast>
       <div class="mt-4 min-h-[85vh]">
         <RouterView/>

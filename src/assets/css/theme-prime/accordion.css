@@ -1,0 +1,8 @@
+:root{
+    --p-accordion-header-active-hover-background: var(--action-color) !important;
+    --p-accordion-header-active-background: var(--action-color) !important;
+    --p-accordion-header-active-color: white !important;
+    --p-accordion-header-active-hover-color: white !important;
+    --p-accordion-header-toggle-icon-active-color: white !important;
+    --p-accordion-header-toggle-icon-active-hover-color: white !important;
+}
