@@ -13,7 +13,12 @@
     background: white !important;
     border: 1px solid lightgray !important;
     color: var(--action-color) !important;
+}
 
+.p-button-grey {
+    background: lightgray !important;
+    border: 1px solid lightgray !important;
+    color: var(--action-color) !important;
 }
 
 .p-button-bg-site {

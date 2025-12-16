@@ -1,65 +1,75 @@
 <template class="flex column justify-center">
-  <Stepper value="1">
-    <StepList>
-      <Step value="1">Général</Step>
-      <Step value="2">Vidéos</Step>
-      <Step value="3">Variants</Step>
-    </StepList>
-    <StepPanels>
-      <StepPanel v-slot="{ activateCallback }" value="1">
-        <div class="p-[10px]">
-          <form1 v-model:name="name"
-                 v-model:description="description"
-                 v-model:price="price"
-                 v-model:selectedCreator="selectedCreator"
-                 v-model:height="height"
-                 v-model:width="width"
-                 :isValidName="isValidName"
-                 :isValidDescription="isValidDescription"
-                 :isValidPrice="isValidPrice"
-          >
-          </form1>
-          <div class="flex pt-6 justify-end">
-            <Button label="Suivant"
-                    icon="pi pi-arrow-right"
-                    iconPos="right"
-                    :disabled="!form1IsValid"
-                    @click="activateCallback('2')"/>
+  <div class="relative w-full h-full">
+    <Stepper value="1">
+      <StepList>
+        <Step value="1">Général</Step>
+        <Step value="2">Vidéos</Step>
+        <Step value="3">Variants</Step>
+      </StepList>
+      <StepPanels>
+        <StepPanel v-slot="{ activateCallback }" value="1">
+          <div class="p-[10px]">
+            <form1 v-model:name="name"
+                   v-model:description="description"
+                   v-model:price="price"
+                   v-model:selectedCreator="selectedCreator"
+                   v-model:height="height"
+                   v-model:width="width"
+                   :isValidName="isValidName"
+                   :isValidDescription="isValidDescription"
+                   :isValidPrice="isValidPrice"
+            >
+            </form1>
+            <div class="flex pt-6 justify-end">
+              <Button label="Suivant"
+                      icon="pi pi-arrow-right"
+                      iconPos="right"
+                      :disabled="!form1IsValid"
+                      @click="activateCallback('2')"/>
+            </div>
           </div>
-        </div>
 
-      </StepPanel>
-      <StepPanel v-slot="{ activateCallback }" value="2">
-        <div class="p-[10px]">
-          <form2 v-model:videoLinks="videoLinks"></form2>
-          <div class="flex pt-6 justify-between">
-            <Button label="Précédent" severity="secondary" icon="pi pi-arrow-left" @click="activateCallback('1')"/>
-            <Button label="Suivant" icon="pi pi-arrow-right" iconPos="right" @click="activateCallback('3')"/>
+        </StepPanel>
+        <StepPanel v-slot="{ activateCallback }" value="2">
+          <div class="p-[10px]">
+            <form2 v-model:videoLinks="videoLinks"></form2>
+            <div class="flex pt-6 justify-between">
+              <Button label="Précédent" severity="secondary" icon="pi pi-arrow-left" @click="activateCallback('1')"/>
+              <Button label="Suivant" icon="pi pi-arrow-right" iconPos="right" @click="activateCallback('3')"/>
+            </div>
           </div>
-        </div>
-      </StepPanel>
-      <StepPanel v-slot="{ activateCallback }" value="3">
-        <div class="p-[10px]">
-          <form3 v-model:variants="variants">
-          </form3>
-          <div class="pt-6 flex justify-between">
-            <Button label="Précédent"
-                    severity="secondary"
-                    icon="pi pi-arrow-left"
-                    @click="activateCallback('2')"
-            />
-            <Button :label="id? 'Éditer':'Valider'"
-                    icon="pi pi-arrow-right"
-                    iconPos="right"
-                    :disabled="!form3IsValid"
-                    @click="send"
-            />
+        </StepPanel>
+        <StepPanel v-slot="{ activateCallback }" value="3">
+          <div class="p-[10px]">
+            <form3 v-model:variants="variants">
+            </form3>
+            <div class="pt-6 flex justify-between">
+              <Button label="Précédent"
+                      severity="secondary"
+                      icon="pi pi-arrow-left"
+                      @click="activateCallback('2')"
+              />
+              <Button :label="id? 'Éditer':'Valider'"
+                      icon="pi pi-arrow-right"
+                      iconPos="right"
+                      :disabled="!form3IsValid"
+                      @click="send"
+              />
+            </div>
           </div>
-        </div>
 
-      </StepPanel>
-    </StepPanels>
-  </Stepper>
+        </StepPanel>
+      </StepPanels>
+    </Stepper>
+<!--    <div v-if="loading"-->
+<!--        class="bg-[var(&#45;&#45;color-grey-transparent)] absolute w-[100%] h-[100%] top-0 left-0  z-[9999]" >-->
+<!--      <div class="bg-white absolute w-[50%] h-[50vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">-->
+<!--        loading-->
+<!--      </div>-->
+
+<!--    </div>-->
+  </div>
+
 </template>
 
 <script setup lang="ts">
@@ -111,6 +121,7 @@ const form3IsValid = ref<boolean>(true);
 const toast = useToast();
 const router = useRouter();
 const selectedCreator = ref<PlushieCreatorDto>();
+const loading = ref<boolean>(false);
 
 const id = ref<number | undefined>(undefined);
 
@@ -153,7 +164,7 @@ onMounted(async () => {
         const images = [];
         for (const image of variant.images) {
           const newImage = await urlToFile(image.url, getImageName(image.url), getMimeType(image.url));
-          images.push(newImage);
+          images.push({ file: newImage, row: image.row });
         }
         variant.imagesFiles = images;
       }
@@ -175,12 +186,12 @@ const send = async () => {
       for (const file of variant.imagesFiles) {
         const isAlreadyPresent = variant.images.some(img => {
           const filename = img.url.split('/images/')[1];
-          return (filename === file.name) || file.name === img.url;
+          return (filename === file.file.name) || file.file.name === img.url;
         });
 
         if (!isAlreadyPresent) {
-          allImage.push(file);
-          variant.images.push({ url: file.name });
+          allImage.push(file.file);
+          variant.images.push({ url: file.file.name, row: file.row });
         }
       }
     }
@@ -222,6 +233,7 @@ const send = async () => {
 
   const method: 'PATCH' | 'POST' = id.value ? 'PATCH' : 'POST';
   console.warn(variants.value);
+  loading.value = true;
   apiPost(api(env.plushies.crud), method, formData, false, true)
       .then(() => {
         toast.add({ severity: 'success', summary: 'Peluche enregistrée', life: 3000 });

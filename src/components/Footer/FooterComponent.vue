@@ -4,7 +4,7 @@
      <RouterLink to="/">
        <img class="logo ml-0_5"
             alt="logo Akia"
-            src="@/assets/logo.png">
+            src="../../assets/logo.png">
      </RouterLink>
      <div>
        <p>Mentions légales</p>

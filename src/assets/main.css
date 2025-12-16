@@ -14,6 +14,7 @@
 @import "css/theme-prime/divider.css";
 @import "css/theme-prime/message.css";
 @import "css/theme-prime/accordion.css";
+@import "css/theme-prime/color-picker.css";
 
 
 @tailwind base;
@@ -42,5 +43,6 @@ h1 {
     --action-color-light-hover: #decdd3;
     --p-select-focus-border-color: var(--action-color) !important;
     --bg-site: #fff4f7;
-    --height-nav: 93px
+    --height-nav: 93px;
+    --color-grey-transparent: rgba(107, 114, 128, 0.7);
 }

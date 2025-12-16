@@ -38,6 +38,14 @@
          Contact
         </span>
   </RouterLink>
+
+  <RouterLink :to="{ name: 'carte'  }"
+              class="text-decoration-none font-spartan"
+              @click="close">
+    <span class="text-black font-bold">
+      Carte
+    </span>
+  </RouterLink>
 </template>
 <script setup lang="ts">
 import { SIMULATOR_ROUTE } from '@/router/routes-name.ts';

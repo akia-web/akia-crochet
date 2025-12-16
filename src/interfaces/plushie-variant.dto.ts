@@ -6,7 +6,7 @@ export interface PlushieVariantDto {
   name: string;
   color: string;
   materials: string[];
-  imagesFiles?: File[];
+  imagesFiles?: {file: File, row: number}[];
   stock: number;
   images: ImagesDto[];
 }

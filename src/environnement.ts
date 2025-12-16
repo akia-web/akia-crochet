@@ -6,7 +6,11 @@ export const env = {
     createAccount: 'auth/create-account',
     confirmEmail: 'auth/verify-email',
     resendConfirmEmail: 'auth/resend-verify-email',
-    login: 'auth/login'
+    login: 'auth/login',
+    boxTal:'auth/auth-boxtal'
+  },
+  boxtal:{
+    mapToken: 'boxtal/token-auth-boxtal-maps'
   },
   plushieCreator: {
     crud: 'plushie-creator'

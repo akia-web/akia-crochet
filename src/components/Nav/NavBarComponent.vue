@@ -3,7 +3,7 @@
     <RouterLink to="/">
       <img class="logo ml-0_5"
            alt="logo Akia"
-           src="@/assets/logo.png">
+           src="../../assets/logo-base-line.png">
     </RouterLink>
 
     <div class="hidden md:block">
@@ -49,7 +49,7 @@
 
 <style scoped>
 .logo {
-  width: 80px;
+  width: 130px;
 }
 </style>
 <script lang="ts" setup>

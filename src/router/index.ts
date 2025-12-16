@@ -89,6 +89,11 @@ const router = createRouter({
           name: SIMULATOR_ROUTE,
           component: () => import('@/pages/Simulator/SimulatorVue.vue'),
         },
+        {
+          path: 'carte',
+          name: 'carte',
+          component: () => import('../components/BoxMap/BoxMapComponent.vue'),
+        },
 
       ],
     },

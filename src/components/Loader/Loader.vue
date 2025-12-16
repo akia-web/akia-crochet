@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center align-center h-[calc(100vh-var(--height-nav))]">
-    <img src="@/assets/logo.png" alt="" class="heartbeat">
+    <img src="../../assets/logo1.png" alt="" class="heartbeat">
   </div>
 
 </template>
