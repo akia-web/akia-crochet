@@ -11,13 +11,10 @@
           <div class="p-[10px]">
             <form1 v-model:name="name"
                    v-model:description="description"
-                   v-model:price="price"
                    v-model:selectedCreator="selectedCreator"
-                   v-model:height="height"
-                   v-model:width="width"
+                   v-model:collection="collection"
                    :isValidName="isValidName"
                    :isValidDescription="isValidDescription"
-                   :isValidPrice="isValidPrice"
             >
             </form1>
             <div class="flex pt-6 justify-end">
@@ -61,13 +58,13 @@
         </StepPanel>
       </StepPanels>
     </Stepper>
-<!--    <div v-if="loading"-->
-<!--        class="bg-[var(&#45;&#45;color-grey-transparent)] absolute w-[100%] h-[100%] top-0 left-0  z-[9999]" >-->
-<!--      <div class="bg-white absolute w-[50%] h-[50vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">-->
-<!--        loading-->
-<!--      </div>-->
+    <!--    <div v-if="loading"-->
+    <!--        class="bg-[var(&#45;&#45;color-grey-transparent)] absolute w-[100%] h-[100%] top-0 left-0  z-[9999]" >-->
+    <!--      <div class="bg-white absolute w-[50%] h-[50vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">-->
+    <!--        loading-->
+    <!--      </div>-->
 
-<!--    </div>-->
+    <!--    </div>-->
   </div>
 
 </template>
@@ -104,14 +101,17 @@ const variants = ref<PlushieVariantDto[]>([{
   stock: 0,
   randomId: crypto.randomUUID(),
   images: [],
+  price: 0,
+  width: 0,
+  height: 0,
+  weight: 0,
+  depth: 0
 }]);
 
 const storeEditPeluche = usePlushieEditStore();
 const name = ref<string>('');
-const price = ref<number>(0);
-const height = ref<number>(0);
-const width = ref<number>(0);
 const description = ref<string>('');
+const collection = ref<boolean>(false);
 const videoLinks = ref<LinkDto[]>([]);
 const isValidName = ref<boolean>(true);
 const isValidDescription = ref<boolean>(true);
@@ -125,14 +125,12 @@ const loading = ref<boolean>(false);
 
 const id = ref<number | undefined>(undefined);
 
-watch([name, description, price], ([newName, newDescription, newPrice]) => {
+watch([name, description], ([newName, newDescription]) => {
   const nameIsValid = checkInputIsNotNull(newName);
   const descriptionIsValid = checkInputIsNotNull(newDescription);
-  const priceIsValid = newPrice > 0;
-  form1IsValid.value = nameIsValid && descriptionIsValid && priceIsValid;
+  form1IsValid.value = nameIsValid && descriptionIsValid;
   isValidName.value = nameIsValid;
   isValidDescription.value = descriptionIsValid;
-  isValidPrice.value = priceIsValid;
 });
 
 watch(variants, (newVariant) => {
@@ -146,11 +144,10 @@ onMounted(async () => {
   if (storeEditPeluche.peluche) {
     const plushie: PlushieDto = storeEditPeluche.peluche;
     name.value = plushie.name!;
-    price.value = plushie.price!;
     description.value = plushie.description!;
     videoLinks.value = plushie.links!;
-    height.value = plushie.height === undefined ? 0 : plushie.height;
-    width.value = plushie.width === undefined ? 0 : plushie.width;
+    collection.value = plushie.collection;
+
 
     if (plushie.plushieCreator) {
       selectedCreator.value = plushie.plushieCreator;
@@ -205,16 +202,7 @@ const send = async () => {
 
   formData.append('name', name.value);
   formData.append('description', description.value);
-  formData.append('price', price.value.toString());
-
-  if (height.value) {
-    formData.append('height', height.value.toString());
-  }
-
-  if (width.value) {
-    formData.append('width', width.value.toString());
-
-  }
+  formData.append('collection', collection.value.toString());
 
   if (id.value) {
     formData.append('id', id.value.toString());

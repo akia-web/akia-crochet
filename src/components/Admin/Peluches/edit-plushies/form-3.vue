@@ -22,6 +22,11 @@
             v-model:imagesFiles="variant.imagesFiles"
             v-model:images="variant.images"
             v-model:stock="variant.stock"
+            v-model:price="variant.price"
+            v-model:width="variant.width"
+            v-model:height="variant.height"
+            v-model:weight="variant.weight"
+            v-model:depth="variant.depth"
             :index="index">
         </VariantComponent>
       </AccordionContent>
@@ -54,7 +59,12 @@ const addVariant = () => {
     imagesFiles: [],
     stock: 0,
     randomId: crypto.randomUUID(),
-    images: []
+    images: [],
+    price: 0,
+    width: 0,
+    height: 0,
+    weight: 0,
+    depth: 0
   });
 };
 

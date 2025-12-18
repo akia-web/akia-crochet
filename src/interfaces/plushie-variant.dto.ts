@@ -9,4 +9,9 @@ export interface PlushieVariantDto {
   imagesFiles?: {file: File, row: number}[];
   stock: number;
   images: ImagesDto[];
+  price: number;
+  height: number;
+  width: number;
+  weight: number;
+  depth: number;
 }

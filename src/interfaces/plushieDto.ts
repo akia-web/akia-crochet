@@ -8,10 +8,8 @@ export interface PlushieDto {
   name?: string;
   description?: string;
   links?: LinkDto[];
-  price?: number;
+  collection: boolean;
   creationDate?: Date;
   plushieCreator?: PlushieCreatorDto;
   plushieVariants?: PlushieVariantDto[];
-  height?: number;
-  width?: number;
 }

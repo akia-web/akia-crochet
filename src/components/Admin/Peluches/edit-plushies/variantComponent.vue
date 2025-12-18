@@ -53,6 +53,102 @@
 
     <br>
 
+    <div class="flex flex-wrap gap-6 mb-6">
+      <div class="flex column w-full md:w-[250px]">
+        <label class="font-size-0_8em italic">Prix (en euros)
+          <span v-if="priceEuros === 0"
+                class="text-red ml-2">
+          Renseignez le prix
+        </span>
+        </label>
+        <InputGroup>
+          <InputNumber
+              :minFractionDigits="2"
+              locale="fr-FR"
+              v-model="priceEuros"
+              placeholder="prix en euros"
+          />
+          <InputGroupAddon>
+            €
+          </InputGroupAddon>
+        </InputGroup>
+
+
+      </div>
+      <div class="flex column w-full md:w-[250px]">
+        <label class="font-size-0_8em italic">Prix (en centimes)
+        </label>
+        <InputGroup>
+          <InputNumber
+              locale="fr-FR"
+              v-model="props.price"
+              disabled
+              placeholder="prix en centimes"
+          />
+          <InputGroupAddon>
+            cts
+          </InputGroupAddon>
+        </InputGroup>
+      </div>
+    </div>
+
+
+    <div class="flex flex-wrap gap-6 w-full">
+      <div class="flex flex-wrap gap-6">
+        <div class="w-full md:w-[250px]">
+          <label class="font-size-0_8em italic">Hauteur (en cm) </label>
+          <InputGroup>
+            <InputNumber
+                v-model="heightProxy"
+                placeholder="Hauteur"
+            />
+            <InputGroupAddon>
+              <img src="@/assets/icones/hauteur.png" width="25" alt="">
+            </InputGroupAddon>
+          </InputGroup>
+        </div>
+        <div class="w-full md:w-[250px]">
+          <label class="font-size-0_8em italic">Largeur (en cm)</label>
+          <InputGroup>
+            <InputNumber
+                v-model="widthProxy"
+                placeholder="Largeur"
+            />
+            <InputGroupAddon>
+              <img src="../../../../assets/icones/longueur.png" width="25" alt="">
+            </InputGroupAddon>
+          </InputGroup>
+
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-6">
+        <div class="w-full md:w-[250px]">
+          <label class="font-size-0_8em italic">Profondeur (en cm) </label>
+          <InputGroup class="w-full">
+            <InputNumber
+                v-model="depthProxy"
+                placeholder="Profondeur"
+            />
+            <InputGroupAddon>
+              <img src="@/assets/icones/profondeur.png" width="25" alt="">
+            </InputGroupAddon>
+          </InputGroup>
+        </div>
+        <div class="w-full md:w-[250px]">
+          <label class="font-size-0_8em italic">Poids (en kg) </label>
+          <InputGroup>
+            <InputNumber
+                v-model="weightProxy"
+                placeholder="Poids"
+            />
+            <InputGroupAddon>
+              <img src="../../../../assets/icones/poids.png" width="25" alt="">
+            </InputGroupAddon>
+          </InputGroup>
+        </div>
+      </div>
+    </div>
+
     <label class="text-xs">Images</label>
     <InputGroup>
       <InputText placeholder="Selectionner une image" @click="activeInput" readonly/>
@@ -96,6 +192,11 @@ const props = defineProps<{
   images: ImagesDto[];
   stock: number;
   index: number;
+  price: number,
+  width: number,
+  height: number,
+  weight: number,
+  depth: number
 }>();
 
 const emit = defineEmits([
@@ -105,6 +206,11 @@ const emit = defineEmits([
   'update:imagesFiles',
   'update:images',
   'update:stock',
+  'update:price',
+  'update:width',
+  'update:height',
+  'update:weight',
+  'update:depth'
 ]);
 
 const name = computed({
@@ -142,6 +248,36 @@ const images = computed({
   set: (value) => emit('update:images', value)
 });
 
+
+const priceEuros = computed({
+  get() {
+    return props.price ? props.price / 100 : 0
+  },
+  set(newValue) {
+    emit('update:price', newValue ? Math.round(newValue * 100) : 0)
+  }
+})
+
+
+const heightProxy = computed({
+  get: () => props.height,
+  set: value => emit('update:height', value)
+});
+
+const widthProxy = computed({
+  get: () => props.width,
+  set: value => emit('update:width', value)
+});
+
+const weightProxy = computed({
+  get: () => props.weight,
+  set: value => emit('update:weight', value)
+});
+
+const depthProxy = computed({
+  get: () => props.depth,
+  set: value => emit('update:depth', value)
+});
 
 const activeInput = () => {
   const input = document.getElementById(`uploadImage-${props.index}`) as HTMLInputElement;

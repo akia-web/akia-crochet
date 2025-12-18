@@ -29,52 +29,28 @@
       />
     </div>
 
-    <div class="flex align-center mb-6 mt-4 flex-wrap">
-      <div class="flex column mr-4 ">
+    <div class="flex align-center mb-6 mt-4 flex-wrap w-full">
+      <div class="flex column md:w-[250px]">
         <label class="font-size-0_8em italic">Créateur</label>
-        <Select v-model="selectedCreatorProxyProxy"
-                :options="creators"
-                optionLabel="name"
-                showClear
-                class="min-w-[300px]"
-                placeholder="Sélectionner un créateur"/>
+        <div>
+          <Select v-model="selectedCreatorProxyProxy"
+                  :options="creators"
+                  optionLabel="name"
+                  showClear
+                  placeholder="Sélectionner un créateur"/>
+        </div>
       </div>
-
-      <div class="flex column">
-        <label class="font-size-0_8em italic">Prix (en centimes)
-          <span v-if="!isValidPrice"
-                class="text-red ml-2">
-          Renseignez le prix
-        </span>
-        </label>
-        <InputNumber
-            v-model="priceProxy"
-            placeholder="prix"
-        />
+      <div class="flex items-center gap-2">
+        <Checkbox v-model="collection" binary id="collection" />
+        <label for="collection">Collection</label>
       </div>
     </div>
-    <div class="flex column">
-        <label class="font-size-0_8em italic">Hauteur (en mm)
-        </label>
-        <InputNumber
-            v-model="heightProxy"
-            placeholder="Hauteur"
-        />
-      </div>
 
-          <div class="flex column">
-        <label class="font-size-0_8em italic">Largeur (en mm)
-        </label>
-        <InputNumber
-            v-model="widthProxy"
-            placeholder="Largeur"
-        />
-      </div>
   </form>
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { apiGet } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
@@ -91,43 +67,30 @@ onMounted(async () => {
 
 const props = defineProps({
   name: String,
-  price: Number,
   description: String,
-  height : Number,
-  width: Number,
   isValidName: Boolean,
   isValidDescription: Boolean,
-  isValidPrice: Boolean,
   selectedCreator: Object,
+  collection: Boolean,
 });
 
 const emit = defineEmits([
   'update:name',
   'update:description',
-  'update:price',
-  'update:height',
-  'update:width',
   'update:selectedCreator',
+  'update:collection'
 ]);
 
-const priceProxy = computed({
-  get: () => props.price,
-  set: value => emit('update:price', value? value:0)
-});
 
-
-const heightProxy = computed({
-  get: () =>props.height,
-  set: value => emit('update:height', value)
-});
-
-const widthProxy = computed({
-  get: () => props.width,
-  set: value => emit('update:width', value)
-});
 
 const selectedCreatorProxyProxy = computed({
   get: () => props.selectedCreator,
   set: value => emit('update:selectedCreator', value)
 });
+
+const collection = computed({
+  get: () => props.collection,
+  set: value => emit('update:collection', value)
+});
+
 </script>
