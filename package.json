@@ -15,6 +15,7 @@
     "@boxtal/parcel-point-map": "^0.0.9",
     "@primevue/forms": "^4.5.0",
     "@primevue/themes": "^4.3.7",
+    "cropperjs": "^1.6.2",
     "js-cookie": "^3.0.5",
     "pinia": "^3.0.3",
     "primeicons": "^7.0.0",
@@ -22,6 +23,7 @@
     "quill": "^2.0.3",
     "three": "^0.181.2",
     "vue": "^3.5.18",
+    "vue-cropperjs": "^5.0.0",
     "vue-router": "^4.5.1",
     "vuedraggable": "^4.1.0"
   },

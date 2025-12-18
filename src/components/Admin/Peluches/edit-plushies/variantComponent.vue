@@ -162,6 +162,7 @@
               :src="createThumbnail(image.file)"
               class="preview mb-4"
               alt="image du produit"
+              @click="openDialog(index)"
           />
 
           <p
@@ -175,14 +176,19 @@
         </div>
       </template>
     </draggable>
+
+    <DynamicDialog/>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import type { ImagesDto } from '@/interfaces/images.dto.ts';
 import draggable from 'vuedraggable';
+import { useDialog } from 'primevue';
+import CropperComponent from '@/components/Cropper/CropperComponent.vue';
 
+const dialog = useDialog();
 
 const props = defineProps<{
   name: string;
@@ -251,12 +257,12 @@ const images = computed({
 
 const priceEuros = computed({
   get() {
-    return props.price ? props.price / 100 : 0
+    return props.price ? props.price / 100 : 0;
   },
   set(newValue) {
-    emit('update:price', newValue ? Math.round(newValue * 100) : 0)
+    emit('update:price', newValue ? Math.round(newValue * 100) : 0);
   }
-})
+});
 
 
 const heightProxy = computed({
@@ -358,6 +364,24 @@ const updateRows = () => {
     }
   });
 };
+
+const openDialog = (index: number) => {
+
+  const options = {header:`Redimentionner l'image`, style: {width: '80%', height: '100vh'} }
+
+  dialog.open(CropperComponent, {
+    props: options,
+    data: { file: imagesFiles.value[index].file},
+    onClose: (options: { data?: File }) => {
+      if (options?.data?.newImage) {
+        imagesFiles.value[index].file = options.data.newImage
+
+        images.value = images.value.filter(img => img.url.split('/images/')[1] !== options.data.newImage.name.split('new-').pop());
+      }
+    },
+  });
+};
+
 
 </script>
 
