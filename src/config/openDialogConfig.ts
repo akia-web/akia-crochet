@@ -1,4 +1,4 @@
-export const configOpenDialog = (header: string) => {
+export const configOpenDialog = (header: string, closable:boolean = true) => {
   return {
     header,
     style: {
@@ -8,6 +8,7 @@ export const configOpenDialog = (header: string) => {
       '960px': '75vw',
       '640px': '90vw'
     },
-    modal: true
+    modal: true,
+    closable
   };
 };

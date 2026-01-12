@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        actionColor: 'var(--color-primary)',
+        actionColor: 'var(--action-color)',
         actionColorHover: 'var(--action-color-hover)',
       }
     },

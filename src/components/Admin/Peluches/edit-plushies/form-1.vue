@@ -29,7 +29,7 @@
       />
     </div>
 
-    <div class="flex align-center mb-6 mt-4 flex-wrap w-full">
+    <div class="flex items-center  mb-6 mt-4 flex-wrap w-full">
       <div class="flex column md:w-[250px]">
         <label class="font-size-0_8em italic">Créateur</label>
         <div>
@@ -40,7 +40,7 @@
                   placeholder="Sélectionner un créateur"/>
         </div>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 mt-3">
         <Checkbox v-model="collection" binary id="collection" />
         <label for="collection">Collection</label>
       </div>

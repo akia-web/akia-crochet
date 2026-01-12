@@ -9,7 +9,7 @@ import App from './App.vue';
 import router from './router';
 import { PrimeVue } from '@primevue/core';
 import Button from 'primevue/button';
-import { Accordion, AccordionContent, AccordionHeader, AccordionPanel, Card, Checkbox, ColorPicker, Dialog, DialogService, Divider, Drawer, DynamicDialog, InputGroup, InputGroupAddon, InputNumber, InputText, Menu, Message, MultiSelect, Password, Select, Step, StepList, Stepper, Toast, ToastService } from 'primevue';
+import { Accordion, AccordionContent, AccordionHeader, AccordionPanel, Card, Checkbox, Chip, ColorPicker, Dialog, DialogService, Divider, Drawer, DynamicDialog, InputGroup, InputGroupAddon, InputNumber, InputText, Menu, Message, MultiSelect, Password, RadioButton, Select, Step, StepList, Stepper, Toast, ToastService } from 'primevue';
 import Editor from 'primevue/editor';
 import { Form, FormField } from '@primevue/forms';
 
@@ -35,6 +35,7 @@ const components = {
   Button,
   Card,
   Checkbox,
+  Chip,
   ColorPicker,
   Dialog,
   Divider,
@@ -51,6 +52,7 @@ const components = {
   Message,
   MultiSelect,
   Password,
+  RadioButton,
   Select,
   Step,
   StepList,

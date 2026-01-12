@@ -7,7 +7,6 @@ export const usePlushieEditStore = defineStore('edit-peluche', () => {
 
   function updatePeluche(value: PlushieDto | null) {
     peluche.value = value;
-    console.warn(peluche.value)
   }
 
   return { peluche, updatePeluche };

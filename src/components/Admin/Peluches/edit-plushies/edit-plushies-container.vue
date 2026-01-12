@@ -220,7 +220,6 @@ const send = async () => {
   formData.append('plushieVariants', JSON.stringify(variants.value));
 
   const method: 'PATCH' | 'POST' = id.value ? 'PATCH' : 'POST';
-  console.warn(variants.value);
   loading.value = true;
   apiPost(api(env.plushies.crud), method, formData, false, true)
       .then(() => {

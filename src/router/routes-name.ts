@@ -8,9 +8,12 @@ export const ADMIN_PATTERN_ROUTE: string = 'AdminPattern';
 
 //------------
 export const PLUSHIES_ROUTE: string = 'peluches';
-export const PLUSHIES_DETAIL_ROUTE: string = 'pelucheDetail';
+export const PLUSHIES_DETAILS_ROUTE: string = 'peluche-details';
 export const PROFILE_ROUTE: string = 'profile';
 export const SIMULATOR_ROUTE: string = 'simulateur'
 export const CONNEXION_ROUTE: string = 'connexion'
 export const INSCRIPTION_ROUTE: string = 'inscription'
 export const CONFIRM_EMAIL_ROUTE: string = 'confirm-email'
+export const PAYMENT_ROUTE: string = 'payment'
+export const CONTACT_ROUTE: string = 'contact'
+export const RECAP_CART_ROUTE: string = 'recap-panier'

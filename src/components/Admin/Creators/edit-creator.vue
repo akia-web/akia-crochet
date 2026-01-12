@@ -88,7 +88,6 @@ onMounted(() => {
   if (storeEditCreator.creator) {
     const creator: PlushieCreatorDto = storeEditCreator.creator;
     creatorId.value = creator.id;
-    console.warn(creator.id)
     name.value = creator.name;
     if (creator.socialMedia) {
       mediaUrls.value = creator.socialMedia;

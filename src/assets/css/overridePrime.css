@@ -15,6 +15,18 @@
     color: var(--action-color) !important;
 }
 
+.p-button-white-border-action-color {
+    background: white !important;
+    border: 1px solid var(--action-color) !important;
+    color: var(--action-color) !important;
+}
+
+.p-button-white-border-action-color:hover {
+    background: var(--light-grey) !important;
+    border: 1px solid var(--action-color) !important;
+    color: var(--action-color) !important;
+}
+
 .p-button-grey {
     background: lightgray !important;
     border: 1px solid lightgray !important;
@@ -35,7 +47,6 @@
     background: transparent !important;
     color: var(--action-color) !important;
     padding: 2px;
-    width: 35px;
     border: none !important;
 }
 
@@ -63,4 +74,8 @@
 
 .p-step-number {
     padding-top: 5px;
+}
+
+.p-drawer-right .p-drawer {
+    width: 40rem !important;
 }

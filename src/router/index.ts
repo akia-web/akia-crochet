@@ -3,7 +3,7 @@ import { updatePinia } from '@/functions/auth.ts';
 import { useUserStore } from '@/stores/user.ts';
 import type { UserDto } from '@/interfaces/user.dto.ts';
 import { RoleEnum } from '@/enum/role.enum.ts';
-import { ADMIN_ADD_CREATOR_ROUTE, ADMIN_ADD_PLUSHIES_ROUTE, ADMIN_CREATOR_ROUTE, ADMIN_DASHBORD_ROUTE, ADMIN_PATTERN_ROUTE, ADMIN_PLUSHIES_ROUTE, CONFIRM_EMAIL_ROUTE, CONNEXION_ROUTE, INSCRIPTION_ROUTE, PLUSHIES_DETAIL_ROUTE, PLUSHIES_ROUTE, PROFILE_ROUTE, SIMULATOR_ROUTE } from '@/router/routes-name.ts';
+import { ADMIN_ADD_CREATOR_ROUTE, ADMIN_ADD_PLUSHIES_ROUTE, ADMIN_CREATOR_ROUTE, ADMIN_DASHBORD_ROUTE, ADMIN_PATTERN_ROUTE, ADMIN_PLUSHIES_ROUTE, CONFIRM_EMAIL_ROUTE, CONNEXION_ROUTE, CONTACT_ROUTE, INSCRIPTION_ROUTE, PAYMENT_ROUTE, PLUSHIES_DETAILS_ROUTE, PLUSHIES_ROUTE, PROFILE_ROUTE, RECAP_CART_ROUTE, SIMULATOR_ROUTE } from '@/router/routes-name.ts';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,40 +59,45 @@ const router = createRouter({
           component: () => import('../components/Peluches/PeluchesComponent.vue'),
         },
         {
-          path: '/articles/:pelucheName',
-          name: PLUSHIES_DETAIL_ROUTE,
+          path: `${PLUSHIES_DETAILS_ROUTE}/:pelucheName/:selectedVariantName`,
+          name: PLUSHIES_DETAILS_ROUTE,
           component: () => import('../components/Peluches/PelucheDetailsComponent.vue'),
           props: true
         },
         {
-          path: 'profile',
+          path: PROFILE_ROUTE,
           name: PROFILE_ROUTE,
           component: () => import('../components/Profile/ProfileComponent.vue'),
         },
         {
-          path: 'connexion',
+          path: CONNEXION_ROUTE,
           name: CONNEXION_ROUTE,
           component: () => import('../components/Connexion/ConnexionComponent.vue'),
         },
         {
-          path: 'inscription',
+          path: INSCRIPTION_ROUTE,
           name: INSCRIPTION_ROUTE,
           component: () => import('../components/createAccount/CreateAccountComponent.vue'),
         },
         {
-          path: 'confirm-email',
+          path: CONFIRM_EMAIL_ROUTE,
           name: CONFIRM_EMAIL_ROUTE,
           component: () => import('../components/ConfirmEmail/ConfirmEmail.vue'),
         },
         {
-          path: 'simulator',
-          name: SIMULATOR_ROUTE,
-          component: () => import('@/pages/Simulator/SimulatorVue.vue'),
+          path: CONTACT_ROUTE,
+          name: CONTACT_ROUTE,
+          component: () => import('../components/Contact/ContactComponenent.vue'),
         },
         {
-          path: 'carte',
-          name: 'carte',
-          component: () => import('../components/BoxMap/BoxMapComponent.vue'),
+          path: 'payment',
+          name: PAYMENT_ROUTE,
+          component: () => import('../pages/payment/paymentPage.vue'),
+        },
+        {
+          path: RECAP_CART_ROUTE,
+          name: RECAP_CART_ROUTE,
+          component: () => import('@/pages/recapCart/RecapCartPage.vue'),
         },
 
       ],

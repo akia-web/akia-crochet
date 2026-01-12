@@ -15,6 +15,8 @@
 @import "css/theme-prime/message.css";
 @import "css/theme-prime/accordion.css";
 @import "css/theme-prime/color-picker.css";
+@import "css/theme-prime/checkbox.css";
+@import "css/theme-prime/radio-button.css";
 
 
 @tailwind base;
@@ -27,7 +29,7 @@
 
 }
 
-p, span, label {
+p, span, label, a {
     font-family: "League Spartan", serif;
 }
 
@@ -41,6 +43,7 @@ h1 {
     --action-color: #803256;
     --action-color-hover: #391421;
     --action-color-light-hover: #decdd3;
+    --light-grey: #FAEEF7;
     --p-select-focus-border-color: var(--action-color) !important;
     --bg-site: #fff4f7;
     --height-nav: 93px;

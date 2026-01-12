@@ -1,10 +1,9 @@
 <template>
-  <div class="flex gap-2">
+  <h1 class="pt-4 ml-[20px] md:ml-0">Toutes les peluches</h1>
+  <div class="flex justify-center md:justify-normal gap-2 mt-4 ">
     <div v-if="peluches && peluches.length > 0" class="flex gap-2">
-      <div v-for="peluche in peluches" :key="peluche.id" >
-              <RouterLink :to="{ name: PLUSHIES_DETAIL_ROUTE, params: { pelucheName: peluche.name } }" v-if="peluche.name">
-                <PelucheCardComponent :plushie="peluche"/>
-              </RouterLink>
+      <div v-for="peluche in peluches" :key="peluche.id">
+        <PelucheCardComponent :plushie="peluche"/>
       </div>
     </div>
 
@@ -21,12 +20,16 @@ import type { PlushieDto } from '@/interfaces/plushieDto.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
 import PelucheCardComponent from '@/components/Peluches/PelucheCardComponent.vue';
-import { PLUSHIES_DETAIL_ROUTE } from '@/router/routes-name.ts';
+import { PLUSHIES_DETAILS_ROUTE } from '@/router/routes-name.ts';
+import { useProductsCartStore } from '@/stores/productsCart.ts';
 
 const peluches = ref<PlushieDto[]>([]);
+const storeProductsCart = useProductsCartStore();
+
 
 onMounted(async () => {
   await getPeluches('tous les produits');
+  await storeProductsCart.getLocalStorageCart();
 });
 
 const getPeluches = async (category: string): Promise<any> => {

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center min-h-[80vh] pb-[20px] shadow-lg bg-white border border-[var(--action-color)] rounded">
+  <div class="flex justify-center min-h-[80vh] pb-[20px] shadow-lg bg-white border border-[var(--action-color)] rounded md:w-1/2 mx-auto">
     <form @submit.prevent="handleSubmit"
           class="flex flex-col gap-4  w-full sm:w-[70%] p-[20px] ">
       <h1 class="mt-8 mb-8 text-center">Formulaire d'inscription</h1>

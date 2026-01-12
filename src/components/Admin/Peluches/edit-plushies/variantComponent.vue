@@ -135,11 +135,13 @@
           </InputGroup>
         </div>
         <div class="w-full md:w-[250px]">
-          <label class="font-size-0_8em italic">Poids (en kg) </label>
+          <label class="font-size-0_8em italic">Poids (en grammes) </label>
           <InputGroup>
             <InputNumber
                 v-model="weightProxy"
                 placeholder="Poids"
+                :min="0"
+                :step="1"
             />
             <InputGroupAddon>
               <img src="../../../../assets/icones/poids.png" width="25" alt="">

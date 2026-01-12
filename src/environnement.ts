@@ -7,9 +7,9 @@ export const env = {
     confirmEmail: 'auth/verify-email',
     resendConfirmEmail: 'auth/resend-verify-email',
     login: 'auth/login',
-    boxTal:'auth/auth-boxtal'
+    boxTal: 'auth/auth-boxtal'
   },
-  boxtal:{
+  boxtal: {
     mapToken: 'boxtal/token-auth-boxtal-maps'
   },
   plushieCreator: {
@@ -17,6 +17,11 @@ export const env = {
   },
   plushies: {
     crud: 'peluches',
-    byName: 'peluches/by-name'
+    byName: 'peluches/by-name',
+    variant: 'peluches/variant'
+  },
+
+  stripe:{
+    checkout:'stripe/checkout'
   }
 };

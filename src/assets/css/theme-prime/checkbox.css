@@ -1,0 +1,6 @@
+:root {
+    --p-checkbox-checked-border-color: var(--action-color) !important;
+    --p-checkbox-checked-background: var(--action-color) !important;
+    --p-checkbox-checked-hover-background: var(--action-color) !important;
+    --p-checkbox-checked-hover-border-color: var(--action-color) !important;
+}

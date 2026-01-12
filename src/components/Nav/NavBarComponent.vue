@@ -1,49 +1,50 @@
 <template>
-  <div class="flex bg-dark-pink w-100 justify-between align-center p-[10px]">
-    <RouterLink to="/">
-      <img class="logo ml-0_5"
-           alt="logo Akia"
-           src="../../assets/logo-base-line.png">
-    </RouterLink>
+    <div class="flex bg-white w-100 justify-between align-center p-[10px] shadow-md">
+      <RouterLink to="/">
+        <img class="logo ml-0_5"
+             alt="logo Akia"
+             src="../../assets/logo-base-line.png">
+      </RouterLink>
 
-    <div class="hidden md:block">
-      <div class="flex align-center gap-4">
-        <LinkComponent/>
+      <div class="hidden md:block">
+        <div class="flex align-center gap-4">
+          <LinkComponent/>
+        </div>
       </div>
-    </div>
 
 
-    <div class="flex align-center">
-      <Button label="Profile"
-              class="mr-1 p-button-transparent text-black font-spartan"
-              icon="pi pi-user"
-              @click="goTo('/profile')"
-              v-if="storeUser.user">
-      </Button>
+      <div class="flex align-center">
+        <Button label="Profile"
+                class="mr-1 p-button-transparent text-black font-spartan"
+                icon="pi pi-user"
+                @click="goTo('/profile')"
+                v-if="storeUser.user">
+        </Button>
 
 
-      <RouterLink :to="{ name: 'connexion' }"
-                  v-if="!storeUser.user"
-                  class="mr-1 text-decoration-none font-spartan">
+        <RouterLink :to="{ name: 'connexion' }"
+                    v-if="!storeUser.user"
+                    class="mr-1 text-decoration-none font-spartan">
         <span class="text-black font-bold">
           Connexion
         </span>
-      </RouterLink>
-      <ShopCard></ShopCard>
-     <!--Menu mobile-->
-      <div class="block md:hidden">
-        <Drawer v-model:visible="visible" header="Menu" position="full">
-          <div class="flex justify-center column mt-4">
-            <LinkComponent @closeDrawer="visible=false"/>
-          </div>
+        </RouterLink>
+        <ShopCard></ShopCard>
+        <!--Menu mobile-->
+        <div class="block md:hidden">
+          <Drawer v-model:visible="visible" header="Menu" position="full">
+            <div class="flex justify-center column mt-4">
+              <LinkComponent @closeDrawer="visible=false"/>
+            </div>
 
-        </Drawer>
-        <Button icon="pi pi-bars" class="p-button-transparent text-black" @click="visible = true" />
+          </Drawer>
+          <Button icon="pi pi-bars" class="p-button-transparent text-black" @click="visible = true" />
+        </div>
+
       </div>
 
     </div>
 
-  </div>
 
 </template>
 

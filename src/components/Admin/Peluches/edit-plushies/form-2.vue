@@ -56,7 +56,7 @@
             <div>
               <span>- {{ video.name }}</span>
             </div>
-            <Button class="button-action-transparent ml-2"
+            <Button class="button-action-transparent ml-2 w-[35px]"
                     icon="pi pi-trash"
                     @click="deleteVideo(video)"
             ></Button>

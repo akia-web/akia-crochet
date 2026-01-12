@@ -9,7 +9,7 @@
       </Button>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
+    <div class="flex flex-wrap justify-center md:justify-normal gap-6 mt-6">
       <div v-for="item in plushies" :key="item.id" class="">
         <PlushieDetailComponent :plushie="item"
                                 @edit="editPeluche"
@@ -60,8 +60,6 @@ const getPeluches = async (category: string): Promise<any> => {
 };
 
 const editPeluche = (peluche: PlushieDto) => {
-  console.warn('editPeluche')
-  console.warn(peluche)
   storeEditPeluche.updatePeluche(peluche);
   goToAddPeluche();
 };
