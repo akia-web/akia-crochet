@@ -1,14 +1,10 @@
 <template>
   <Form class="flex flex-col w-full gap-4">
-    <LabelAndInputText v-if="!isInvoiceAddress"
-                       v-model:property="phone"
-                       inputId="phone"
-                       :label="`Numéro de téléphone ${isInvoiceAddress? '':'du destinataire'}`"
-                       required
-                       placeholder="exemple: 0607080906"
-                       :propertyRules="props.v$?.phone"
-                       errorMessage="Numéro invalide" />
 
+    <DropDownPhone v-model:phone="phone"
+                   v-if="!isInvoiceAddress"
+                   :propertyRules="props.v$?.phone"
+                   errorMessage="Numéro invalide"></DropDownPhone>
 
     <LabelAndInputText v-model:property="company"
                        inputId="company"
@@ -48,28 +44,17 @@
                        errorMessage="Prénom requis"
                        class="mt-4">
     </LabelAndInputText>
-
-    <div class="flex flex-col mt-4"
-         v-if="!props.isInvoiceAddress">
-      <label for="country" class="text-xs font-bold">Pays {{isInvoiceAddress? 'de l\'expediteur':'du destinataire'}}</label>
-      <Select v-model="deliveryAddressCountry"
-              :options="optionCountries"
-              optionLabel="name"
-              placeholder="Pays"
-              class="w-full"
-      />
-    </div>
   </Form>
 </template>
 
 <script lang="ts" setup>
 import { computed, watch } from 'vue';
 import LabelAndInputText from '@/components/FormComponents/LabelAndInputText.vue';
+import DropDownPhone from '@/components/DropDownPhone/DropDownPhone.vue';
 
 const props = defineProps({
   deliveryAddressLastName: String,
   deliveryAddressFirstName: String,
-  deliveryAddressCountry: Object,
   email: String,
   phone: String,
   company: String,
@@ -78,17 +63,10 @@ const props = defineProps({
   v$: Object,
 });
 
-const optionCountries = [
-  { name: 'France', code: 'FR' },
-  { name: 'Belgique', code: 'BE' },
-  { name: 'Suisse', code: 'CH' },
-  { name: 'Allemage', code: 'DE' }
-];
 
 const emit = defineEmits([
   'update:deliveryAddressLastName',
   'update:deliveryAddressFirstName',
-  'update:deliveryAddressCountry',
   'update:phone',
   'update:email',
   'update:company',
@@ -102,11 +80,6 @@ const deliveryAddressLastName = computed({
 const deliveryAddressFirstName = computed({
   get: () => props.deliveryAddressFirstName,
   set: value => emit('update:deliveryAddressFirstName', value)
-});
-
-const deliveryAddressCountry = computed({
-  get: () => props.deliveryAddressCountry,
-  set: value => emit('update:deliveryAddressCountry', value)
 });
 
 const phone = computed({

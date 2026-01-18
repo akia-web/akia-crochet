@@ -1,3 +1,6 @@
+import { api } from '@/functions/api.ts';
+import { env } from '@/environnement.ts';
+
 export const apiGet = async (url: string, method: 'GET' | 'DELETE', auth?: boolean) => {
   const headers: { 'Content-Type': string, 'Authorization'?: string } = { 'Content-Type': 'application/json', };
 
@@ -13,13 +16,30 @@ export const apiGet = async (url: string, method: 'GET' | 'DELETE', auth?: boole
   });
 
   if (!res.ok) {
+    if (res.status === 403) {
+      await fetch(
+        api(env.auth.revoque),
+        {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+      window.location.href = '/connexion'
+    }
     throw await res.json().catch(() => ({}));
   }
 
   return res;
 };
 
-
+/**
+ *
+ * @param url
+ * @param method
+ * @param body
+ * @param credentials si on veut recevoir un cookie
+ * @param auth si on veut envoyer le token
+ */
 export const apiPost = async (url: string, method: 'POST' | 'PATCH' | 'PUT', body: any, credentials: boolean = false, auth?: boolean) => {
   const headers: { 'Content-Type'?: string, 'Authorization'?: string } = {};
 
@@ -53,4 +73,4 @@ export const apiPost = async (url: string, method: 'POST' | 'PATCH' | 'PUT', bod
 
 export const apiDelete = () => {
 
-}
+};

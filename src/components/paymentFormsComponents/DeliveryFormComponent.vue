@@ -1,33 +1,40 @@
 <template>
   <ContactInfo v-model:deliveryAddressLastName="deliveryAddressLastName"
                v-model:deliveryAddressFirstName="deliveryAddressFirstName"
-               v-model:deliveryAddressCountry="deliveryAddressCountry"
                v-model:phone="phone"
                v-model:email="email"
                v-model:company="company"
                :isInvoiceAddress="false"
                :v$="v$"/>
 
-  <BoxMapComponent v-model:livraisonOption="livraisonOption"
-                   v-model:deliveryAddressCountry="deliveryAddressCountry"
-                   v-model:selectedParcelPoint="selectedParcelPoint"/>
 
-  <div v-if="livraisonOption?.name ==='domicile'">
-    <AddressComponent v-model:street="street"
-                      v-model:numberStreet="numberStreet"
-                      v-model:zipCode="zipCode"
-                      v-model:city="city"
-                      :v$="v$"
+  <AddressComponent v-model:street="street"
+                    v-model:numberStreet="numberStreet"
+                    v-model:postalCode="postalCode"
+                    v-model:city="city"
+                    :isInvoiceAddress="false"
+                    v-model:deliveryAddressCountry="deliveryAddressCountry"
+                    :v$="v$"
 
-    />
-  </div>
+  />
+
+  <BoxMap2Component v-model:livraisonOption="livraisonOption"
+                    v-model:deliveryAddressCountry="deliveryAddressCountry"
+                    v-model:selectedParcelPoint="selectedParcelPoint"
+                    :city="city"
+                    :numberStreet="numberStreet"
+                    :postalCode="postalCode"
+                    :street="street"/>
+
+
 </template>
 <script lang="ts" setup>
 import ContactInfo from '@/components/paymentFormsComponents/contactInfo.vue';
 import { computed, type PropType } from 'vue';
-import BoxMapComponent from '@/components/BoxMap/BoxMapComponent.vue';
 import type { ParcelPointDto } from '@/interfaces/parcel-point.dto.ts';
 import AddressComponent from '@/components/paymentFormsComponents/AddressComponent.vue';
+import BoxMap2Component from '@/components/BoxMap/BoxMap2Component.vue';
+
 const props = defineProps({
   deliveryAddressLastName: String,
   deliveryAddressFirstName: String,
@@ -41,7 +48,7 @@ const props = defineProps({
   selectedParcelPoint: Object as PropType<ParcelPointDto>,
   street: String,
   numberStreet: String,
-  zipCode: String,
+  postalCode: String,
   city: String,
 });
 
@@ -55,7 +62,7 @@ const emit = defineEmits([
   'update:selectedParcelPoint',
   'update:street',
   'update:numberStreet',
-  'update:zipCode',
+  'update:postalCode',
   'update:city',
   'update:company',
 ]);
@@ -106,9 +113,9 @@ const numberStreet = computed({
   set: value => emit('update:numberStreet', value)
 });
 
-const zipCode = computed({
-  get: () => props.zipCode,
-  set: value => emit('update:zipCode', value)
+const postalCode = computed({
+  get: () => props.postalCode,
+  set: value => emit('update:postalCode', value)
 });
 
 const city = computed({

@@ -1,10 +1,10 @@
 <template>
 
   <div class="flex flex-col">
-    <div class="flex flex-col">
+    <div class="flex gap-2">
       <label :for="inputId" class="text-xs font-bold mb-1">{{label}}{{required? '*': ''}}</label>
       <p v-if="propertyRules?.$error"
-         class="text-actionColor font-bold">
+         class="text-actionColor text-xs font-bold">
         {{errorMessage }}
       </p>
     </div>

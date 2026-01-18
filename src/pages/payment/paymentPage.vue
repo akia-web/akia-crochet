@@ -1,13 +1,14 @@
 <template>
   <div class=" xl:w-[80%] m-auto">
     <h1 class="text-xl mb-2 pt-4">Page de paiement</h1>
-    <div class="flex w-full flex-wrap md:flex-row-reverse justify-between items-start pt-4">
-      <div class="w-full md:w-auto md:sticky top-[95px] bg-white p-[20px] rounded-lg mb-8 self-start min-w-[25%]">
+    <div class="flex w-full flex-wrap lg:flex-row-reverse justify-between items-start pt-4">
+      <div
+          class="w-full md:w-[90%] lg:w-auto lg:sticky top-[95px] ml-auto mr-auto bg-white p-[20px] rounded-lg mb-8 self-start min-w-[25%]">
         <h2 class="font-bold text-center mb-2">Récapitulatif panier</h2>
         <RecapCartView :isRecapPage="false"></RecapCartView>
       </div>
 
-      <div class="w-full md:w-[70%] lg:w-[60%] bg-white mb-8 p-[20px] rounded-lg">
+      <div class="w-full md:w-[90%] lg:w-[60%] m-auto bg-white mb-8 p-[10px] md:p-[20px] rounded-lg">
         <Stepper value="1">
           <StepList>
             <Step value="1">Livraison</Step>
@@ -17,7 +18,7 @@
           <StepPanels>
             <StepPanel v-slot="{ activateCallback }"
                        value="1"
-                       class="rounded-md p-[20px]">
+                       class="rounded-md md:p-[20px]">
               <div class="flex flex-col gap-4">
                 <DeliveryFormComponent v-model:deliveryAddressLastName="form.deliveryAddress.lastName"
                                        v-model:deliveryAddressFirstName="form.deliveryAddress.firstName"
@@ -31,7 +32,7 @@
                                        v-model:selectedParcelPoint="form.deliveryAddress.selectedParcelPoint"
                                        v-model:street="form.deliveryAddress.street"
                                        v-model:numberStreet="form.deliveryAddress.numberStreet"
-                                       v-model:zipCode="form.deliveryAddress.zipCode"
+                                       v-model:postalCode="form.deliveryAddress.postalCode"
                                        v-model:city="form.deliveryAddress.city">
                 </DeliveryFormComponent>
                 <div class="flex pt-6 justify-end">
@@ -59,14 +60,18 @@
                   :v$="v$.invoiceAddress"
                   v-model:invoiceAddressStreet="form.invoiceAddress.street"
                   v-model:invoiceAddressNumberStreet="form.invoiceAddress.numberStreet"
-                  v-model:invoiceAddressZipCode="form.invoiceAddress.zipCode"
+                  v-model:invoiceAddressPostalCode="form.invoiceAddress.postalCode"
                   v-model:invoiceAddressCity="form.invoiceAddress.city"
               />
-              <Button label="Suivant"
-                      icon="pi pi-arrow-right"
-                      iconPos="right"
-                      :disabled="!canGoToStep3"
-                      @click="activateCallback('3');"/>
+
+              <div class="flex pt-6 justify-end">
+                <Button label="Suivant"
+                        icon="pi pi-arrow-right"
+                        iconPos="right"
+                        :disabled="!canGoToStep3"
+                        @click="activateCallback('3');"/>
+              </div>
+
             </StepPanel>
             <StepPanel v-slot="{ activateCallback }"
                        value="3"
@@ -82,6 +87,11 @@
 
               <RecapDeliveryAddress :form="form.deliveryAddress"></RecapDeliveryAddress>
 
+              <Textarea v-if="form.deliveryAddress.livraisonOption.code === 'domicile'"
+                        v-model="form.deliveryAddress.additionalInformation"
+                        class="w-full mt-4"
+                        placeholder="Ajouter une information pour le livreur"></Textarea>
+
               <hr class="mt-4 border-actionColor">
 
               <div class="flex justify-between mt-4">
@@ -93,9 +103,10 @@
                 ></Button>
               </div>
 
-              <RecapInvoiceAddress :form="form"></RecapInvoiceAddress>
+              <RecapInvoiceAddress :form="form"
+                                   v-model:tips="form.tips"></RecapInvoiceAddress>
 
-              <div class="flex gap-1 mt-4">
+              <div class="flex gap-1 mt-8">
                 <Checkbox v-model="form.cguAccepted" binary id="cgu"/>
                 <label for="cgu">J'accepte les conditions de ventes</label>
               </div>
@@ -150,6 +161,7 @@ import { apiPost } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
 import { ADMIN_DASHBORD_ROUTE } from '@/router/routes-name.ts';
+import type { CheckoutFormDto } from '@/components/paymentFormsComponents/interfaces/checkoutForm.dto.ts';
 
 const storeUser = useUserStore();
 const router = useRouter();
@@ -161,20 +173,9 @@ onMounted(() => {
   if (storeProductsCart.openSlider) {
     storeProductsCart.updateVisibility(false);
   }
-
-
 });
 
-interface CheckoutForm {
-  deliveryAddress: any; // ou type précis
-  invoiceAddress: any;
-  sameAddressForDeliveryAndInvoice: boolean;
-  cguAccepted: boolean;
-  checked: boolean;
-  products: ProductShopDto[];
-}
-
-const form = reactive<CheckoutForm>({
+const form = reactive<CheckoutFormDto>({
   deliveryAddress: {
     firstName: '',
     lastName: '',
@@ -183,7 +184,7 @@ const form = reactive<CheckoutForm>({
     street: '',
     city: '',
     country: { name: 'France', code: 'FR' },
-    zipCode: '',
+    postalCode: '',
     phone: '',
     email: '',
     additionalInformation: '',
@@ -194,20 +195,14 @@ const form = reactive<CheckoutForm>({
         country: '',
         position: { longitude: '', latitude: '' },
         street: '',
-        zipCode: ''
+        postalCode: ''
       },
       name: '',
-      network: '',
-      openingDays: []
     },
     livraisonOption: {
       code: 'MONR_NETWORK',
       name: 'Mondial Relais'
     },
-    // livraisonOption: {
-    //   code: 'domicile',
-    //   name: 'Mondial Relais'
-    // },
   },
   invoiceAddress: {
     firstName: '',
@@ -217,47 +212,25 @@ const form = reactive<CheckoutForm>({
     street: '',
     city: '',
     country: { name: 'France' },
-    zipCode: '',
+    postalCode: '',
     email: '',
-    additionalInformation: ''
   },
   sameAddressForDeliveryAndInvoice: true,
   cguAccepted: false,
   checked: false,
-  products: []
+  tips: { name: 'Aucun', value: 0 },
+  products: [],
+  user: storeUser.user ? storeUser.user : undefined,
 });
 
 const rules = computed(() => ({
   deliveryAddress: {
     firstName: { required },
     lastName: { required },
-
-    numberStreet: {
-      required: requiredIf(
-          () => form.deliveryAddress.livraisonOption.code === 'domicile'
-      ),
-      maxLength: maxLength(12)
-    },
-
-    street: {
-      required: requiredIf(
-          () => form.deliveryAddress.livraisonOption.code === 'domicile'
-      )
-    },
-
-    city: {
-      required: requiredIf(
-          () => form.deliveryAddress.livraisonOption.code === 'domicile'
-      )
-    },
-
-    zipCode: {
-      required: requiredIf(
-          () => form.deliveryAddress.livraisonOption.code === 'domicile'
-      ),
-      maxLength: maxLength(10)
-    },
-
+    numberStreet: { required, maxLength: maxLength(12) },
+    street: { required },
+    city: { required },
+    postalCode: { maxLength: maxLength(10), required },
     phone: {
       required,
       phoneByCountry: phoneByCountry(
@@ -266,7 +239,6 @@ const rules = computed(() => ({
     },
 
     email: { required, email },
-
     selectedParcelPoint: {
       isRequired: requiredIf(() => form.deliveryAddress.livraisonOption.code !== 'domicile'),
       notEmptyObject: (value: any) => {
@@ -274,9 +246,7 @@ const rules = computed(() => ({
         return value && value.code && value.code !== '';
       }
     },
-    livraisonOption: {
-      code: { required }
-    }
+    livraisonOption: { code: { required } }
   },
   invoiceAddress: {
     firstName: {
@@ -295,7 +265,7 @@ const rules = computed(() => ({
     city: {
       required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.code !== 'domicile'))
     },
-    zipCode: {
+    postalCode: {
       required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.code !== 'domicile')),
       maxLength: maxLength(10)
     },
@@ -315,27 +285,34 @@ const rules = computed(() => ({
 const v$ = useVuelidate(rules, form, { $autoDirty: true });
 
 const finalizePayment = () => {
-  console.warn(form);
+
   form.products = storeProductsCart.productsCart;
-  apiPost(api(env.stripe.checkout), 'POST', form).then((data: any) => {
+
+  if (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.code === 'domicile') {
+    form.invoiceAddress.numberStreet = form.deliveryAddress.numberStreet;
+    form.invoiceAddress.country.name = form.deliveryAddress.country.name;
+    form.invoiceAddress.street = form.deliveryAddress.street;
+    form.invoiceAddress.postalCode = form.deliveryAddress.postalCode;
+    form.invoiceAddress.city = form.deliveryAddress.city;
+    form.invoiceAddress.company = form.deliveryAddress.company;
+    form.invoiceAddress.email = form.deliveryAddress.email;
+    form.invoiceAddress.firstName = form.deliveryAddress.firstName;
+    form.invoiceAddress.lastName = form.deliveryAddress.lastName;
+  }
+  console.warn(form);
+
+
+  apiPost(api(env.stripe.checkout), 'POST', form, false, !!storeUser.user).then((data: any) => {
     window.location.href = data.url;
 
-  }).catch(e => {
-
+  }).catch(async e => {
+        if (e.message === 'Produits non validé pour précommande') {
+          console.error('erreur');
+          await storeProductsCart.getLocalStorageCart()
+          console.warn(storeProductsCart.listOutOfStocks)
+        }
       }
   );
-
-  // if (!storeUser.user) {
-  //   dialog.open(ConnexionModale, {
-  //     props: configOpenDialog('Connexion requise', true),
-  //     onClose: (options: { data: SocialMediaDto }) => {
-  //       if (options?.data) {
-  //         // mediaUrls.value.push({ type: options.data.type, url: options.data.url });
-  //       }
-  //     }
-  //   });
-  //
-  // }
 };
 
 

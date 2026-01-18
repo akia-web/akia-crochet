@@ -100,9 +100,52 @@ const router = createRouter({
           component: () => import('@/pages/recapCart/RecapCartPage.vue'),
         },
 
+        {
+          path: 'sucess-paiement',
+          name: 'sucess-paiement',
+          component: () => import('@/pages/payment/SuccessPaymentPage.vue'),
+        },
+
+        {
+          path: 'error-paiement',
+          name: 'error-paiement',
+          component: () => import('@/pages/payment/ErrorPaymentPage.vue'),
+        },
+        {
+          path: 'conditions-generales-de-vente',
+          name: 'cgv',
+          component: () => import('@/components/DocsAdministratif/CGV.vue'),
+        },
+        {
+          path: 'politique-de-livraison',
+          name: 'deliveryPolicy',
+          component: () => import('@/components/DocsAdministratif/DeliveryPolicy .vue'),
+        },
+        {
+          path: 'mentions-legales',
+          name: 'legalNotices',
+          component: () => import('@/components/DocsAdministratif/LegalNotices.vue'),
+        },
+        {
+          path: 'politique-de-confidentialite',
+          name: 'privacyPolicy',
+          component: () => import('@/components/DocsAdministratif/PrivacyPolicy.vue'),
+        },
+        {
+          path: 'politique-de-retours-et-remboursements',
+          name: 'returnAndRefunds',
+          component: () => import('@/components/DocsAdministratif/ReturnsAndRefunds.vue'),
+        },
+
       ],
     },
   ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    }
+    return { top: 0, behavior: 'smooth' }
+  },
 });
 
 router.beforeEach(async (to, from, next) => {

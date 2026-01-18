@@ -1,6 +1,6 @@
 <template>
   <Form>
-    <div class="flex flex-wrap w-full gap-4">
+    <div class="flex flex-wrap w-full gap-4 mt-4">
       <LabelAndInputText v-model:property="numberStreet"
                          label="Numéro de voie"
                          inputId="number"
@@ -8,7 +8,7 @@
                          class=" w-full md:w-[30%]"
                          :propertyRules="v$?.numberStreet"
                          placeholder="exemple: 3 bis"
-                         errorMessage="Numéro invalide">
+                         errorMessage="invalide">
       </LabelAndInputText>
 
       <LabelAndInputText v-model:property="street"
@@ -23,14 +23,14 @@
       </LabelAndInputText>
     </div>
     <div class="flex flex-wrap mt-4 gap-4">
-      <LabelAndInputText v-model:property="zipCode"
+      <LabelAndInputText v-model:property="postalCode"
                          label="Code postal"
-                         inputId="zipCode"
+                         inputId="postalCode"
                          required
                          placeholder="exemple: 75002"
                          class="w-full md:w-[30%]"
-                         :propertyRules="v$?.zipCode"
-                         errorMessage="Code postal invalide">
+                         :propertyRules="v$?.postalCode"
+                         errorMessage="invalide">
       </LabelAndInputText>
 
       <LabelAndInputText v-model:property="city"
@@ -42,6 +42,17 @@
                          :propertyRules="v$?.city"
                          errorMessage="Ville requise">
       </LabelAndInputText>
+
+      <div class="flex flex-col w-full mt-4"
+           v-if="!props.isInvoiceAddress">
+        <label for="country" class="text-xs font-bold">Pays {{isInvoiceAddress? 'de l\'expediteur':'du destinataire'}}</label>
+        <Select v-model="deliveryAddressCountry"
+                :options="optionCountries"
+                optionLabel="name"
+                placeholder="Pays"
+                class="w-full"
+        />
+      </div>
     </div>
   </Form>
 
@@ -51,20 +62,33 @@
 import LabelAndInputText from '@/components/FormComponents/LabelAndInputText.vue';
 import { computed } from 'vue';
 
+const optionCountries = [
+  { name: 'France', code: 'FR' },
+];
+
+
 const props = defineProps({
   street: String,
   numberStreet: String,
-  zipCode: String,
+  postalCode: String,
   city: String,
+  deliveryAddressCountry: Object,
+  isInvoiceAddress: Boolean,
   v$: Object,
 });
 
 const emit = defineEmits([
   'update:street',
   'update:numberStreet',
-  'update:zipCode',
+  'update:postalCode',
   'update:city',
+  'update:deliveryAddressCountry',
 ]);
+
+const deliveryAddressCountry = computed({
+  get: () => props.deliveryAddressCountry,
+  set: value => emit('update:deliveryAddressCountry', value)
+});
 
 
 const street = computed({
@@ -77,9 +101,9 @@ const numberStreet = computed({
   set: value => emit('update:numberStreet', value)
 });
 
-const zipCode = computed({
-  get: () => props.zipCode,
-  set: value => emit('update:zipCode', value)
+const postalCode = computed({
+  get: () => props.postalCode,
+  set: value => emit('update:postalCode', value)
 });
 
 const city = computed({

@@ -1,3 +1,4 @@
 :root {
     --p-inputtext-focus-border-color: var(--action-color) !important;
+    --p-textarea-focus-border-color: var(--action-color) !important;
 }

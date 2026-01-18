@@ -2,20 +2,19 @@ export interface ParcelPointDto {
   code: string,
   location: LocationDto
   name: string,
-  network: string,
-  openingDays: OpeningDay[]
 }
 
 
 interface LocationDto {
   city: string,
   country: string,
-  position: { longitude: string, latitude: string },
+  position: { longitude: number, latitude: number },
   street: string,
-  zipCode: string,
+  postalCode: string,
 }
 
-interface OpeningDay {
-  openingPeriod: { closingTime: string, openingTime: string }[];
-  weekday: string;
+
+export interface ParcelPointWithDistanceDto {
+  distanceFromSearchLocation: number,
+  parcelPoint: ParcelPointDto
 }

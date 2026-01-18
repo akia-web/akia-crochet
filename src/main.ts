@@ -1,3 +1,4 @@
+import 'maplibre-gl/dist/maplibre-gl.css';
 import './assets/main.css';
 import Aura from '@primevue/themes/aura';
 import { createApp } from 'vue';
@@ -9,10 +10,9 @@ import App from './App.vue';
 import router from './router';
 import { PrimeVue } from '@primevue/core';
 import Button from 'primevue/button';
-import { Accordion, AccordionContent, AccordionHeader, AccordionPanel, Card, Checkbox, Chip, ColorPicker, Dialog, DialogService, Divider, Drawer, DynamicDialog, InputGroup, InputGroupAddon, InputNumber, InputText, Menu, Message, MultiSelect, Password, RadioButton, Select, Step, StepList, Stepper, Toast, ToastService } from 'primevue';
+import { Accordion, AccordionContent, AccordionHeader, AccordionPanel, Card, Checkbox, Chip, ColorPicker, Dialog, DialogService, Divider, Drawer, DynamicDialog, InputGroup, InputGroupAddon, InputNumber, InputText, Menu, Message, MultiSelect, Password, RadioButton, Select, SelectButton, Step, StepList, Stepper, Textarea, Toast, ToastService } from 'primevue';
 import Editor from 'primevue/editor';
 import { Form, FormField } from '@primevue/forms';
-
 
 const app = createApp(App);
 
@@ -54,9 +54,11 @@ const components = {
   Password,
   RadioButton,
   Select,
+  SelectButton,
   Step,
   StepList,
   Stepper,
+  Textarea,
   Toast,
 };
 

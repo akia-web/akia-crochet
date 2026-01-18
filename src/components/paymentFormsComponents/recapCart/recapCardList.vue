@@ -1,5 +1,5 @@
 <template>
-  <div v-if="list && list.length > 0">
+  <div v-show="list && list.length > 0">
     <h2 class=" font-semibold text-sm text-actionColor">{{ title }}</h2>
     <table class="w-full mt-2">
       <tbody>
@@ -18,7 +18,7 @@
 
         </td>
         <td class=" w-[25%]">
-          <p class="">{{ product.plushie.name }} {{
+          <p class="md:text-center">{{ product.plushie.name }} {{
               product.plushie.plushieVariants && product.plushie.plushieVariants?.length > 1 ? `- ` + product.plushieVariant.name : ''
             }}</p>
         </td>

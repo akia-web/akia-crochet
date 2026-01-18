@@ -13,9 +13,10 @@ export const useProductsCartStore = defineStore('cart', () => {
     const openSlider = ref<boolean>(false);
     const listOutOfStocks = ref<ProductShopDto[]>([]);
     const productCartLength = ref<number>(0);
+    const livraisonPrice = ref<number>(0);
+    const tipsPrice = ref<number>(0);
 
     const updateCart = async (value: ProductShopDto): Promise<void> => {
-      console.warn('updateCart');
       await apiGet(`${api(env.plushies.variant)}?id=${value.plushieVariant.id}`, 'GET').then(response => response.json())
         .then(data => {
           value.plushieVariant = data;
@@ -38,21 +39,19 @@ export const useProductsCartStore = defineStore('cart', () => {
         productsCart.value[searchVariantInProductCartIndex].preOrder = value.preOrder;
       }
 
-      totalPrice.value = calculateAmount();
+      calculateAmount();
+      console.warn(totalPrice.value);
       saveInLocalStorageCart();
     };
 
     const deleteProduct = (product: ProductShopDto): void => {
-      console.warn('deleteProduct');
       productsCart.value = productsCart.value.filter((element: ProductShopDto) => element.plushieVariant.id !== product.plushieVariant.id);
-      totalPrice.value = calculateAmount();
+      calculateAmount();
       saveInLocalStorageCart();
     };
 
     const calculateAmount = () => {
-      console.warn('calculateAmount');
-
-      return productsCart.value.reduce((sum, item) => {
+      totalPrice.value = productsCart.value.reduce((sum, item) => {
         return (item.preOrder && item.acceptedPreOrder) || !item.preOrder
           ? sum + divideBy100(item.plushieVariant.price)!
           : sum;
@@ -60,19 +59,23 @@ export const useProductsCartStore = defineStore('cart', () => {
     };
 
     const saveInLocalStorageCart = () => {
-      console.warn('saveInLocalStorageCart');
 
       if (productsCart.value.length > 0) {
         localStorage.setItem(import.meta.env.VITE_CART, JSON.stringify(productsCart.value));
       } else {
         localStorage.removeItem(import.meta.env.VITE_CART);
+        livraisonPrice.value = 0;
+        tipsPrice.value = 0;
+        openModal.value = false;
+        openSlider.value = false;
+        totalPrice.value = 0;
+        productCartLength.value = 0;
       }
 
       getProductsCartLength(productsCart.value);
     };
 
     const getLocalStorageCart = async (): Promise<void> => {
-      console.warn('getLocalStorageCart');
       const storage: string | null = localStorage.getItem(import.meta.env.VITE_CART);
 
       listOutOfStocks.value = [];
@@ -87,7 +90,7 @@ export const useProductsCartStore = defineStore('cart', () => {
           openModal.value = true;
         }
 
-        totalPrice.value = calculateAmount();
+        calculateAmount();
         getProductsCartLength(productsCart.value);
 
       } else {
@@ -114,7 +117,6 @@ export const useProductsCartStore = defineStore('cart', () => {
       }
     };
 
-
     const getProductsCartLength = (list?: ProductShopDto[]): void => {
       const storage: string | null = localStorage.getItem(import.meta.env.VITE_CART);
 
@@ -129,11 +131,44 @@ export const useProductsCartStore = defineStore('cart', () => {
     };
 
     const updateVisibility = (value?: boolean) => {
-      console.warn('updateVisibility');
       openSlider.value = value ? value : !openSlider.value;
     };
 
+    const updateTips = (value: number) => {
+      tipsPrice.value = value;
+      calculateAmount();
+    };
 
-    return { productsCart, totalPrice, updateCart, deleteProduct, getLocalStorageCart, openModal, openSlider, updateVisibility, listOutOfStocks, getProductsCartLength, productCartLength };
+    const updateLivraisonPrice = (value: number) => {
+      livraisonPrice.value = value;
+      calculateAmount();
+    };
+
+    const deleteCart = () => {
+      productsCart.value.length = 0;
+      saveInLocalStorageCart();
+    };
+
+    const veryfyOrder = async () => {
+      for (const item of productsCart.value) {
+        await apiGet(`${api(env.plushies.variant)}?id=${item.plushieVariant.id}`, 'GET').then(response => response.json())
+          .then(data => {
+            item.plushieVariant = data;
+            item.preOrder = data.stock === 0;
+
+            if (item.preOrder && !item.acceptedPreOrder) {
+              listOutOfStocks.value.push(item);
+            }
+          });
+      }
+
+
+      if (listOutOfStocks.value.length > 0) {
+        openModal.value = true;
+      }
+    };
+
+
+    return { productsCart, totalPrice, updateCart, deleteProduct, getLocalStorageCart, openModal, openSlider, updateVisibility, listOutOfStocks, getProductsCartLength, productCartLength, calculateAmount, updateTips, updateLivraisonPrice, livraisonPrice, tipsPrice, deleteCart, veryfyOrder };
   })
 ;

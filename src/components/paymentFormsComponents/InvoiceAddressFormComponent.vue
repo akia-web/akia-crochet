@@ -18,8 +18,9 @@
     <AddressComponent class="mt-4"
                       v-model:street="invoiceAddressStreet"
                       v-model:numberStreet="invoiceAddressNumberStreet"
-                      v-model:zipCode="invoiceAddressZipCode"
+                      v-model:postalCode="invoiceAddressPostalCode"
                       v-model:city="invoiceAddressCity"
+                      :isInvoiceAddress="true"
                       v-model:sameAddressForDeliveryAndInvoice="sameAddressForDeliveryAndInvoice"
                       :v$="v$"/>
 
@@ -52,7 +53,7 @@ const props = defineProps({
   livraisonOption: Object,
   invoiceAddressStreet: String,
   invoiceAddressNumberStreet: String,
-  invoiceAddressZipCode: String,
+  invoiceAddressPostalCode: String,
   invoiceAddressCity: String,
   invoiceAddressCompany: String,
 });
@@ -65,7 +66,7 @@ const emit = defineEmits([
   'update:invoiceAddressEmail',
   'update:invoiceAddressStreet',
   'update:invoiceAddressNumberStreet',
-  'update:invoiceAddressZipCode',
+  'update:invoiceAddressPostalCode',
   'update:invoiceAddressCity',
   'update:invoiceAddressCompany',
 
@@ -106,9 +107,9 @@ const invoiceAddressNumberStreet = computed({
   set: value => emit('update:invoiceAddressNumberStreet', value)
 });
 
-const invoiceAddressZipCode = computed({
-  get: () => props.invoiceAddressZipCode,
-  set: value => emit('update:invoiceAddressZipCode', value)
+const invoiceAddressPostalCode = computed({
+  get: () => props.invoiceAddressPostalCode,
+  set: value => emit('update:invoiceAddressPostalCode', value)
 });
 
 const invoiceAddressCity = computed({

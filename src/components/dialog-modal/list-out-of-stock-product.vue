@@ -18,7 +18,7 @@
 
 </template>
 <script lang="ts" setup>
-import { inject, ref } from 'vue';
+import { inject, ref, watch } from 'vue';
 import { useProductsCartStore } from '@/stores/productsCart.ts';
 import type { ProductShopDto } from '@/interfaces/product-shop.dto.ts';
 import { divideBy100 } from '@/functions/convertions.ts';
@@ -28,29 +28,32 @@ const storeProductsCart = useProductsCartStore();
 
 const objectList = ref<ProductShopDto[]>([]);
 
+
 if (dialogRef?.value?.data) {
   objectList.value = dialogRef.value.data.list;
 }
+
 
 
 const validateProduct = async (product: ProductShopDto) => {
   product.preOrder = true;
   product.acceptedPreOrder = true;
   await storeProductsCart.updateCart(product);
-  objectList.value = objectList.value.filter((element: ProductShopDto) => element.plushieVariant.id !== product.plushieVariant.id);
-
-  if(objectList.value.length === 0){
+  const findIndex = objectList.value.findIndex((element: ProductShopDto)=> element.plushieVariant.id === product.plushieVariant.id)
+  objectList.value.splice(findIndex, 1);
+  if (objectList.value.length === 0) {
     dialogRef.value.close();
   }
+
 };
 
 const deleteProduct = async (product: ProductShopDto) => {
-  objectList.value = objectList.value.filter((element: ProductShopDto) => element.plushieVariant.id !== product.plushieVariant.id);
+  const findIndex = objectList.value.findIndex((element: ProductShopDto)=> element.plushieVariant.id === product.plushieVariant.id)
+  objectList.value.splice(findIndex, 1);
   storeProductsCart.deleteProduct(product);
-  if(objectList.value.length === 0){
+  if (objectList.value.length === 0) {
     dialogRef.value.close();
   }
-
 }
 
 

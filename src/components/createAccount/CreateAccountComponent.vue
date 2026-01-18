@@ -1,5 +1,6 @@
 <template>
-  <div class="flex justify-center min-h-[80vh] pb-[20px] shadow-lg bg-white border border-[var(--action-color)] rounded md:w-1/2 mx-auto">
+  <div
+      class="flex justify-center min-h-[80vh] pb-[20px] shadow-lg bg-white border border-[var(--action-color)] rounded md:w-1/2 mx-auto">
     <form @submit.prevent="handleSubmit"
           class="flex flex-col gap-4  w-full sm:w-[70%] p-[20px] ">
       <h1 class="mt-8 mb-8 text-center">Formulaire d'inscription</h1>
@@ -134,7 +135,7 @@
 
 </template>
 <script lang="ts" setup>
-import { computed, reactive } from 'vue';
+import { computed, onMounted, reactive } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
@@ -150,11 +151,12 @@ import { apiPost } from '@/services/request-service.ts';
 import { CONNEXION_ROUTE } from '@/router/routes-name.ts';
 import { useDialog } from 'primevue';
 import DialogModal from '@/components/dialog-modal/dialog-modal.vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const dialog = useDialog();
 const toast = useToast();
 const router = useRouter();
+const route = useRoute();
 
 const form = reactive<CreateAccountDto>({
   email: '',
@@ -173,6 +175,12 @@ const errors = reactive({
   lastName: '',
 });
 
+onMounted(() => {
+  const email = route.query.email as string;
+  if (email) {
+    form.email = email;
+  }
+});
 
 const validateEmail = () => {
   errors.email = checkValidateEmail(form.email);

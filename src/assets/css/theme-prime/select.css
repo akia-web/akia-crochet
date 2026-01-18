@@ -1,0 +1,6 @@
+:root {
+    --p-select-option-selected-focus-background:var(--action-color-light-hover) !important;
+    --p-select-option-selected-background:var(--action-color-light-hover) !important;
+    --p-select-option-selected-focus-color: var(--action-color) !important;
+    --p-select-option-selected-color: var(--action-color) !important;
+}

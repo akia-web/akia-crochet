@@ -35,7 +35,7 @@
           class="md:w-[25%]"
           placeholder="Rue"/>
       <InputText
-          v-model="form.zipCode"
+          v-model="form.postalCode"
           class="md:w-[25%]"
           placeholder="Code postal"/>
 
@@ -57,7 +57,7 @@
       class="mt-4">
         <p class="underline">point relais selectionné :</p>
         <p> {{ selectedParcelPoint.name }}</p>
-        <p> {{ selectedParcelPoint.location.street }} - {{ selectedParcelPoint.location.zipCode }} -
+        <p> {{ selectedParcelPoint.location.street }} - {{ selectedParcelPoint.location.postalCode }} -
           {{ selectedParcelPoint.location.city }} </p>
       </div>
 
@@ -80,13 +80,13 @@ let map: BoxtalParcelPointMap;
 
 const form = reactive({
   street: '',
-  zipCode: '',
+  postalCode: '',
   city: '',
 });
 
 const rules = computed(() => ({
   street: { required },
-  zipCode: { required },
+  postalCode: { required },
   city: { required },
 }));
 
@@ -164,10 +164,9 @@ const initMap = () => {
 
 const search = () => {
   map.searchParcelPoints(
-      { country: deliveryAddressCountry.value?.code, zipCode: form.zipCode, city: form.city, street: form.street },
+      { country: deliveryAddressCountry.value?.code, postalCode: form.postalCode, city: form.city, street: form.street },
       (parcelPoint: any) => {
         selectedParcelPoint.value = parcelPoint;
-        console.warn(parcelPoint);
         zoomOnParcelPoint(parcelPoint);
       }
   );
@@ -175,14 +174,13 @@ const search = () => {
 };
 
 const zoomOnParcelPoint = (point: any) => {
-  console.warn('lala')
   if (!map.map) return;
 
   const lngLat = [point.position.longitude, point.position.latitude];
 
   map.map.flyTo({
     center: lngLat,
-    zoom: 20,       // niveau de zoom désiré
+    zoom: 20,
     speed: 1.2,     // vitesse de l’animation
     curve: 1,       // fluidité de l’animation
   });
@@ -220,7 +218,7 @@ const showRelayDetails = computed(() => {
 watch(deliveryAddressCountry, (newValue) => {
   form.street = '';
   form.city = '';
-  form.zipCode = '';
+  form.postalCode = '';
   selectedParcelPoint.value = {};
   map.clearParcelPoints();
 });

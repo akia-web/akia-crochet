@@ -1,4 +1,6 @@
 :root {
     --p-radiobutton-checked-border-color : var(--action-color) !important;
     --p-radiobutton-checked-background : var(--action-color) !important;
+    --p-radiobutton-checked-hover-border-color: var(--action-color) !important;
+    --p-radiobutton-checked-hover-background: var(--action-color) !important;
 }

@@ -92,9 +92,6 @@ onMounted(() => {
     if (creator.socialMedia) {
       mediaUrls.value = creator.socialMedia;
     }
-
-  }else{
-    console.warn('pas de CreatorId')
   }
 });
 
