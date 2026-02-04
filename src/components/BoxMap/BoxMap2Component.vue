@@ -10,18 +10,12 @@
             <RadioButton v-model="livraisonOption"
                          :inputId="'parcel-'+index"
                          :name="parcelPoint.name"
-                         :value="{name: parcelPoint.name, code: parcelPoint.code}"/>
-            <label :for="'parcel-'+index" class="mr-4">{{ parcelPoint.name }}</label>
+                         :value="{name: parcelPoint.name, code: parcelPoint.code, supplement: parcelPoint.supplement}"/>
+            <label :for="'parcel-'+index" class="mr-4">{{ parcelPoint.name }}
+              <span v-if="parcelPoint.name === 'Domicile'"
+                    class="text-xs italic">+(5 euros)</span>
+            </label>
           </div>
-
-          <div class="flex items-center gap-2">
-            <RadioButton v-model="livraisonOption"
-                         inputId="domicile"
-                         name="domicile"
-                         :value="{name: 'domicile', code: 'domicile'}"/>
-            <label for="domicile" class="mr-4">Domicile <span class="text-xs italic">+(3 euros)</span></label>
-          </div>
-
         </div>
       </template>
     </Card>
@@ -90,7 +84,7 @@
 
 </template>
 <script lang="ts" setup>
-import { computed, onMounted, type PropType, reactive, ref, watch } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { apiGet, apiPost } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
@@ -99,7 +93,7 @@ import maplibregl, { Marker } from 'maplibre-gl';
 
 import { useVuelidate } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
-import type { ParcelPointDto, ParcelPointWithDistanceDto } from '@/interfaces/parcel-point.dto.ts';
+import type { ParcelPointDtoBoxtal, ParcelPointWithDistanceDto } from '@/interfaces/parcel-point-dto.boxtal.ts';
 import { useProductsCartStore } from '@/stores/productsCart.ts';
 
 const token = ref();
@@ -138,6 +132,7 @@ const props = defineProps({
   numberStreet: String,
   postalCode: String,
   city: String,
+  isSendTogether: Boolean,
 });
 
 const emit = defineEmits([
@@ -159,16 +154,22 @@ const deliveryAddressCountry = computed(() => props.deliveryAddressCountry);
 
 const parcelPointList = ref<ParcelPointWithDistanceDto[]>([]);
 
-const parcelPointsNetwork: { code: string, name: string }[] = [
+const parcelPointsNetwork: { code: string, name: string, supplement: number }[] = [
   {
-    code: 'MONR_NETWORK',
-    name: 'Mondial Relais'
+    name: 'Mondial Relais',
+    code: 'MONR-CpourToi',
+    supplement: 0
   },
   {
-    code: 'CHRP_NETWORK',
-    name: 'Chronopost'
+    code: 'CHRP-ChronoShoptoShop',
+    name: 'Chronopost',
+    supplement: 0
   },
-
+  {
+    code: 'POFR-ColissimoAccess',
+    name: 'Domicile',
+    supplement: 5
+  },
 ];
 
 onMounted(async () => {
@@ -176,8 +177,9 @@ onMounted(async () => {
     const response = await apiGet(api(env.boxtal.mapToken), 'GET');
     const responseJson = await response.json();
     token.value = responseJson.token;
+
     if (!livraisonOption.value?.code) {
-      livraisonOption.value = { name: 'Mondial Relais', code: 'MONR_NETWORK' };
+      livraisonOption.value = { name: 'Mondial Relais', code: 'MONR-CpourToi' };
     }
   } catch (err) {
     console.error(err);
@@ -193,10 +195,11 @@ const fetchParcelPoints = async () => {
       city: props.city,
       postalCode: props.postalCode,
       countryIsoCode: 'FR',
-      searchNetworks: livraisonOption.value?.code
+      operationType: 'DEPARTURE',
+      shippingOfferCode: livraisonOption.value?.code
     });
 
-    const url = `https://api.boxtal.build/shipping/v3.2/parcel-point-by-network?${params}`;
+    const url = `https://api.boxtal.build/shipping/v3.2/parcel-point-by-shipping-offer?${params}`;
 
     try {
       const response = await fetch(url, {
@@ -254,7 +257,7 @@ const clearMarkers = () => {
 const recenterOnFirstParcelPoint = () => {
   if (!map.value || parcelPointList.value.length === 0) return;
 
-  const p: ParcelPointDto = parcelPointList.value[0].parcelPoint;
+  const p: ParcelPointDtoBoxtal = parcelPointList.value[0].parcelPoint;
 
   map.value.flyTo({
     center: [
@@ -359,7 +362,7 @@ const createPopup = (p: any) => {
 const showRelayDetails = computed(() => {
   return (
       !!livraisonOption.value?.name &&
-      livraisonOption.value.name !== 'domicile'
+      livraisonOption.value.name !== 'Domicile'
   );
 });
 
@@ -372,11 +375,12 @@ watch(deliveryAddressCountry, (newValue) => {
 
 watch(livraisonOption, async (newValue) => {
       if (newValue) {
-        updateLivraisonPrice(newValue.code === 'domicile' ? 3 : 0);
+        const priceLivraison = newValue.supplement;
+        const priceTogether = !props.isSendTogether ? newValue.supplement : 0;
+        updateLivraisonPrice(priceLivraison + priceTogether);
       }
 
-
-      if (newValue && newValue.code === 'domicile' && selectedParcelPoint.value) {
+      if (newValue && newValue.name === 'Domicile' && selectedParcelPoint.value) {
         selectedParcelPoint.value.code = '';
       } else {
         if (props.street !== '' && props.city !== '' && props.postalCode !== '') {

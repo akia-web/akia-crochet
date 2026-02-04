@@ -1,27 +1,34 @@
 <template>
-  <div class="relative h-[calc(100%-100px)]">
-    <div class="mb-[40px]">
-      <RouterLink to="/" class="flex justify-center mt-[50px] mb-[100px]">
-        <img class="logo"
-             alt="logo Akia"
-             src="@/assets/logo-base-line.png">
-      </RouterLink>
-    </div>
+  <div class="flex flex-col items-center pt-[20px] gap-8">
+          <RouterLink to="/" class="flex justify-center">
+            <img class="logo"
+                 alt="logo Akia"
+                 src="@/assets/logo-base-line.png">
+          </RouterLink>
+    <PanelMenu :model="adminMenuItems">
+      <template #item="{ item, active }">
+        <div class="flex items-center px-4 py-2 cursor-pointer group">
+          <span :class="[item.icon, 'text-primary group-hover:text-inherit']"/>
+          <span :class="['ml-2', { 'font-semibold': item.items }]"
+                @click="navigateTo(item.url? item.url : undefined)">
+              {{ item.label }}
+            </span>
 
-    <a v-for="item in adminMenuItems"
-       @click="navigateTo(item.url)"
-       class="flex justify-center mb-[20px]">
-      <p :class="'pi pi-'+item.icon"
-         class="mr-2"></p>
-      <p>{{ item.label }}</p>
-    </a>
-
-    <div class="absolute bottom-0 left-0 w-full">
-      <div class="flex justify-center">
-        <Button @click="disconnect">Déconnexion</Button>
-      </div>
-    </div>
+          <span
+              v-if="item.items"
+              class="pi ml-auto transition-transform"
+              :class="active ? 'pi-angle-down' : 'pi-angle-right'"
+          />
+        </div>
+      </template>
+    </PanelMenu>
+        <div class="absolute bottom-[10px] left-0 w-full">
+          <div class="flex justify-center">
+            <Button @click="disconnect">Déconnexion</Button>
+          </div>
+        </div>
   </div>
+
 
 
 </template>
@@ -34,7 +41,10 @@ const disconnect = () => {
   emit('disconnect');
 };
 
-const navigateTo = (url: string) => {
+const navigateTo = (url: string | undefined) => {
+  if (url === undefined) {
+    return;
+  }
   emit('naviate', url);
 };
 </script>

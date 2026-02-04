@@ -1,9 +1,9 @@
 <template>
 
   <div class="bg-white  md:w-[50%]  mx-auto">
-    <img src="@/assets/icones/ligneTicket.svg" class="w-full" alt="">
+    <img src="../../../assets/icones/ligneTicket.svg" class="w-full" alt="">
     <div class="p-[20px] pt-8">
-      <img src="@/assets/icones/quokkaWaw.png"
+      <img src="../../../assets/icones/quokkaWaw.png"
            alt="quokka émerveillé"
            class="w-[150px] ml-auto mr-auto mt-16 mb-4">
       <h1 class="text-center text-xl mb-12">Merci pour votre commande !</h1>

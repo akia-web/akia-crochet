@@ -1,20 +1,9 @@
 export interface ParcelPointDto {
-  code: string,
-  location: LocationDto
-  name: string,
-}
-
-
-interface LocationDto {
-  city: string,
-  country: string,
-  position: { longitude: number, latitude: number },
-  street: string,
-  postalCode: string,
-}
-
-
-export interface ParcelPointWithDistanceDto {
-  distanceFromSearchLocation: number,
-  parcelPoint: ParcelPointDto
+  id: number;
+  code: string;
+  name: string;
+  network: string;
+  street: string;
+  postalCode: string;
+  country: string;
 }

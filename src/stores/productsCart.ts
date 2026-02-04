@@ -40,7 +40,6 @@ export const useProductsCartStore = defineStore('cart', () => {
       }
 
       calculateAmount();
-      console.warn(totalPrice.value);
       saveInLocalStorageCart();
     };
 

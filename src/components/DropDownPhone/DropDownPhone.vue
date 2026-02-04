@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex">
-      <label for="deliveryForm" class="text-xs font-bold mb-1">Numéro du destinataire *</label>
+      <label for="deliveryForm" class="text-xs font-bold mb-1">Numéro <span v-if="!isAdmin">du destinataire </span> *</label>
       <p v-if="propertyRules?.$error"
          class="text-actionColor text-xs font-bold">
         {{errorMessage }}
@@ -10,7 +10,7 @@
 
       <div class="flex flex-wrap">
         <Select
-            v-if="countryList.length > 0"
+            v-if="countryList.length > 0 && !isAdmin"
             v-model="selectedCountry"
             :options="countryList"
             optionLabel="name"
@@ -88,6 +88,7 @@ const props = defineProps({
   phone: String,
   propertyRules: Object,
   errorMessage: String,
+  isAdmin: Boolean,
 })
 
 const emit = defineEmits([

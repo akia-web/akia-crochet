@@ -7,6 +7,7 @@
     --p-button-primary-active-border-color: var(--action-color-hover) !important;
     --p-button-text-primary-color: var(--action-color-hover) !important;
     --p-button-text-primary-hover-background: var(--action-color-light-hover) !important;
+    --p-button-text-secondary-hover-background: var(--action-color-light-hover) !important;
 }
 
 .p-button.menu .p-button-icon {

@@ -2,19 +2,20 @@
   <Form class="flex flex-col w-full gap-4">
 
     <DropDownPhone v-model:phone="phone"
-                   v-if="!isInvoiceAddress"
+                   v-if="!isInvoiceAddress || isAdmin"
                    :propertyRules="props.v$?.phone"
+                   :isAdmin="isAdmin"
                    errorMessage="Numéro invalide"></DropDownPhone>
 
     <LabelAndInputText v-model:property="company"
                        inputId="company"
-                       :label="`Entreprise ${isInvoiceAddress? 'de l\'expediteur':'du destinataire'} (optionel)`"
+                       :label="`Entreprise ${label} (optionel)`"
                        placeholder="exemple: EI John Doe"
                        class="mt-4"/>
 
     <LabelAndInputText v-model:property="email"
                        inputId="email"
-                       :label="`Email ${isInvoiceAddress? 'de l\'expediteur':'du destinataire'}`"
+                       :label="`Email ${label}`"
                        required
                        placeholder="exemple: john@doe.fr"
                        :propertyRules="props.v$?.email"
@@ -26,7 +27,7 @@
 
     <LabelAndInputText v-model:property="deliveryAddressLastName"
                        inputId="lastName"
-                       :label="`Nom de famille ${isInvoiceAddress? 'de l\'expediteur':'du destinataire'}`"
+                       :label="`Nom de famille ${label}`"
                        placeholder="exemple: Doe"
                        required
                        :propertyRules="props.v$?.lastName"
@@ -37,7 +38,7 @@
 
     <LabelAndInputText v-model:property="deliveryAddressFirstName"
                        inputId="firstName"
-                       :label="`Prénom ${isInvoiceAddress? 'de l\'expediteur':'du destinataire'}`"
+                       :label="`Prénom ${label}`"
                        placeholder="exemple: John"
                        required
                        :propertyRules="props.v$?.firstName"
@@ -61,6 +62,7 @@ const props = defineProps({
   isInvoiceAddress: Boolean,
   livraisonOptionCode: String,
   v$: Object,
+  isAdmin: Boolean,
 });
 
 
@@ -98,11 +100,13 @@ const company = computed({
   set: value => emit('update:company', value)
 });
 
-// watch(() => props.deliveryAddressCountry, () => {
-//   console.warn('je change');
-//   props.v$?.phone.$reset?.();
-//   props.v$?.phone.$validate?.();
-// });
+const label = computed(() => {
+  if (!props.isAdmin) {
+    return `${props.isInvoiceAddress ? 'de l\'expediteur' : 'du destinataire'}`;
+  } else {
+    return '';
+  }
+});
 
 
 </script>

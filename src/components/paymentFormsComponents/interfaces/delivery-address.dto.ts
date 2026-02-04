@@ -4,7 +4,7 @@ export interface DeliveryAddressDto {
   email: string;
   firstName: string;
   lastName: string;
-  livraisonOption: { name: string, code: string };
+  livraisonOption: { name: string, code: string, supplement: number };
   numberStreet: string;
   phone: string;
   postalCode: string;

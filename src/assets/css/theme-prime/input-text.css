@@ -2,3 +2,7 @@
     --p-inputtext-focus-border-color: var(--action-color) !important;
     --p-textarea-focus-border-color: var(--action-color) !important;
 }
+
+.inputText-font-10px{
+    font-size: 10px !important;
+}

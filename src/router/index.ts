@@ -3,7 +3,7 @@ import { updatePinia } from '@/functions/auth.ts';
 import { useUserStore } from '@/stores/user.ts';
 import type { UserDto } from '@/interfaces/user.dto.ts';
 import { RoleEnum } from '@/enum/role.enum.ts';
-import { ADMIN_ADD_CREATOR_ROUTE, ADMIN_ADD_PLUSHIES_ROUTE, ADMIN_CREATOR_ROUTE, ADMIN_DASHBORD_ROUTE, ADMIN_PATTERN_ROUTE, ADMIN_PLUSHIES_ROUTE, CONFIRM_EMAIL_ROUTE, CONNEXION_ROUTE, CONTACT_ROUTE, INSCRIPTION_ROUTE, PAYMENT_ROUTE, PLUSHIES_DETAILS_ROUTE, PLUSHIES_ROUTE, PROFILE_ROUTE, RECAP_CART_ROUTE, SIMULATOR_ROUTE } from '@/router/routes-name.ts';
+import { ADMIN_ADD_CREATOR_ROUTE, ADMIN_ADD_PLUSHIES_ROUTE, ADMIN_ADDRESS_ROUTE, ADMIN_CREATOR_ROUTE, ADMIN_DASHBORD_ROUTE, ADMIN_ETIQUETTES_ROUTE, ADMIN_ORDERS_ROUTE, ADMIN_PATTERN_ROUTE, ADMIN_PLUSHIES_ROUTE, CONFIRM_EMAIL_ROUTE, CONNEXION_ROUTE, CONTACT_ROUTE, INSCRIPTION_ROUTE, PAYMENT_ROUTE, PLUSHIES_DETAILS_ROUTE, PLUSHIES_ROUTE, PROFILE_ROUTE, RECAP_CART_ROUTE, SIMULATOR_ROUTE } from '@/router/routes-name.ts';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,12 +20,17 @@ const router = createRouter({
         {
           path: 'creators',
           name: ADMIN_CREATOR_ROUTE,
-          component: () => import('@/components/Admin/Creators/CreatorsComponent.vue'),
+          component: () => import('@/components/Admin/config/Creators/CreatorsComponent.vue'),
+        },
+        {
+          path: 'address',
+          name: ADMIN_ADDRESS_ROUTE,
+          component: () => import('../components/Admin/config/address/AdminAdressComponent.vue'),
         },
         {
           path: 'add-creator',
           name: ADMIN_ADD_CREATOR_ROUTE,
-          component: () => import('@/components/Admin/Creators/edit-creator.vue'),
+          component: () => import('@/components/Admin/config/Creators/edit-creator.vue'),
         },
         {
           path: 'peluches',
@@ -43,6 +48,17 @@ const router = createRouter({
           name: ADMIN_PATTERN_ROUTE,
           component: () => import('../components/Admin/Patron/AdminPatronComponent.vue'),
         },
+        {
+          path: 'commandes',
+          name: ADMIN_ORDERS_ROUTE,
+          component: () => import('../components/Admin/Orders/AdminOrdersComponent.vue'),
+        },
+        {
+          path: 'etiquettes/:id/:network',
+          name: ADMIN_ETIQUETTES_ROUTE,
+          props: true,
+          component: () => import('../components/Admin/Orders/createEtiquettes.vue'),
+        },
       ],
     },
     {
@@ -56,7 +72,7 @@ const router = createRouter({
         {
           path: 'peluches',
           name: PLUSHIES_ROUTE,
-          component: () => import('../components/Peluches/PeluchesComponent.vue'),
+          component: () => import('../pages/Plushies/PlushiesPage.vue'),
         },
         {
           path: `${PLUSHIES_DETAILS_ROUTE}/:pelucheName/:selectedVariantName`,
@@ -65,9 +81,10 @@ const router = createRouter({
           props: true
         },
         {
-          path: PROFILE_ROUTE,
+          path:`${PROFILE_ROUTE}/:step`,
           name: PROFILE_ROUTE,
-          component: () => import('../components/Profile/ProfileComponent.vue'),
+          component: () => import('../pages/Profile/ProfileComponent.vue'),
+          props: true
         },
         {
           path: CONNEXION_ROUTE,
@@ -90,9 +107,9 @@ const router = createRouter({
           component: () => import('../components/Contact/ContactComponenent.vue'),
         },
         {
-          path: 'payment',
+          path: 'Payment',
           name: PAYMENT_ROUTE,
-          component: () => import('../pages/payment/paymentPage.vue'),
+          component: () => import('@/pages/Payment/PaymentPage.vue'),
         },
         {
           path: RECAP_CART_ROUTE,
@@ -103,13 +120,13 @@ const router = createRouter({
         {
           path: 'sucess-paiement',
           name: 'sucess-paiement',
-          component: () => import('@/pages/payment/SuccessPaymentPage.vue'),
+          component: () => import('@/pages/Payment/StripeResponse/SuccessPaymentPage.vue'),
         },
 
         {
           path: 'error-paiement',
           name: 'error-paiement',
-          component: () => import('@/pages/payment/ErrorPaymentPage.vue'),
+          component: () => import('@/pages/Payment/StripeResponse/ErrorPaymentPage.vue'),
         },
         {
           path: 'conditions-generales-de-vente',
@@ -150,7 +167,12 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore();
-  await updatePinia(userStore);
+
+
+  if(to.path.startsWith('/profile')|| to.path.startsWith('/admin') || userStore.user === null) {
+    await updatePinia(userStore);
+  }
+
 
   const user: UserDto | null = userStore.user;
   if (to.path === '/profile') {

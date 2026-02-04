@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <RecapCardList :title="'Expédition immediate'"
+    <RecapCardList :title="'Expédition immédiate'"
                    :isRecapPage="props.isRecapPage"
                    :list="productsToSendImmediately"
                    class="mb-8"/>
@@ -65,10 +65,8 @@ const productsToSendAfter = computed<ProductShopDto[]>(() =>
 
 const totalPrice = computed(() => {
   if (!props.isRecapPage) {
-    console.warn('hello')
     return storeProductsCart.totalPrice + storeProductsCart.tipsPrice + storeProductsCart.livraisonPrice;
   }else{
-    console.warn('coucou')
     return storeProductsCart.totalPrice;
   }
 });
@@ -79,7 +77,6 @@ const props = defineProps({
 
 
 const openDialog = () => {
-  console.warn('openDialog');
   dialog.open(ListOutOfStockProduct, {
     props: configOpenDialog('Liste des produits à modifier', false),
     data: {

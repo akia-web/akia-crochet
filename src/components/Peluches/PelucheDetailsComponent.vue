@@ -99,8 +99,8 @@ const updateVariant = (index: number) => {
     selectedImage.value = selectedVariant.value.images[0];
 
     router.replace({
-      name: route.name,      // ou path: route.path
-      params: { ...route.params, selectedVariantName: selectedVariant.value.name }  // garde les autres params
+      name: route.name,
+      params: { ...route.params, selectedVariantName: selectedVariant.value.name }
     });
   }
 

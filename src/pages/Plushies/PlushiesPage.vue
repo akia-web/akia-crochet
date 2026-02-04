@@ -1,7 +1,7 @@
 <template>
   <h1 class="pt-4 ml-[20px] md:ml-0">Toutes les peluches</h1>
-  <div class="flex justify-center md:justify-normal gap-2 mt-4 ">
-    <div v-if="peluches && peluches.length > 0" class="flex gap-2">
+  <div class="flex justify-center md:justify-normal gap-2 mt-4 flex-wrap mb-4">
+    <div v-if="peluches && peluches.length > 0" class="flex gap-2 flex-wrap justify-center">
       <div v-for="peluche in peluches" :key="peluche.id">
         <PelucheCardComponent :plushie="peluche"/>
       </div>

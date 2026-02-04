@@ -1,0 +1,5 @@
+:root {
+    --p-tabs-tab-active-border-color: var(--action-color) !important;
+    --p-tabs-tab-active-color: var(--action-color) !important;
+    --p-tabs-active-bar-background: var(--action-color) !important;
+}

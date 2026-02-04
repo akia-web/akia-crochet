@@ -4,3 +4,8 @@
     --p-select-option-selected-focus-color: var(--action-color) !important;
     --p-select-option-selected-color: var(--action-color) !important;
 }
+
+
+.select-font-10px .p-select-label{
+    font-size: 10px
+}

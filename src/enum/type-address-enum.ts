@@ -1,0 +1,5 @@
+export enum TypeAdressEnum {
+  CUSTOMER = 'CUSTOMER',
+  ADMIN_EXPEDITEUR = 'ADMIN_EXPEDITEUR',
+  ADMIN_RESEND = 'ADMIN_RESEND'
+}

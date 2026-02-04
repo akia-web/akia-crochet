@@ -2,9 +2,9 @@
   <Loader v-if="loaded"></Loader>
   <div v-if="!loaded && !tokenIsValid && !tokenAlreadyValidate"
        class="bg-white p-[20px]">
-    <h1 class="text-center">Oups votre compte ne peux pas être validé...</h1>
-    <p class="mt-8 text-center">Ce lien a expiré !</p>
-    <p class="text-center">Renseignez à nouveau votre e-mail pour regénérer un lien.</p>
+    <h1 class="text-center mt-8">{{title}}</h1>
+    <p class="mt-8 text-center" v-if="token">Ce lien a expiré !</p>
+    <p class="text-center mt-8">Renseignez à nouveau votre e-mail pour regénérer un lien.</p>
     <p class="text-center text-xs">Il sera valable durant 15 minutes.</p>
     <div class="flex justify-center mt-16">
       <form @submit.prevent="handleSubmit"
@@ -92,27 +92,33 @@ const router = useRouter();
 
 onMounted(() => {
 
-  apiGet(api(`${env.auth.confirmEmail}?token=${token}`), 'GET').then(response => response.json())
-      .then((data: UserDto) => {
-        toast.add({
-          severity: 'success',
-          summary: 'Validation de votre compte',
-          detail: `Votre compte a bien été validé`,
-          life: 3000
-        });
-        tokenIsValid.value = true;
-      })
-      .catch((e) => {
-        if (e.message === 'E-mail déjà validé') {
-          toast.add({ severity: 'warn', summary: e.message, life: 3000 });
-          tokenAlreadyValidate.value = true;
-        } else {
-          toast.add({ severity: 'error', summary: e.message, life: 3000 });
-        }
+  if(token){
+    apiGet(api(`${env.auth.confirmEmail}?token=${token}`), 'GET').then(response => response.json())
+        .then((data: UserDto) => {
+          toast.add({
+            severity: 'success',
+            summary: 'Validation de votre compte',
+            detail: `Votre compte a bien été validé`,
+            life: 3000
+          });
+          tokenIsValid.value = true;
+        })
+        .catch((e) => {
+          if (e.message === 'E-mail déjà validé') {
+            toast.add({ severity: 'warn', summary: e.message, life: 3000 });
+            tokenAlreadyValidate.value = true;
+          } else {
+            toast.add({ severity: 'error', summary: e.message, life: 3000 });
+          }
 
-      })
-      .finally(() => loaded.value = false);
+        })
+        .finally(() => loaded.value = false);
+  }else{
+    loaded.value = false;
+  }
 });
+
+const title = computed(() => token? 'Oups votre compte ne peux pas être validé...': 'Demande de renvois du lien de validation')
 
 const form = reactive<{ email: string, checked: boolean }>({
   email: '',

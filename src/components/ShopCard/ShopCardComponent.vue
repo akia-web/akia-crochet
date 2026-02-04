@@ -113,7 +113,7 @@ const deleteProduct = (product: ProductShopDto) => {
 
 
 const updateVisibility = () => {
-  if(route.path !== '/payment' && route.path !==`/${RECAP_CART_ROUTE}` ) {
+  if(route.path !== '/Payment' && route.path !==`/${RECAP_CART_ROUTE}` ) {
     storeProductsCart.updateVisibility();
   }
 };

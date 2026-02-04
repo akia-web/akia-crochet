@@ -58,7 +58,6 @@
           class="mr-1 p-button-bg-site sm:w-[70%]"
           rounded
           icon="pi pi-google"
-          v-if="!storeUser.user"
           @click="loginWithGoogle"
       />
       <RouterLink to="/inscription"
@@ -71,7 +70,7 @@
 
 </template>
 <script lang="ts" setup>
-import { computed, reactive } from 'vue';
+import { computed, onMounted, reactive } from 'vue';
 import { useToast } from 'primevue/usetoast';
 import { useUserStore } from '@/stores/user.ts';
 import { api } from '@/functions/api.ts';
@@ -79,7 +78,7 @@ import { env } from '@/environnement.ts';
 import { apiPost } from '@/services/request-service.ts';
 import { useDialog } from 'primevue';
 import { useRouter } from 'vue-router';
-import { ADMIN_DASHBORD_ROUTE } from '@/router/routes-name.ts';
+import { ADMIN_DASHBORD_ROUTE, CONFIRM_EMAIL_ROUTE, CONNEXION_ROUTE, PLUSHIES_ROUTE } from '@/router/routes-name.ts';
 
 
 const storeUser = useUserStore();
@@ -130,6 +129,9 @@ const handleSubmit = () => {
     }).catch(e => {
           if (e.message === 'E-mail déjà validé') {
             toast.add({ severity: 'warn', summary: e.message, life: 3000 });
+
+          }else if(e.message === 'E-mail non validé'){
+            router.push({ name: CONFIRM_EMAIL_ROUTE });
           } else {
             toast.add({ severity: 'error', summary: e.message, life: 3000 });
           }
@@ -142,4 +144,10 @@ const handleSubmit = () => {
 const loginWithGoogle = async () => {
   window.location.href = api(env.auth.google);
 };
+onMounted( () => {
+  if(storeUser.user){
+    router.push({ name: PLUSHIES_ROUTE });
+  }
+})
+
 </script>

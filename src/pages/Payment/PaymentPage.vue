@@ -33,7 +33,8 @@
                                        v-model:street="form.deliveryAddress.street"
                                        v-model:numberStreet="form.deliveryAddress.numberStreet"
                                        v-model:postalCode="form.deliveryAddress.postalCode"
-                                       v-model:city="form.deliveryAddress.city">
+                                       v-model:city="form.deliveryAddress.city"
+                                       :isSendTogether="form.isSendTogether">
                 </DeliveryFormComponent>
                 <div class="flex pt-6 justify-end">
                   <Button label="Suivant"
@@ -87,7 +88,7 @@
 
               <RecapDeliveryAddress :form="form.deliveryAddress"></RecapDeliveryAddress>
 
-              <Textarea v-if="form.deliveryAddress.livraisonOption.code === 'domicile'"
+              <Textarea v-if="form.deliveryAddress.livraisonOption.name === 'Domicile'"
                         v-model="form.deliveryAddress.additionalInformation"
                         class="w-full mt-4"
                         placeholder="Ajouter une information pour le livreur"></Textarea>
@@ -105,6 +106,37 @@
 
               <RecapInvoiceAddress :form="form"
                                    v-model:tips="form.tips"></RecapInvoiceAddress>
+
+
+              <div v-if="productsToSendAfter.length > 0 && productsToSendImmediately.length>0">
+                <hr class="mt-4 border-actionColor">
+                <h2 class="font-bold mt-2">Choix nombre de colis</h2>
+                <p>
+                  Votre commande comprend des articles en précommande.
+                  <br>
+                  Vous avez le choix entre une livraison unique dans 3 semaines ou une première livraison des articles
+                  disponibles dès maintenant, suivie des précommandes dans 3 semaines.
+                </p>
+                <div class="flex items-center gap-2 mt-3">
+                  <RadioButton v-model="form.isSendTogether"
+                               inputId="together"
+                               name="together"
+                               :value="true"
+                               @click="handleUpdateLivraisonPrice($event)"/>
+                  <label for="together" class="mr-4">Je veux tout recevoir en même temps</label>
+                </div>
+                <div class="flex items-center gap-2 mt-3">
+                  <RadioButton v-model="form.isSendTogether"
+                               inputId="separate"
+                               name="separate"
+                               :value="false"
+                               @click="handleUpdateLivraisonPrice($event)"/>
+                  <label for="separate" class="mr-4">Je veux deux livraisons
+                    {{ form.deliveryAddress.livraisonOption.name === 'Domicile' ? ' (+5 €)' : '' }}</label>
+                </div>
+
+              </div>
+
 
               <div class="flex gap-1 mt-8">
                 <Checkbox v-model="form.cguAccepted" binary id="cgu"/>
@@ -134,7 +166,6 @@
 <script lang="ts" setup>
 
 import { computed, onMounted, reactive, ref, watch } from 'vue';
-import BoxMapComponent from '@/components/BoxMap/BoxMapComponent.vue';
 import { useUserStore } from '@/stores/user.ts';
 import { useRouter } from 'vue-router';
 import { useDialog } from 'primevue';
@@ -164,16 +195,31 @@ import { ADMIN_DASHBORD_ROUTE } from '@/router/routes-name.ts';
 import type { CheckoutFormDto } from '@/components/paymentFormsComponents/interfaces/checkoutForm.dto.ts';
 
 const storeUser = useUserStore();
-const router = useRouter();
-const dialog = useDialog();
-
 const storeProductsCart = useProductsCartStore();
 
 onMounted(() => {
   if (storeProductsCart.openSlider) {
     storeProductsCart.updateVisibility(false);
   }
+
+  if(storeUser.user){
+    form.deliveryAddress.firstName = storeUser.user.firstName;
+    form.deliveryAddress.lastName = storeUser.user.lastName;
+    form.deliveryAddress.email = storeUser.user.email;
+  }
 });
+
+const productsToSendAfter = computed<ProductShopDto[]>(() =>
+    storeProductsCart.productsCart.filter(
+        product => product.preOrder && product.acceptedPreOrder
+    )
+);
+
+const productsToSendImmediately = computed<ProductShopDto[]>(() =>
+    storeProductsCart.productsCart.filter(
+        product => !product.preOrder
+    )
+);
 
 const form = reactive<CheckoutFormDto>({
   deliveryAddress: {
@@ -200,8 +246,9 @@ const form = reactive<CheckoutFormDto>({
       name: '',
     },
     livraisonOption: {
-      code: 'MONR_NETWORK',
-      name: 'Mondial Relais'
+      code: 'MONR-CpourToi',
+      name: 'Mondial Relais',
+      supplement: 0
     },
   },
   invoiceAddress: {
@@ -220,6 +267,7 @@ const form = reactive<CheckoutFormDto>({
   checked: false,
   tips: { name: 'Aucun', value: 0 },
   products: [],
+  isSendTogether: true,
   user: storeUser.user ? storeUser.user : undefined,
 });
 
@@ -240,9 +288,9 @@ const rules = computed(() => ({
 
     email: { required, email },
     selectedParcelPoint: {
-      isRequired: requiredIf(() => form.deliveryAddress.livraisonOption.code !== 'domicile'),
+      isRequired: requiredIf(() => form.deliveryAddress.livraisonOption.name !== 'Domicile'),
       notEmptyObject: (value: any) => {
-        if (form.deliveryAddress.livraisonOption.code === 'domicile') return true; // pas requis
+        if (form.deliveryAddress.livraisonOption.name === 'Domicile') return true;
         return value && value.code && value.code !== '';
       }
     },
@@ -250,33 +298,33 @@ const rules = computed(() => ({
   },
   invoiceAddress: {
     firstName: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.code !== 'domicile')),
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.name !== 'Domicile')),
     },
     lastName: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.code !== 'domicile'))
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.name !== 'Domicile'))
     },
     numberStreet: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.code !== 'domicile')),
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.name !== 'Domicile')),
       maxLength: maxLength(12)
     },
     street: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.code !== 'domicile'))
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.name !== 'Domicile'))
     },
     city: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.code !== 'domicile'))
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.name !== 'Domicile'))
     },
     postalCode: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.code !== 'domicile')),
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.name !== 'Domicile')),
       maxLength: maxLength(10)
     },
     email: {
       required: requiredIf(() =>
-          !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.code !== 'domicile')
+          !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.name !== 'Domicile')
       ),
       email
     },
     country: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.code !== 'domicile'))
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.name !== 'Domicile'))
     },
 
   }
@@ -288,7 +336,7 @@ const finalizePayment = () => {
 
   form.products = storeProductsCart.productsCart;
 
-  if (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.code === 'domicile') {
+  if (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.name === 'Domicile') {
     form.invoiceAddress.numberStreet = form.deliveryAddress.numberStreet;
     form.invoiceAddress.country.name = form.deliveryAddress.country.name;
     form.invoiceAddress.street = form.deliveryAddress.street;
@@ -299,8 +347,6 @@ const finalizePayment = () => {
     form.invoiceAddress.firstName = form.deliveryAddress.firstName;
     form.invoiceAddress.lastName = form.deliveryAddress.lastName;
   }
-  console.warn(form);
-
 
   apiPost(api(env.stripe.checkout), 'POST', form, false, !!storeUser.user).then((data: any) => {
     window.location.href = data.url;
@@ -308,8 +354,7 @@ const finalizePayment = () => {
   }).catch(async e => {
         if (e.message === 'Produits non validé pour précommande') {
           console.error('erreur');
-          await storeProductsCart.getLocalStorageCart()
-          console.warn(storeProductsCart.listOutOfStocks)
+          await storeProductsCart.getLocalStorageCart();
         }
       }
   );
@@ -319,6 +364,17 @@ const finalizePayment = () => {
 const canGoToStep2 = computed(() => !v$.value.deliveryAddress.$invalid);
 const canGoToStep3 = computed(() => !v$.value.deliveryAddress.$invalid && !v$.value.invoiceAddress.$invalid);
 const canPayed = computed(() => !v$.value.deliveryAddress.$invalid && !v$.value.invoiceAddress.$invalid && form.cguAccepted);
+
+
+const handleUpdateLivraisonPrice = (event: any) => {
+
+  if (event.target.value === 'false') {
+    storeProductsCart.updateLivraisonPrice(form.deliveryAddress.livraisonOption.supplement * 2);
+  } else {
+    storeProductsCart.updateLivraisonPrice(form.deliveryAddress.livraisonOption.supplement);
+  }
+
+};
 
 
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <Card v-if="selectedVariant">
+  <Card v-if="selectedVariant" class="min-h-[434px]">
     <template #content>
       <RouterLink
           :to="{ name: PLUSHIES_DETAILS_ROUTE, params: { pelucheName: props.plushie.name, selectedVariantName: selectedVariant.name } }">
@@ -18,7 +18,7 @@
         {{ props.plushie.name }}
       </h2>
 
-      <div class="flex gap-1" v-if="plushie && plushie.plushieVariants && plushie.plushieVariants.length>0">
+      <div class="flex gap-1" v-if="plushie && plushie.plushieVariants && plushie.plushieVariants.length>1">
         <div v-for="(variant, index) in plushie.plushieVariants">
           <div class="w-[20px] h-[20px] rounded-full cursor-pointer"
                :style="{ background: variant.color, border: selectedVariant.color === variant.color?'1px solid black' : 'transparent' }"

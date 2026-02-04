@@ -4,6 +4,12 @@
     border: 1px solid var(--action-color) !important;
 }
 
+.p-button-text-action-color-bg-white {
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    color: var(--action-color) !important;
+}
+
 .p-button-transparent {
     background: transparent !important;
     border: 1px solid transparent !important;
@@ -78,4 +84,8 @@
 
 .p-drawer-right .p-drawer {
     width: 40rem !important;
+}
+
+.p-datatable-column-title {
+    font-size: 12px;
 }

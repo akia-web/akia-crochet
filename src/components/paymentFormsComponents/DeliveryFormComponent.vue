@@ -18,22 +18,24 @@
 
   />
 
-  <BoxMap2Component v-model:livraisonOption="livraisonOption"
-                    v-model:deliveryAddressCountry="deliveryAddressCountry"
-                    v-model:selectedParcelPoint="selectedParcelPoint"
-                    :city="city"
-                    :numberStreet="numberStreet"
-                    :postalCode="postalCode"
-                    :street="street"/>
+  <FormWithMap v-model:livraisonOption="livraisonOption"
+           v-model:deliveryAddressCountry="deliveryAddressCountry"
+           v-model:selectedParcelPoint="selectedParcelPoint"
+           :city="city"
+           :numberStreet="numberStreet"
+           :postalCode="postalCode"
+           :street="street"
+           :isSendTogether="props.isSendTogether"/>
 
 
 </template>
 <script lang="ts" setup>
 import ContactInfo from '@/components/paymentFormsComponents/contactInfo.vue';
 import { computed, type PropType } from 'vue';
-import type { ParcelPointDto } from '@/interfaces/parcel-point.dto.ts';
+import type { ParcelPointDtoBoxtal } from '@/interfaces/parcel-point-dto.boxtal.ts';
 import AddressComponent from '@/components/paymentFormsComponents/AddressComponent.vue';
 import BoxMap2Component from '@/components/BoxMap/BoxMap2Component.vue';
+import FormWithMap from '@/components/paymentFormsComponents/FormWithMap.vue';
 
 const props = defineProps({
   deliveryAddressLastName: String,
@@ -45,11 +47,12 @@ const props = defineProps({
   company: String,
   v$: Object,
   livraisonOption: Object,
-  selectedParcelPoint: Object as PropType<ParcelPointDto>,
+  selectedParcelPoint: Object as PropType<ParcelPointDtoBoxtal>,
   street: String,
   numberStreet: String,
   postalCode: String,
   city: String,
+  isSendTogether: Boolean,
 });
 
 const emit = defineEmits([

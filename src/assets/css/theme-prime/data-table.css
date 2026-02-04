@@ -1,0 +1,9 @@
+:root {
+    --p-datatable-row-selected-background: var(--very-light-grey) !important;
+    --p-datatable-row-selected-color: var(--action-color) !important;
+    --p-datatable-body-cell-selected-border-color: var(--action-color) !important;
+}
+
+.p-datatable-row-expansion{
+    background-color: var(--very-light-grey) !important;
+}

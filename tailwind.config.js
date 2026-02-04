@@ -7,6 +7,8 @@ export default {
       colors: {
         actionColor: 'var(--action-color)',
         actionColorHover: 'var(--action-color-hover)',
+        bgSite: 'var(--bg-site)',
+        bgLightGrey: 'var(--very-light-grey)',
       }
     },
   },

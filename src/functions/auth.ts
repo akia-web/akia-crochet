@@ -3,8 +3,6 @@ import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
 
 export const updatePinia = async (storeUser: any): Promise<void> => {
-
-  if (!storeUser.user) {
     const connectedUser: Response = await fetch(
       api(env.auth.isAuthenticated),
       {
@@ -23,6 +21,4 @@ export const updatePinia = async (storeUser: any): Promise<void> => {
         localStorage.setItem('akia-crochet-auth', data.jwt);
       }
     }
-
-  }
 };

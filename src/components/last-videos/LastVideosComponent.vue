@@ -1,6 +1,6 @@
 <template>
   <div class="w-full bg-white p-[10px] rounded-lg">
-    <H1 class="text-xl">Mes dernières réalisations</H1>
+    <h1 class="text-xl">Mes dernières réalisations</h1>
 
     <div class="flex flex-col justify-center align-center mt-6 ">
       <div class="flex m-0-auto justify-center gap-1">

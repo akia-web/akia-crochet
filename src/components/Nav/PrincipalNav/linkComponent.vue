@@ -58,10 +58,6 @@ const emit = defineEmits(['closeDrawer']);
 const route = useRoute();
 const selectedRoute = ref<string>('peluches');
 
-onMounted(() => {
-  updateSelectedRoute();
-});
-
 const updateSelectedRoute = (url?: string) => {
   close()
 

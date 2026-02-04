@@ -1,18 +1,20 @@
 <template>
-  <div v-if="props.livraisonOption?.code === 'domicile'">
+  <div v-if="props.livraisonOption?.name === 'Domicile' && !isAdmin">
     <div class="flex items-center gap-2 mt-4">
       <Checkbox v-model="sameAddressForDeliveryAndInvoice" binary id="sameAddress"/>
       <label for="sameAddress">Utiliser la même adresse pour la facturation</label>
     </div>
   </div>
 
-  <div v-if="(props.livraisonOption?.name ==='domicile' && !sameAddressForDeliveryAndInvoice) || (props.livraisonOption?.name !=='domicile')">
+  <div v-if="(props.livraisonOption?.name ==='Domicile' && !sameAddressForDeliveryAndInvoice) || (props.livraisonOption?.name !=='Domicile')">
     <ContactInfo v-model:deliveryAddressLastName="invoiceAddressLastName"
                  v-model:deliveryAddressFirstName="invoiceAddressFirstName"
                  v-model:email="invoiceAddressEmail"
                  v-model:company="invoiceAddressCompany"
+                 v-model:phone="invoiceAddressPhone"
                  :livraisonOptionCode="props.livraisonOption?.code"
                  :isInvoiceAddress="true"
+                 :isAdmin="props.isAdmin"
                  :v$="v$"/>
 
     <AddressComponent class="mt-4"
@@ -56,6 +58,8 @@ const props = defineProps({
   invoiceAddressPostalCode: String,
   invoiceAddressCity: String,
   invoiceAddressCompany: String,
+  isAdmin: Boolean,
+  invoiceAddressPhone: String,
 });
 
 const emit = defineEmits([
@@ -69,6 +73,7 @@ const emit = defineEmits([
   'update:invoiceAddressPostalCode',
   'update:invoiceAddressCity',
   'update:invoiceAddressCompany',
+  'update:invoiceAddressPhone',
 
 ]);
 
@@ -80,6 +85,11 @@ const sameAddressForDeliveryAndInvoice = computed({
 const invoiceAddressLastName = computed({
   get: () => props.invoiceAddressLastName,
   set: value => emit('update:invoiceAddressLastName', value)
+});
+
+const invoiceAddressPhone = computed({
+  get: () => props.invoiceAddressPhone,
+  set: value => emit('update:invoiceAddressPhone', value)
 });
 
 const invoiceAddressFirstName = computed({

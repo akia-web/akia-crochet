@@ -52,7 +52,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useDialog, useToast } from 'primevue';
-import PopupAddCreator from '@/components/Admin/Creators/PopupAddCreator.vue';
+import PopupAddCreator from '@/components/Admin/config/Creators/PopupAddCreator.vue';
 import type { PlushieCreatorDto } from '@/interfaces/plushie-creator.dto.ts';
 import type { SocialMediaDto } from '@/interfaces/social-media.dto.ts';
 import { api } from '@/functions/api.ts';

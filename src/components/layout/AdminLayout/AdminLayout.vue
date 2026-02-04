@@ -1,14 +1,14 @@
 <template>
 
   <div class="bg-site min-h-100vh">
-    <div class=" hidden md:block">
+    <div v-if="isDesktop">
       <div class="flex p-1">
         <div class="card menu-width relative">
           <LeftBarComponent @disconnect="disconnect"
                             @naviate="navigateTo($event)">
           </LeftBarComponent>
         </div>
-        <div class="ml-2 mr-2 mt-8 w-100">
+        <div class="w-full">
           <Toast></Toast>
           <RouterView/>
         </div>
@@ -16,7 +16,7 @@
 
     </div>
     <!--Menu mobile-->
-    <div class="block md:hidden">
+    <div v-if="!isDesktop">
       <Drawer v-model:visible="visible" header="Menu" position="full">
         <PopUpAdminMenuComponent @naviate="navigateTo($event)"
                                  @disconnect="disconnect">
@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { RouterView, useRouter } from 'vue-router';
 import LeftBarComponent from '@/components/Admin/LeftBar/LeftBarComponent.vue';
-import { ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import PopUpAdminMenuComponent from '@/components/Admin/LeftBar/PopUpAdminMenuComponent.vue';
 import { useUserStore } from '@/stores/user.ts';
 import { api } from '@/functions/api.ts';
@@ -45,6 +45,22 @@ const visible = ref<boolean>(false);
 
 const router = useRouter();
 const useUser = useUserStore();
+
+// reactive pour détecter si on est desktop ou mobile
+const isDesktop = ref(window.innerWidth >= 768);
+
+const updateIsDesktop = () => {
+  isDesktop.value = window.innerWidth >= 768;
+};
+
+// mettre à jour à l'ouverture et sur resize
+window.addEventListener('resize', updateIsDesktop);
+onMounted(() => {
+  updateIsDesktop();
+});
+onUnmounted(() => {
+  window.removeEventListener('resize', updateIsDesktop);
+});
 
 
 const navigateTo = (url: string) => {

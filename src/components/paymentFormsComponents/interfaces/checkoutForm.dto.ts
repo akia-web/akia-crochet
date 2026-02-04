@@ -11,5 +11,6 @@ export interface CheckoutFormDto {
   checked: boolean;
   tips: { name: string, value: number };
   products: ProductShopDto[];
+  isSendTogether: boolean;
   user?: UserDto;
 }
