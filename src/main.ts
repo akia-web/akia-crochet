@@ -10,7 +10,53 @@ import App from './App.vue';
 import router from './router';
 import { PrimeVue } from '@primevue/core';
 import Button from 'primevue/button';
-import { Accordion, AccordionContent, AccordionHeader, AccordionPanel, Card, Checkbox, Chip, ColorPicker, Column, DataTable, DatePicker, Dialog, DialogService, Divider, Drawer, DynamicDialog, InputGroup, InputGroupAddon, InputNumber, InputText, Menu, Message, MultiSelect, PanelMenu, Password, Popover, RadioButton, Select, SelectButton, Step, StepList, Stepper, Tab, TabList, TabPanel, TabPanels, Tabs, Tag, Textarea, Toast, ToastService } from 'primevue';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionHeader,
+  AccordionPanel,
+  Card,
+  Checkbox,
+  Chip,
+  ColorPicker,
+  Column,
+  DataTable,
+  DatePicker,
+  Dialog,
+  DialogService,
+  Divider,
+  Drawer,
+  DynamicDialog,
+  InputGroup,
+  InputGroupAddon,
+  InputNumber,
+  InputText,
+  InputOtp,
+  Menu,
+  Message,
+  MultiSelect,
+  PanelMenu,
+  Password,
+  Popover,
+  RadioButton,
+  Select,
+  SelectButton,
+  Step,
+  StepList,
+  Stepper,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Tag,
+  Textarea,
+  Timeline,
+  Toast,
+  ToastService,
+  ToggleSwitch,
+  Tooltip
+} from 'primevue';
 import Editor from 'primevue/editor';
 import { Form, FormField } from '@primevue/forms';
 
@@ -34,6 +80,7 @@ app.use(PrimeVue, {
 });
 app.use(ToastService);
 app.use(DialogService);
+app.directive('tooltip', Tooltip);
 
 
 const components = {
@@ -60,6 +107,7 @@ const components = {
   InputGroupAddon,
   InputNumber,
   InputText,
+  InputOtp,
   Menu,
   Message,
   MultiSelect,
@@ -77,6 +125,8 @@ const components = {
   TabList,
   TabPanel,
   TabPanels,
+  Timeline,
+  ToggleSwitch,
   Textarea,
   Toast,
   Tag,

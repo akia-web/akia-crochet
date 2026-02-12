@@ -1,5 +1,5 @@
 <template>
-  <div class="sticky bg-white top-0 left-0 h-[100vh] p-[20px] min-w-[241px]">
+  <div class="sticky bg-white top-0 left-0 h-[100vh] p-[20px]">
     <div>
       <RouterLink to="/" class="flex justify-center mb-8">
         <img class="logo"

@@ -16,12 +16,14 @@ export const env = {
   boxtal: {
     mapToken: 'boxtal/token-auth-boxtal-maps',
     createEtiquette: 'boxtal/order-shipping',
+    getDocuments: 'boxtal/get-documents',
   },
   plushieCreator: {
     crud: 'plushie-creator'
   },
   order:{
-    crud: 'order'
+    crud: 'order',
+    updateGuest:'order/update-guest',
   },
   shipment:{
     crud: 'shipment',

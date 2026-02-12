@@ -1,22 +1,21 @@
 <template>
   <div v-if="props.form">
-    <div
-        v-if="props.form.sameAddressForDeliveryAndInvoice && props.form.deliveryAddress.livraisonOption.name === 'Domicile'">
+    <div v-if="props.form.sameAddressForDeliveryAndInvoice && props.form.deliveryAddress.livraisonOption.name === 'Domicile'">
       <p>Même adresse que celle de la livraison</p>
     </div>
 
     <div
         v-if="!props.form.sameAddressForDeliveryAndInvoice ||(props.form.sameAddressForDeliveryAndInvoice && props.form.deliveryAddress.livraisonOption.name !== 'Domicile') ">
       <p>Email: {{ props.form.invoiceAddress.email }}</p>
-      <div class="inline-block border border-actionColor rounded-md p-[10px] shadow-md">
-        <p class="font-bold" v-if="props.form.invoiceAddress.company">{{ props.form.invoiceAddress.company }}</p>
-        <p class="font-bold" v-else>{{ props.form.invoiceAddress.firstName }}
-          {{ props.form.invoiceAddress.lastName }}</p>
-        <p>{{ props.form.invoiceAddress.numberStreet }} {{ props.form.invoiceAddress.street }}</p>
-        <p>{{ props.form.invoiceAddress.postalCode }} -
-          {{ props.form.invoiceAddress.city }}</p>
-        <p>{{ props.form.invoiceAddress.country.name }}</p>
-      </div>
+      <RecapAddressComponent :company="props.form.invoiceAddress.company"
+                             :firstName="props.form.invoiceAddress.firstName"
+                             :lastName="props.form.invoiceAddress.lastName"
+                             :numberStreet="props.form.invoiceAddress.numberStreet"
+                             :street="props.form.invoiceAddress.street"
+                             :postalCode="props.form.invoiceAddress.postalCode"
+                             :city="props.form.invoiceAddress.city"
+                             :country="props.form.invoiceAddress.country.name"/>
+
     </div>
 
     <hr class="mt-4 border-actionColor">
@@ -37,6 +36,7 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
 import { useProductsCartStore } from '@/stores/productsCart.ts';
+import RecapAddressComponent from '@/components/RecapAddress/RecapAddressComponent.vue';
 
 const { updateTips } = useProductsCartStore();
 

@@ -3,7 +3,7 @@ import { updatePinia } from '@/functions/auth.ts';
 import { useUserStore } from '@/stores/user.ts';
 import type { UserDto } from '@/interfaces/user.dto.ts';
 import { RoleEnum } from '@/enum/role.enum.ts';
-import { ADMIN_ADD_CREATOR_ROUTE, ADMIN_ADD_PLUSHIES_ROUTE, ADMIN_ADDRESS_ROUTE, ADMIN_CREATOR_ROUTE, ADMIN_DASHBORD_ROUTE, ADMIN_ETIQUETTES_ROUTE, ADMIN_ORDERS_ROUTE, ADMIN_PATTERN_ROUTE, ADMIN_PLUSHIES_ROUTE, CONFIRM_EMAIL_ROUTE, CONNEXION_ROUTE, CONTACT_ROUTE, INSCRIPTION_ROUTE, PAYMENT_ROUTE, PLUSHIES_DETAILS_ROUTE, PLUSHIES_ROUTE, PROFILE_ROUTE, RECAP_CART_ROUTE, SIMULATOR_ROUTE } from '@/router/routes-name.ts';
+import { ADMIN_ADD_CREATOR_ROUTE, ADMIN_ADD_PLUSHIES_ROUTE, ADMIN_ADDRESS_ROUTE, ADMIN_CREATOR_ROUTE, ADMIN_DASHBORD_ROUTE, ADMIN_ETIQUETTES_ROUTE, ADMIN_ORDERS_ROUTE, ADMIN_PATTERN_ROUTE, ADMIN_PLUSHIES_ROUTE, CONFIRM_EMAIL_ROUTE, CONNEXION_ROUTE, CONTACT_ROUTE, INSCRIPTION_ROUTE, PAYMENT_ROUTE, PLUSHIES_DETAILS_ROUTE, PLUSHIES_ROUTE, PROFILE_ORDER_ROUTE, PROFILE_ROUTE, RECAP_CART_ROUTE, SIMULATOR_ROUTE } from '@/router/routes-name.ts';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -61,6 +61,7 @@ const router = createRouter({
         },
       ],
     },
+
     {
       path: '/',
       component: () => import('../components/layout/default/defaultLayout.vue'),
@@ -84,6 +85,12 @@ const router = createRouter({
           path:`${PROFILE_ROUTE}/:step`,
           name: PROFILE_ROUTE,
           component: () => import('../pages/Profile/ProfileComponent.vue'),
+          props: true
+        },
+        {
+          path:`${PROFILE_ROUTE}/commandes/:id`,
+          name: PROFILE_ORDER_ROUTE,
+          component: () => import('../pages/Profile/orderDetails/OrderDetails.vue'),
           props: true
         },
         {

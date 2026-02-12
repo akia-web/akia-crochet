@@ -17,14 +17,7 @@ export const apiGet = async (url: string, method: 'GET' | 'DELETE', auth?: boole
 
   if (!res.ok) {
     if (res.status === 403) {
-      await fetch(
-        api(env.auth.revoque),
-        {
-          method: 'GET',
-          credentials: 'include',
-        });
-
-      window.location.href = '/connexion'
+      await removeAuthToken();
     }
     throw await res.json().catch(() => ({}));
   }
@@ -64,6 +57,9 @@ export const apiPost = async (url: string, method: 'POST' | 'PATCH' | 'PUT', bod
   });
 
   if (!res.ok) {
+    if (res.status === 403) {
+      await removeAuthToken();
+    }
     throw await res.json().catch(() => ({}));
   }
 
@@ -73,4 +69,16 @@ export const apiPost = async (url: string, method: 'POST' | 'PATCH' | 'PUT', bod
 
 export const apiDelete = () => {
 
+};
+
+export const removeAuthToken = async () => {
+  await fetch(
+    api(env.auth.revoque),
+    {
+      method: 'GET',
+      credentials: 'include',
+    });
+
+  localStorage.removeItem(import.meta.env.VITE_AUTH_STORAGE);
+  window.location.href = '/connexion';
 };

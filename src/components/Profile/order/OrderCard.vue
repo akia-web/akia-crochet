@@ -70,10 +70,14 @@
 
 <script lang="ts" setup>
 import type { AllOrdersDto } from '@/components/Profile/order/interfaces/all-orders.dto.ts';
-import { computed, onMounted } from 'vue';
-import { traductOrderStatusEnum, traductShipmentStateEnum } from '@/functions/enum-to-francais.ts';
+import { computed } from 'vue';
+import {
+  getSeverityShipmentStatus,
+  traductOrderStatusEnum,
+  traductShipmentStateEnum
+} from '@/functions/enum-to-francais.ts';
 import { ShipmentStatusEnum } from '@/enum/shipment-status-enum.ts';
-import {  OrderStatusEnum } from '@/enum/orders-status-enum.ts';
+import { OrderStatusEnum } from '@/enum/orders-status-enum.ts';
 
 const props = defineProps({
   order: {
@@ -99,22 +103,6 @@ const getSizeImage = (index: number): string => {
     return `w-[100px]`;
   }
 };
-
-const getSeverityShipmentStatus = (status: ShipmentStatusEnum) => {
-  switch (status) {
-    case ShipmentStatusEnum.INPREPARATION:
-    case ShipmentStatusEnum.SHIPPED:
-      return 'warn';
-    case ShipmentStatusEnum.DELIVERED:
-      return 'success'
-    case ShipmentStatusEnum.LOSED:
-    case ShipmentStatusEnum.ERROR:
-      return 'danger'
-    default:
-      return 'warn'
-  }
-}
-
 const getSeverityOrderStatus=(status: OrderStatusEnum) => {
   switch (status) {
     case OrderStatusEnum.PAID:

@@ -13,6 +13,7 @@ export const ADMIN_ETIQUETTES_ROUTE: string = 'AdminEtiquettesRoutes';
 export const PLUSHIES_ROUTE: string = 'peluches';
 export const PLUSHIES_DETAILS_ROUTE: string = 'peluche-details';
 export const PROFILE_ROUTE: string = 'profile';
+export const PROFILE_ORDER_ROUTE: string = 'profile/commandes';
 export const SIMULATOR_ROUTE: string = 'simulateur'
 export const CONNEXION_ROUTE: string = 'connexion'
 export const INSCRIPTION_ROUTE: string = 'inscription'

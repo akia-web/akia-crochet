@@ -89,3 +89,11 @@
 .p-datatable-column-title {
     font-size: 12px;
 }
+
+.p-timeline-event-opposite {
+    flex: 0 !important;
+}
+
+.admin-editor .p-editor-toolbar{
+    display: none !important;
+}

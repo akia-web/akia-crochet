@@ -1,12 +1,14 @@
 <template>
   <h1 class="mt-4">Commandes</h1>
-    <div class="flex flex-wrap w-full gap-4 mt-4 justify-center items-center flex-col xl:justify-start md:flex-row" v-if="orders.length > 0">
-      <div v-for="order in orders"
-           :key="order.id">
+  <div class="flex flex-wrap w-full gap-4 mt-4 justify-center items-center flex-col xl:justify-start md:flex-row"
+       v-if="orders.length > 0">
+    <div v-for="order in orders"
+         :key="order.id">
+      <RouterLink :to="{name: PROFILE_ORDER_ROUTE, params: {id: order.id}}">
         <OrderCard :order="order"></OrderCard>
-      </div>
+      </RouterLink>
     </div>
-
+  </div>
 
 
 </template>
@@ -17,6 +19,7 @@ import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
 import OrderCard from '@/components/Profile/order/OrderCard.vue';
 import type { AllOrdersDto } from '@/components/Profile/order/interfaces/all-orders.dto.ts';
+import { PROFILE_ORDER_ROUTE } from '@/router/routes-name.ts';
 
 const orders = ref<AllOrdersDto[]>([]);
 

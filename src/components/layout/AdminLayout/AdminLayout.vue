@@ -3,12 +3,12 @@
   <div class="bg-site min-h-100vh">
     <div v-if="isDesktop">
       <div class="flex p-1">
-        <div class="card menu-width relative">
+        <div class="card menu-width relative w-[241px]">
           <LeftBarComponent @disconnect="disconnect"
                             @naviate="navigateTo($event)">
           </LeftBarComponent>
         </div>
-        <div class="w-full">
+        <div class="w-[calc(100%-241px)]">
           <Toast></Toast>
           <RouterView/>
         </div>

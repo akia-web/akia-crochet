@@ -22,11 +22,26 @@
               class="text-red ml-2">Renseignez la description
         </span>
       </label>
+      <ToggleSwitch v-model="activeEditorHtml"/>
       <Editor
+          v-if="!activeEditorHtml"
           :modelValue="description"
           @update:modelValue="val => emit('update:description', val)"
+          :modules="modules"
+          :formats="formats"
+          class="admin-editor"
           editorStyle="height: 320px"
       />
+
+      <div v-if="activeEditorHtml" class="w-full">
+        <Textarea :modelValue="description"
+                  @update:modelValue="val => emit('update:description', val)"
+                  class="w-full"
+                  rows="5"
+                  ref="textarea"
+        />
+      </div>
+
     </div>
 
     <div class="flex items-center  mb-6 mt-4 flex-wrap w-full">
@@ -41,7 +56,7 @@
         </div>
       </div>
       <div class="flex items-center gap-2 mt-3">
-        <Checkbox v-model="collection" binary id="collection" />
+        <Checkbox v-model="collection" binary id="collection"/>
         <label for="collection">Collection</label>
       </div>
     </div>
@@ -57,6 +72,7 @@ import { env } from '@/environnement.ts';
 import type { PlushieCreatorDto } from '@/interfaces/plushie-creator.dto.ts';
 
 const creators = ref<PlushieCreatorDto[]>([]);
+const activeEditorHtml = ref(false);
 
 onMounted(async () => {
   await apiGet(api(env.plushieCreator.crud), 'GET').then(response => response.json())
@@ -74,14 +90,28 @@ const props = defineProps({
   collection: Boolean,
 });
 
+const root = document.documentElement;
+const actionColor = getComputedStyle(root).getPropertyValue('--action-color').trim();
+
+
+const modules = {
+  toolbar: [
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'color': ['#000000', actionColor] }],
+    ['clean']
+  ]
+};
+
+const formats = [
+  'bold', 'italic', 'underline', 'strike',
+  'color'
+];
 const emit = defineEmits([
   'update:name',
   'update:description',
   'update:selectedCreator',
   'update:collection'
 ]);
-
-
 
 const selectedCreatorProxyProxy = computed({
   get: () => props.selectedCreator,

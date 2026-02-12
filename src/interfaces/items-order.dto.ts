@@ -10,4 +10,5 @@ export interface ItemsOrderDTO {
   plushie: PlushieDto;
   plushieVariant: PlushieVariantDto;
   orderShipment: ShipmentStatusEnum;
+  imageItemUrl?: string;
 }
