@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-white p-[20px] rounded-lg">
-    <h2 class="text-lg font-semibold mb-4">Récapitulatif de la commande</h2>
+  <div class="bg-white p-[20px] rounded-lg w-full mt-[20px] md:mt-0 md:max-w-[250px]">
+    <h2 class="text-lg font-semibold mb-4">Commande #{{orderId}}</h2>
     <div class="flex flex-col justify-between h-[calc(100%-30px)]">
       <div v-for="item in itemsList" :key="item.id">
         <div class="flex gap-4 items-center">
@@ -39,6 +39,7 @@ const props = defineProps({
     required: true,
   },
   tips: Number,
+  orderId: Number,
   addingLivraisonPrice: Number,
   totalAmount: {
     required: true,

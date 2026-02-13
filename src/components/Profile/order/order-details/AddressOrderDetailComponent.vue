@@ -1,7 +1,8 @@
 <template>
   <div class="bg-white mt-4 p-[20px] rounded-lg">
     <h2 class="text-xl font-semibold mb-4">Adresses</h2>
-    <div class="flex gap-4 flex-wrap" v-if="!isGuest && deliveryAddress !== null && billingAddress !== null">
+    <div v-if="!isGuest && deliveryAddress !== null && billingAddress !== null"
+    class="flex flex-wrap gap-4">
       <div>
         <h2>Livraison</h2>
         <RecapAddressComponent
@@ -14,6 +15,9 @@
             :city="deliveryAddress.city"
             :country="deliveryAddress.country"
             :parcelPoint="deliveryAddress.parcelPoint"
+            :isRecapOrder="true"
+            :phone="deliveryAddress.phone"
+            :email="deliveryAddress.email"
         />
       </div>
 
@@ -27,9 +31,14 @@
             :street="billingAddress.street"
             :postalCode="billingAddress.postalCode"
             :city="billingAddress.city"
-            :country="billingAddress.country"/>
+            :country="billingAddress.country"
+            :isRecapOrder="true"
+            :phone="deliveryAddress.phone"
+            :email="deliveryAddress.email"
+        />
       </div>
     </div>
+
     <div v-else>
       <p>Pour afficher l'adresse de livraison, merci de bien vouloir saisir le code reçu par e-mail</p>
       <InputOtp v-model="form.code" :length="5" class="mt-4"/>

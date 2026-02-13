@@ -1,6 +1,7 @@
 <template>
   <div class="inline-block border border-actionColor rounded-md p-[10px] shadow-md">
-    <div v-if="props.parcelPoint === undefined || props.parcelPoint === null">
+    <div v-if="props.parcelPoint === undefined || props.parcelPoint === null"
+    class="min-h-[130px]">
       <p class="font-bold" v-if="props.company">{{ props.company }}</p>
       <p class="font-bold" v-else>{{ props.firstName }} {{ props.lastName }}</p>
       <p>{{ props.numberStreet }} {{ props.street }}</p>
@@ -8,14 +9,16 @@
         {{ props.city }}</p>
       <p>{{ props.country }}</p>
     </div>
-    <div v-else>
-      <p class="font-bold text-actionColor">{{ props.parcelPoint.name }}</p>
+    <div v-else class="min-h-[130px]">
+      <p class="font-bold">{{props.firstName}} {{props.lastName}}</p>
+      <p >{{ props.parcelPoint.name }}</p>
       <p>{{ props.parcelPoint.street }}</p>
       <p>{{ props.parcelPoint.postalCode }} -
         {{ props.parcelPoint.city }}</p>
       <p>{{ props.parcelPoint.country }}</p>
     </div>
-
+      <p v-if="isRecapOrder">E-mail: {{props.email}}</p>
+      <p v-if="isRecapOrder">Téléphone: {{props.phone}}</p>
   </div>
 </template>
 <script lang="ts" setup>
@@ -38,5 +41,8 @@ const props = defineProps({
   postalCode: String,
   city: String,
   country: String,
+  isRecapOrder: Boolean,
+  email: String,
+  phone: String,
 });
 </script>
