@@ -2,7 +2,7 @@
 
   <div v-if="storeProductsCart.productCartLength >0" class="mt-12">
     <div class="bg-white p-[20px] md:w-[60%] lg:w-[40%] m-auto">
-      <h2 class="font-bold text-center mb-8">Récapitulatif du panier</h2>
+      <h2 class="font-bold text-center mb-8 text-lg">Récapitulatif du panier</h2>
       <RecapCartView :isRecapPage="true"></RecapCartView>
     </div>
 
@@ -18,7 +18,7 @@
          class="w-[150px] mb-8">
     <p>Il n'y a pas de produits dans votre panier</p>
     <Button label="Voir le catalogue produits"
-            @click="goTo(PLUSHIES_ROUTE)"
+            @click="goTo(PRODUCTS_ROUTE)"
             class="mt-8"/>
   </div>
 
@@ -27,7 +27,7 @@
 <script lang="ts" setup>
 
 import { useRouter } from 'vue-router';
-import { PAYMENT_ROUTE, PLUSHIES_ROUTE } from '@/router/routes-name.ts';
+import { PAYMENT_ROUTE, PRODUCTS_ROUTE } from '@/router/routes-name.ts';
 import { onMounted } from 'vue';
 import { useProductsCartStore } from '@/stores/productsCart.ts';
 import RecapCartView from '@/components/paymentFormsComponents/recapCart/recapCartView.vue';

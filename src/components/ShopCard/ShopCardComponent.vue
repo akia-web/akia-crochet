@@ -27,7 +27,7 @@
     <div v-for="product in products">
       <div class="flex items-center border-b mt-1"
       v-if="(product.preOrder && product.acceptedPreOrder) || !product.preOrder">
-        <img :src="product.plushieVariant.images[0].url" alt="" class="w-[100px] h-[100px] object-cover">
+        <img :src="product.productVariant.images[0].url" alt="" class="w-[100px] h-[100px] object-cover">
 
         <div class="flex flex-col w-full ml-4">
           <div>
@@ -35,8 +35,8 @@
          </div>
 
           <div class="flex w-full items-center ml-4">
-            <p class="w-[40%]">{{ product.plushie.name }} - {{ product.plushieVariant.name }}</p>
-            <p class="w-[40%] text-center">{{ divideBy100(product.quantity * product.plushieVariant.price) }} €</p>
+            <p class="w-[40%]">{{ product.product.name }} - {{ product.productVariant.name }}</p>
+            <p class="w-[40%] text-center">{{ divideBy100(product.quantity * product.productVariant.price) }} €</p>
 
             <Button icon="pi pi-trash"
                     class="w-[25%] p-button-transparent text-black"

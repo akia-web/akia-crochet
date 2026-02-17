@@ -5,10 +5,10 @@
   <div v-if="objectList" class="mt-4">
     <div v-for="item in objectList"
          class="flex gap-4 items-center">
-      <img :src="item.plushieVariant.images[0].url" alt=""
+      <img :src="item.productVariant.images[0].url" alt=""
            class="w-[50px]">
-      <p>{{ item.plushie.name }} - {{ item.plushieVariant.name }}</p>
-      <p>{{ divideBy100( item.plushieVariant.price) }} €</p>
+      <p>{{ item.product.name }} - {{ item.productVariant.name }}</p>
+      <p>{{ divideBy100(item.productVariant.price) }} €</p>
       <Button label="pré-commander" @click="validateProduct(item)"/>
       <Button icon="pi pi-trash"
               label="Supprimer"
@@ -39,7 +39,7 @@ const validateProduct = async (product: ProductShopDto) => {
   product.preOrder = true;
   product.acceptedPreOrder = true;
   await storeProductsCart.updateCart(product);
-  const findIndex = objectList.value.findIndex((element: ProductShopDto)=> element.plushieVariant.id === product.plushieVariant.id)
+  const findIndex = objectList.value.findIndex((element: ProductShopDto)=> element.productVariant.id === product.productVariant.id)
   objectList.value.splice(findIndex, 1);
   if (objectList.value.length === 0) {
     dialogRef.value.close();
@@ -48,7 +48,7 @@ const validateProduct = async (product: ProductShopDto) => {
 };
 
 const deleteProduct = async (product: ProductShopDto) => {
-  const findIndex = objectList.value.findIndex((element: ProductShopDto)=> element.plushieVariant.id === product.plushieVariant.id)
+  const findIndex = objectList.value.findIndex((element: ProductShopDto)=> element.productVariant.id === product.productVariant.id)
   objectList.value.splice(findIndex, 1);
   storeProductsCart.deleteProduct(product);
   if (objectList.value.length === 0) {

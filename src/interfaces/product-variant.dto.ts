@@ -1,6 +1,6 @@
 import type { ImagesDto } from '@/interfaces/images.dto.ts';
 
-export interface PlushieVariantDto {
+export interface ProductVariantDto {
   id?: number,
   randomId?: `${string}-${string}-${string}-${string}-${string}`;
   name: string;

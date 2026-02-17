@@ -4,7 +4,7 @@
     <div class="flex w-full flex-wrap lg:flex-row-reverse justify-between items-start pt-4">
       <div
           class="w-full md:w-[90%] lg:w-auto lg:sticky top-[95px] ml-auto mr-auto bg-white p-[20px] rounded-lg mb-8 self-start min-w-[25%]">
-        <h2 class="font-bold text-center mb-2">Récapitulatif panier</h2>
+        <h2 class="font-bold text-center mb-8 text-lg">Récapitulatif panier</h2>
         <RecapCartView :isRecapPage="false"></RecapCartView>
       </div>
 

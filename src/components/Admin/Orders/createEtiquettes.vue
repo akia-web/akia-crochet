@@ -131,7 +131,7 @@ const rules = computed(() => ({
   width: { required, minValue: minValue(1) },
   height: { required, minValue: minValue(1) },
   length: { required, minValue: minValue(1) },
-  weight: { required, minValue: minValue(0.1) },
+  weight: { required, minValue: minValue(0.01) },
   selectedParcelPoint: {
     notEmptyObject: (value: any) => {
       return value && value.code && value.code !== '';

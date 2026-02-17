@@ -3,10 +3,10 @@
     <h2 class=" font-semibold text-sm text-actionColor">{{ title }}</h2>
     <table class="w-full mt-2">
       <tbody>
-      <tr v-for="product in list" :key="product.plushieVariant.id">
+      <tr v-for="product in list" :key="product.productVariant.id">
         <td class="pt-[10px] w-[25%]">
           <div class="relative w-[70px] ">
-            <img :src="product.plushieVariant.images[0].url"
+            <img :src="product.productVariant.images[0].url"
                  alt=""
                  class="w-[70px] h-[70px] object-cover"/>
 
@@ -18,13 +18,14 @@
 
         </td>
         <td class=" w-[25%]">
-          <p class="md:text-center">{{ product.plushie.name }} {{
-              product.plushie.plushieVariants && product.plushie.plushieVariants?.length > 1 ? `- ` + product.plushieVariant.name : ''
+          <p class="md:text-center">{{ product.product.name }} {{
+              product.product.productVariants && product.product.productVariants?.length > 1 ? `- ` + product.productVariant.name : ''
             }}</p>
         </td>
         <td class="md:p-[10px]  w-[25%]">
-          <p class="text-right"> {{ divideBy100(product.plushieVariant.price * product.quantity) }} €</p>
-          <p class="text-xs text-right italic text-gray-400">({{product.quantity}} x {{divideBy100(product.plushieVariant.price)}} €)</p>
+          <p class="text-right"> {{ divideBy100(product.productVariant.price * product.quantity) }} €</p>
+          <p class="text-xs text-right italic text-gray-400">({{ product.quantity }} x
+            {{ divideBy100(product.productVariant.price) }} €)</p>
         </td>
         <td v-if="isRecapPage" class="text-center  w-[25%]">
           <Button icon="pi pi-trash"

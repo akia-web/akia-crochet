@@ -1,5 +1,5 @@
 <template>
-  <div class="flex mt-8 flex-col lg:flex-row gap-2 bg-white rounded-lg" v-if="plushie && selectedVariant">
+  <div class="flex mt-8 flex-col lg:flex-row gap-2 bg-white rounded-lg" v-if="product && selectedVariant">
     <div class="flex flex-col lg:flex-row gap-2 mx-auto pt-8 lg:pl-[50px] w-full lg:w-[40%] md:min-w-[500px]">
       <div class="flex gap-1 justify-center md:justify-normal lg:flex-col">
         <div v-for="image in selectedVariant.images"
@@ -20,15 +20,15 @@
 
     <div class="p-[20px] lg:w-[60%]">
       <h1 class="text-center border-dotted border border-actionColor p-[10px] text-actionColor">{{
-          pelucheName
-        }}{{ plushie.plushieVariants && plushie.plushieVariants.length > 1 ? ` - ` + selectedVariant.name : `` }}</h1>
+          productName
+        }}{{ product.productVariants && product.productVariants.length > 1 ? ` - ` + selectedVariant.name : `` }}</h1>
 
       <div class="flex items-center mt-4 gap-2">
         <img src="@/assets/icones/doc.svg" alt="">
         <h2 class="font-semibold mt-1">Description du produit :</h2>
       </div>
 
-      <p class="pl-8" v-html="plushie.description"></p>
+      <p class="pl-8" v-html="product.description"></p>
 
       <div class="mt-4">
         <div class="flex items-center gap-2">
@@ -61,14 +61,14 @@
       </div>
 
 
-      <div class="mt-4" v-if="plushie.plushieVariants && plushie.plushieVariants.length >1">
+      <div class="mt-4" v-if="product.productVariants && product.productVariants.length >1">
         <div class="flex items-center gap-1">
           <img src="@/assets/icones/paint-bucket.svg" alt="">
           <h2 class="font-semibold">Couleur :</h2>
         </div>
 
         <div class="flex gap-2 mt-1 pl-8">
-          <div v-for="(variant, index) in plushie.plushieVariants">
+          <div v-for="(variant, index) in product.productVariants">
             <div class="w-[20px] h-[20px] rounded-full cursor-pointer"
                  :style="{ background: variant.color, border: selectedVariant.color === variant.color?'2px solid black' : 'transparent' }"
                  @click="updateVariant(index)">
@@ -99,46 +99,45 @@ import { onMounted, ref, computed } from 'vue';
 import { apiGet } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
-import type { PlushieDto } from '@/interfaces/plushieDto.ts';
+import type { ProductDto } from '@/interfaces/product.dto.ts';
 import { divideBy100 } from '@/functions/convertions.ts';
 import { useProductsCartStore } from '@/stores/productsCart.ts';
-import type { ProductShopDto } from '@/interfaces/product-shop.dto.ts';
-import type { PlushieVariantDto } from '@/interfaces/plushie-variant.dto.ts';
+import type { ProductVariantDto } from '@/interfaces/product-variant.dto.ts';
 import type { ImagesDto } from '@/interfaces/images.dto.ts';
 import { useRoute, useRouter } from 'vue-router';
-import MaintenanceTipsComponent from '@/components/Peluches/MaintenanceTipsComponent.vue';
+import MaintenanceTipsComponent from '@/components/Products/MaintenanceTipsComponent.vue';
 
 
 const storeProductsCart = useProductsCartStore();
 
 const props = defineProps<{
-  pelucheName: string,
+  productName: string,
   selectedVariantName: string
 }>();
 
 
-const plushie = ref<PlushieDto>();
-const selectedVariant = ref<PlushieVariantDto>();
+const product = ref<ProductDto>();
+const selectedVariant = ref<ProductVariantDto>();
 const selectedImage = ref<ImagesDto>();
 const router = useRouter();
 const route = useRoute();
 
 const disabled = computed(() =>
     storeProductsCart.productsCart.some(
-        el => el.plushieVariant.id === selectedVariant.value?.id
+        el => el.productVariant.id === selectedVariant.value?.id
     )
 );
 onMounted(async () => {
-  await apiGet(api(`${env.plushies.byName}?name=${props.pelucheName}`), 'GET').then(response => response.json())
+  await apiGet(api(`${env.products.byName}?name=${props.productName}`), 'GET').then(response => response.json())
       .then(data => {
-        plushie.value = data;
+        product.value = data;
 
-        if (plushie.value?.plushieVariants) {
-          const variant: PlushieVariantDto[] = plushie.value.plushieVariants.filter((e) => e.name === props.selectedVariantName);
+        if (product.value?.productVariants) {
+          const variant: ProductVariantDto[] = product.value.productVariants.filter((e) => e.name === props.selectedVariantName);
           if (variant.length > 0) {
             selectedVariant.value = variant[0];
           } else {
-            selectedVariant.value = plushie.value.plushieVariants[0];
+            selectedVariant.value = product.value.productVariants[0];
           }
           selectedImage.value = selectedVariant.value.images[0];
         }
@@ -148,8 +147,8 @@ onMounted(async () => {
 const price = computed(() => divideBy100(selectedVariant.value?.price));
 
 const updateVariant = (index: number) => {
-  if (plushie.value && plushie.value.plushieVariants) {
-    selectedVariant.value = plushie.value.plushieVariants[index];
+  if (product.value && product.value.productVariants) {
+    selectedVariant.value = product.value.productVariants[index];
     selectedImage.value = selectedVariant.value.images[0];
 
     router.replace({
@@ -161,10 +160,10 @@ const updateVariant = (index: number) => {
 };
 
 const addCart = (preOrder: boolean): void => {
-  if (plushie.value?.id && selectedVariant.value?.id) {
+  if (product.value?.id && selectedVariant.value?.id) {
     storeProductsCart.updateCart({
-      plushieVariant: selectedVariant.value,
-      plushie: plushie.value,
+      productVariant: selectedVariant.value,
+      product: product.value,
       quantity: 1,
       preOrder: preOrder,
       acceptedPreOrder: preOrder,

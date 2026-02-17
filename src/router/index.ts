@@ -3,7 +3,7 @@ import { updatePinia } from '@/functions/auth.ts';
 import { useUserStore } from '@/stores/user.ts';
 import type { UserDto } from '@/interfaces/user.dto.ts';
 import { RoleEnum } from '@/enum/role.enum.ts';
-import { ADMIN_ADD_CREATOR_ROUTE, ADMIN_ADD_PLUSHIES_ROUTE, ADMIN_ADDRESS_ROUTE, ADMIN_CREATOR_ROUTE, ADMIN_DASHBORD_ROUTE, ADMIN_ETIQUETTES_ROUTE, ADMIN_ORDERS_ROUTE, ADMIN_PATTERN_ROUTE, ADMIN_PLUSHIES_ROUTE, CONFIRM_EMAIL_ROUTE, CONNEXION_ROUTE, CONTACT_ROUTE, INSCRIPTION_ROUTE, PAYMENT_ROUTE, PLUSHIES_DETAILS_ROUTE, PLUSHIES_ROUTE, PROFILE_ORDER_ROUTE, PROFILE_ROUTE, RECAP_CART_ROUTE, SIMULATOR_ROUTE } from '@/router/routes-name.ts';
+import { ADMIN_ADD_CREATOR_ROUTE, ADMIN_ADD_PLUSHIES_ROUTE, ADMIN_ADDRESS_ROUTE, ADMIN_CREATOR_ROUTE, ADMIN_DASHBORD_ROUTE, ADMIN_ETIQUETTES_ROUTE, ADMIN_ORDERS_ROUTE, ADMIN_PATTERN_ROUTE, ADMIN_PLUSHIES_ROUTE, CONFIRM_EMAIL_ROUTE, CONNEXION_ROUTE, CONTACT_ROUTE, INSCRIPTION_ROUTE, PAYMENT_ROUTE, PRODUCTS_DETAILS_ROUTE, PRODUCTS_ROUTE, PROFILE_ORDER_ROUTE, PROFILE_ROUTE, RECAP_CART_ROUTE, SIMULATOR_ROUTE } from '@/router/routes-name.ts';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,14 +33,14 @@ const router = createRouter({
           component: () => import('@/components/Admin/config/Creators/edit-creator.vue'),
         },
         {
-          path: 'peluches',
+          path: 'produits',
           name: ADMIN_PLUSHIES_ROUTE,
-          component: () => import('../components/Admin/Peluches/AdminTablePeluchesComponent.vue'),
+          component: () => import('../components/Admin/Products/AdminTablePeluchesComponent.vue'),
         },
         {
-          path: 'add-peluches',
+          path: 'add-product',
           name: ADMIN_ADD_PLUSHIES_ROUTE,
-          component: () => import('../components/Admin/Peluches/edit-plushies/edit-plushies-container.vue'),
+          component: () => import('@/components/Admin/Products/edit-product/edit-product-container.vue'),
           props: true
         },
         {
@@ -68,17 +68,18 @@ const router = createRouter({
       children: [
         {
           path: '',
+          name:'home',
           component: () => import('@/pages/Home/HomeComponent.vue'),
         },
         {
-          path: 'peluches',
-          name: PLUSHIES_ROUTE,
-          component: () => import('../pages/Plushies/PlushiesPage.vue'),
+          path: 'produits',
+          name: PRODUCTS_ROUTE,
+          component: () => import('@/pages/Products/ProductsPage.vue'),
         },
         {
-          path: `${PLUSHIES_DETAILS_ROUTE}/:pelucheName/:selectedVariantName`,
-          name: PLUSHIES_DETAILS_ROUTE,
-          component: () => import('../components/Peluches/PelucheDetailsComponent.vue'),
+          path: `${PRODUCTS_DETAILS_ROUTE}/:productName/:selectedVariantName`,
+          name: PRODUCTS_DETAILS_ROUTE,
+          component: () => import('../components/Products/ProductDetailsComponent.vue'),
           props: true
         },
         {

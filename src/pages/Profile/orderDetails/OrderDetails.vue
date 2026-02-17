@@ -3,21 +3,26 @@
     <h1 class="text-lg mb-8">Informations de la commande</h1>
     <div v-if="orderDetails">
       <div class="flex justify-between flex-wrap">
-        <div v-for="packageBoxtal in orderDetails.orderPackages" class="w-full md:w-[calc(95%-250px)] gap-4">
-          <ShipmentsTimelineComponent :data="packageBoxtal.history"
-                                      :trackingUrl="packageBoxtal.urlTracking"
-                                      :refBoxtal="packageBoxtal.ref"
-                                      :items="packageBoxtal.items"
+        <div class="w-full md:w-[calc(96%-300px)] flex flex-col gap-4">
+          <div v-for="(packageBoxtal, index) in orderDetails.orderPackages">
+            <ShipmentsTimelineComponent :data="packageBoxtal.history"
+                                        :trackingUrl="packageBoxtal.urlTracking"
+                                        :refBoxtal="packageBoxtal.ref"
+                                        :items="packageBoxtal.items"
+                                        :estimateDeliveryDate="packageBoxtal.estimateDeliveryDate"
+                                        :index="index"
 
-          />
+            />
+          </div>
         </div>
+
 
         <RecapOrderDetailsComponent :itemsList="orderDetails.orderItems"
                                     :tips="orderDetails.tips"
                                     :addingLivraisonPrice="orderDetails.addingLivraisonPrice"
                                     :totalAmount="orderDetails.totalAmount"
                                     :orderId="orderDetails.orderId"
-                                    class="min-w-[250px]"/>
+                                    class="min-w-[300px]"/>
       </div>
 
 

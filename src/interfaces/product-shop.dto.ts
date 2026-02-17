@@ -1,10 +1,10 @@
-import type { PlushieDto } from '@/interfaces/plushieDto.ts';
-import type { PlushieVariantDto } from '@/interfaces/plushie-variant.dto.ts';
+import type { ProductDto } from '@/interfaces/product.dto.ts';
+import type { ProductVariantDto } from '@/interfaces/product-variant.dto.ts';
 
 export interface ProductShopDto {
     quantity: number;
-    plushie: PlushieDto;
-    plushieVariant: PlushieVariantDto;
+    product: ProductDto;
+    productVariant: ProductVariantDto;
     preOrder:boolean;
     acceptedPreOrder:boolean;
 }

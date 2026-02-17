@@ -97,3 +97,7 @@
 .admin-editor .p-editor-toolbar{
     display: none !important;
 }
+
+.input-readOnly{
+    background: var(--very-light-grey) !important;
+}

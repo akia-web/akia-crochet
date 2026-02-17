@@ -2,10 +2,10 @@
 
   <div class="flex flex-col">
     <div class="flex gap-2">
-      <label :for="inputId" class="text-xs font-bold mb-1">{{label}}{{required? '*': ''}}</label>
+      <label :for="inputId" class="text-xs font-bold mb-1">{{ label }}{{ required ? '*' : '' }}</label>
       <p v-if="propertyRules?.$error"
          class="text-actionColor text-xs font-bold">
-        {{errorMessage }}
+        {{ errorMessage }}
       </p>
     </div>
 
@@ -13,6 +13,8 @@
         :id="inputId"
         v-model="property"
         :placeholder="placeholder? placeholder: props.label"
+        :readonly="readonly"
+        :class="[readonly? 'input-readOnly cursor-not-allowed':'bg-transparent cursor-text']"
         @blur="propertyRules?.$touch()"/>
   </div>
 
@@ -28,6 +30,7 @@ const props = defineProps({
   propertyRules: Object,
   errorMessage: String,
   placeholder: String,
+  readonly: Boolean,
 });
 
 const emit = defineEmits([

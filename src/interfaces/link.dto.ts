@@ -4,7 +4,7 @@ export interface LinkDto {
   id?: number;
   url: string;
   type: TypeLinkEnum;
-  pelucheId?: number;
+  productId?: number;
   row: number;
   name: string;
 }

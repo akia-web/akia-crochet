@@ -53,7 +53,7 @@
 import { onMounted, ref } from 'vue';
 import { useDialog, useToast } from 'primevue';
 import PopupAddCreator from '@/components/Admin/config/Creators/PopupAddCreator.vue';
-import type { PlushieCreatorDto } from '@/interfaces/plushie-creator.dto.ts';
+import type { creatorDto } from '@/interfaces/creator.dto.ts';
 import type { SocialMediaDto } from '@/interfaces/social-media.dto.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
@@ -86,7 +86,7 @@ const openDialog = () => {
 
 onMounted(() => {
   if (storeEditCreator.creator) {
-    const creator: PlushieCreatorDto = storeEditCreator.creator;
+    const creator: creatorDto = storeEditCreator.creator;
     creatorId.value = creator.id;
     name.value = creator.name;
     if (creator.socialMedia) {
@@ -100,13 +100,13 @@ const deleteUrl = (item: SocialMediaDto) => {
 };
 
 const save = () => {
-  const newCreator: PlushieCreatorDto = {
+  const newCreator: creatorDto = {
     id: creatorId.value ? creatorId.value : undefined,
     name: name.value,
     socialMedia: mediaUrls.value
   };
 
-  apiPost(api(env.plushieCreator.crud), creatorId.value ? 'PATCH' : 'POST', newCreator, false, true)
+  apiPost(api(env.creator.crud), creatorId.value ? 'PATCH' : 'POST', newCreator, false, true)
       .then(() => {
         toast.add({
           severity: 'success',

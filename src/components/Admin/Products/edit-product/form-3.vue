@@ -36,18 +36,18 @@
 </template>
 <script lang="ts" setup>
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
-import VariantComponent from '@/components/Admin/Peluches/edit-plushies/variantComponent.vue';
-import type { PlushieVariantDto } from '@/interfaces/plushie-variant.dto.ts';
+import VariantComponent from '@/components/Admin/Products/edit-product/variantComponent.vue';
+import type { ProductVariantDto } from '@/interfaces/product-variant.dto.ts';
 
 const props = defineProps<{
-  variants: PlushieVariantDto[];
+  variants: ProductVariantDto[];
 }>();
 
 const emit = defineEmits(['update:variants']);
 
 const variantsComputed = computed({
   get: () => props.variants,
-  set: (value: PlushieVariantDto[]) => emit('update:variants', value),
+  set: (value: ProductVariantDto[]) => emit('update:variants', value),
 });
 
 

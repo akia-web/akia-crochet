@@ -8,7 +8,8 @@ export const env = {
     resendConfirmEmail: 'auth/resend-verify-email',
     login: 'auth/login',
     boxTal: 'auth/auth-boxtal',
-    updateEmail: 'auth/update-email',
+    updateProfile: 'auth/update-profile',
+    updatePassword: 'auth/update-password',
   },
   config: {
     address: 'address/config',
@@ -18,24 +19,27 @@ export const env = {
     createEtiquette: 'boxtal/order-shipping',
     getDocuments: 'boxtal/get-documents',
   },
-  plushieCreator: {
-    crud: 'plushie-creator'
+  creator: {
+    crud: 'creator'
   },
-  order:{
+  contact: {
+    send:'contact-message'
+  },
+  order: {
     crud: 'order',
-    updateGuest:'order/update-guest',
+    updateGuest: 'order/update-guest',
   },
-  shipment:{
+  shipment: {
     crud: 'shipment',
     updateStatus: 'shipment/update-status'
   },
-  plushies: {
-    crud: 'peluches',
-    byName: 'peluches/by-name',
-    variant: 'peluches/variant'
+  products: {
+    crud: 'products',
+    byName: 'products/by-name',
+    variant: 'products/variant'
   },
 
-  stripe:{
-    checkout:'stripe/checkout'
+  stripe: {
+    checkout: 'stripe/checkout'
   }
 };

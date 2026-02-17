@@ -5,8 +5,8 @@
           alignItems? alignItems : 'items-center',
           justifyContent? justifyContent : 'justify-center',
   ]">
-    <img src="../../assets/icones/quokka-cookie.gif" :class="[
-        props.height? `h-[${props.height}]` : 'height:200px'
+    <img src="../../assets/icones/quokka-cookie.gif" :style="[
+        props.height? `height:${props.height}` : 'height:200px'
     ]" alt="" class="heartbeat">
     <p class="mt-8">En attente des données...</p>
   </div>

@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import { PLUSHIES_ROUTE } from '@/router/routes-name.ts';
+import { PRODUCTS_ROUTE } from '@/router/routes-name.ts';
 
 const props = defineProps<{
   step: string,

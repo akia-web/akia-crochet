@@ -10,8 +10,8 @@ export const ADMIN_ORDERS_ROUTE: string = 'AdminOrders';
 export const ADMIN_ETIQUETTES_ROUTE: string = 'AdminEtiquettesRoutes';
 
 //------------
-export const PLUSHIES_ROUTE: string = 'peluches';
-export const PLUSHIES_DETAILS_ROUTE: string = 'peluche-details';
+export const PRODUCTS_ROUTE: string = 'produits';
+export const PRODUCTS_DETAILS_ROUTE: string = 'produits-details';
 export const PROFILE_ROUTE: string = 'profile';
 export const PROFILE_ORDER_ROUTE: string = 'profile/commandes';
 export const SIMULATOR_ROUTE: string = 'simulateur'

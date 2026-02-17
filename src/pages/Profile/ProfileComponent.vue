@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import GeneralInformation from '@/components/Profile/GeneralInformation.vue';
+import GeneralInformation from '@/components/Profile/generalInformations/GeneralInformation.vue';
 import ProfilNavComponent from '@/components/Nav/ProfileNav/ProfilNavComponent.vue';
 import { useRouter } from 'vue-router';
 import { PROFILE_ROUTE } from '@/router/routes-name.ts';

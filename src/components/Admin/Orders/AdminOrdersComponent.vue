@@ -143,7 +143,7 @@
           <DataTable :value="data.items">
             <Column header="Image">
               <template #body="slotProps">
-                <img :src="slotProps.data.plushieVariant.images[0].url" class="w-[100px]" alt="">
+                <img :src="slotProps.data.productVariant.images[0].url" class="w-[100px]" alt="">
               </template>
             </Column>
             <Column field="name" header="Nom">

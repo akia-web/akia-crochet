@@ -78,7 +78,7 @@ import { env } from '@/environnement.ts';
 import { apiPost } from '@/services/request-service.ts';
 import { useDialog } from 'primevue';
 import { useRouter } from 'vue-router';
-import { ADMIN_DASHBORD_ROUTE, CONFIRM_EMAIL_ROUTE, CONNEXION_ROUTE, PLUSHIES_ROUTE } from '@/router/routes-name.ts';
+import { ADMIN_DASHBORD_ROUTE, CONFIRM_EMAIL_ROUTE, CONNEXION_ROUTE, PRODUCTS_ROUTE } from '@/router/routes-name.ts';
 
 
 const storeUser = useUserStore();
@@ -146,7 +146,7 @@ const loginWithGoogle = async () => {
 };
 onMounted( () => {
   if(storeUser.user){
-    router.push({ name: PLUSHIES_ROUTE });
+    router.push({ name: PRODUCTS_ROUTE });
   }
 })
 

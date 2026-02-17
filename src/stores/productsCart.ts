@@ -17,14 +17,14 @@ export const useProductsCartStore = defineStore('cart', () => {
     const tipsPrice = ref<number>(0);
 
     const updateCart = async (value: ProductShopDto): Promise<void> => {
-      await apiGet(`${api(env.plushies.variant)}?id=${value.plushieVariant.id}`, 'GET').then(response => response.json())
+      await apiGet(`${api(env.products.variant)}?id=${value.productVariant.id}`, 'GET').then(response => response.json())
         .then(data => {
-          value.plushieVariant = data;
+          value.productVariant = data;
           value.preOrder = data.stock === 0;
 
         });
 
-      const searchVariantInProductCartIndex = productsCart.value.findIndex((element: ProductShopDto) => element.plushieVariant.id === value.plushieVariant.id);
+      const searchVariantInProductCartIndex = productsCart.value.findIndex((element: ProductShopDto) => element.productVariant.id === value.productVariant.id);
 
       if (searchVariantInProductCartIndex === -1) {
         value.acceptedPreOrder = value.preOrder;
@@ -44,7 +44,7 @@ export const useProductsCartStore = defineStore('cart', () => {
     };
 
     const deleteProduct = (product: ProductShopDto): void => {
-      productsCart.value = productsCart.value.filter((element: ProductShopDto) => element.plushieVariant.id !== product.plushieVariant.id);
+      productsCart.value = productsCart.value.filter((element: ProductShopDto) => element.productVariant.id !== product.productVariant.id);
       calculateAmount();
       saveInLocalStorageCart();
     };
@@ -52,7 +52,7 @@ export const useProductsCartStore = defineStore('cart', () => {
     const calculateAmount = () => {
       totalPrice.value = productsCart.value.reduce((sum, item) => {
         return (item.preOrder && item.acceptedPreOrder) || !item.preOrder
-          ? sum + divideBy100(item.plushieVariant.price)!
+          ? sum + divideBy100(item.productVariant.price)!
           : sum;
       }, 0);
     };
@@ -102,9 +102,9 @@ export const useProductsCartStore = defineStore('cart', () => {
 
     const searchAllProducts = async (list: ProductShopDto[]) => {
       for (const item of list) {
-        await apiGet(`${api(env.plushies.variant)}?id=${item.plushieVariant.id}`, 'GET').then(response => response.json())
+        await apiGet(`${api(env.products.variant)}?id=${item.productVariant.id}`, 'GET').then(response => response.json())
           .then(data => {
-            item.plushieVariant = data;
+            item.productVariant = data;
             item.preOrder = data.stock === 0;
 
             if (item.preOrder && !item.acceptedPreOrder) {
@@ -150,9 +150,9 @@ export const useProductsCartStore = defineStore('cart', () => {
 
     const veryfyOrder = async () => {
       for (const item of productsCart.value) {
-        await apiGet(`${api(env.plushies.variant)}?id=${item.plushieVariant.id}`, 'GET').then(response => response.json())
+        await apiGet(`${api(env.products.variant)}?id=${item.productVariant.id}`, 'GET').then(response => response.json())
           .then(data => {
-            item.plushieVariant = data;
+            item.productVariant = data;
             item.preOrder = data.stock === 0;
 
             if (item.preOrder && !item.acceptedPreOrder) {

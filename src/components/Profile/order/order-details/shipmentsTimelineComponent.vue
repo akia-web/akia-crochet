@@ -1,10 +1,12 @@
 <template>
   <div class="bg-white p-[20px] rounded-lg">
     <div class="flex justify-between mb-4">
-      <h2 class="text-xl font-semibold">Historique de livraison </h2>
+      <h2 class="text-xl font-semibold">Historique de livraison colis {{ index + 1 }} </h2>
       <a :href="props.trackingUrl" target="_blank" class="text-actionColor underline">Suivre le colis</a>
     </div>
     <p class="mb-4">Numéro de suivi chez le transporteur : {{ props.refBoxtal }} </p>
+    <p v-if="props.estimateDeliveryDate" class="text-actionColor mb-4 font-semibold">Date de livraison estimée :
+      {{ formattedDate(props.estimateDeliveryDate, false) }}</p>
     <Timeline :value="data" class="customized-timeline">
       <template #marker="slotProps">
                 <span class="flex w-8 h-8 items-center justify-center text-white rounded-full z-10 shadow-sm"
@@ -59,18 +61,20 @@ const props = defineProps({
   items: {
     type: Array as PropType<ItemsPackageBoxtalDto[]>,
     required: true,
-  }
+  },
+  index: Number,
+  estimateDeliveryDate: Date
 });
 
-const formattedDate = (date: string) => {
-
+const formattedDate = (date: string, hours: boolean = true) => {
+  console.warn(date);
   return new Intl.DateTimeFormat('fr-FR', {
     day: '2-digit',
     month: 'long',
     year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hourCycle: 'h23',
+    hour: hours ? '2-digit' : undefined,
+    minute: hours ? '2-digit' : undefined,
+    hourCycle: hours ? 'h23' : undefined,
   }).format(new Date(date));
 };
 

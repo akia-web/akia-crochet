@@ -69,13 +69,13 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { apiGet } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
-import type { PlushieCreatorDto } from '@/interfaces/plushie-creator.dto.ts';
+import type { creatorDto } from '@/interfaces/creator.dto.ts';
 
-const creators = ref<PlushieCreatorDto[]>([]);
+const creators = ref<creatorDto[]>([]);
 const activeEditorHtml = ref(false);
 
 onMounted(async () => {
-  await apiGet(api(env.plushieCreator.crud), 'GET').then(response => response.json())
+  await apiGet(api(env.creator.crud), 'GET').then(response => response.json())
       .then(data => {
         creators.value = data;
       });

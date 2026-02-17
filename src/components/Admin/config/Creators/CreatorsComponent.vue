@@ -55,7 +55,7 @@ import { onMounted, ref } from 'vue';
 import { apiGet } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
-import type { PlushieCreatorDto } from '@/interfaces/plushie-creator.dto.ts';
+import type { creatorDto } from '@/interfaces/creator.dto.ts';
 import { getMedialSocialIcon } from '@/functions/social-media-icon.ts';
 import { useCreatorEditStore } from '@/stores/edit-creator.ts';
 import type { MenuItem } from 'primevue/menuitem';
@@ -64,20 +64,20 @@ const router = useRouter();
 const menuRefs = ref([]);
 const menuItems = ref<MenuItem[]>([]);
 const storeEditCreator = useCreatorEditStore();
-const creators = ref<PlushieCreatorDto[]>([]);
+const creators = ref<creatorDto[]>([]);
 
 const goToAddCreator = (): void => {
   router.push({ name: ADMIN_ADD_CREATOR_ROUTE });
 };
 
 onMounted(async (): Promise<void> => {
-  await apiGet(api(env.plushieCreator.crud), 'GET').then(response => response.json())
+  await apiGet(api(env.creator.crud), 'GET').then(response => response.json())
       .then(data => {
         creators.value = data;
       });
 });
 
-const toggle = (event: any, index: number, creator: PlushieCreatorDto): void => {
+const toggle = (event: any, index: number, creator: creatorDto): void => {
   menuItems.value = [
     {
       label: 'Éditer',
@@ -94,16 +94,16 @@ const toggle = (event: any, index: number, creator: PlushieCreatorDto): void => 
   menuRefs.value[index]?.toggle(event);
 };
 
-const editCreator = (creator: PlushieCreatorDto): void => {
+const editCreator = (creator: creatorDto): void => {
   storeEditCreator.updateCreator(creator);
   router.push({ name: ADMIN_ADD_CREATOR_ROUTE });
 };
 
-const deleteCreator = (creator: PlushieCreatorDto) => {
-  const url = `${api(env.plushieCreator.crud)}?id=${creator.id}`;
+const deleteCreator = (creator: creatorDto) => {
+  const url = `${api(env.creator.crud)}?id=${creator.id}`;
   apiGet(url, 'DELETE', true)
       .then(response => response.json())
-      .then(creators.value = creators.value.filter((element: PlushieCreatorDto) => element.id !== creator.id))
+      .then(creators.value = creators.value.filter((element: creatorDto) => element.id !== creator.id))
       .catch(error => {
         console.error('Erreur :', error);
       });

@@ -75,25 +75,25 @@ import StepList from 'primevue/steplist';
 import StepPanels from 'primevue/steppanels';
 import Step from 'primevue/step';
 import StepPanel from 'primevue/steppanel';
-import Form1 from '@/components/Admin/Peluches/edit-plushies/form-1.vue';
+import Form1 from '@/components/Admin/Products/edit-product/form-1.vue';
 import { onMounted, ref, watch } from 'vue';
-import Form2 from '@/components/Admin/Peluches/edit-plushies/form-2.vue';
+import Form2 from '@/components/Admin/Products/edit-product/form-2.vue';
 import type { LinkDto } from '@/interfaces/link.dto.ts';
-import Form3 from '@/components/Admin/Peluches/edit-plushies/form-3.vue';
+import Form3 from '@/components/Admin/Products/edit-product/form-3.vue';
 import { checkInputIsNotNull, checkInputIsNotNullAndANumber } from '@/functions/check-forms.ts';
-import { usePlushieEditStore } from '@/stores/edit-peluche.ts';
-import type { PlushieDto } from '@/interfaces/plushieDto.ts';
+import { usePlushieEditStore } from '@/stores/edit-product.ts';
+import type { ProductDto } from '@/interfaces/product.dto.ts';
 import { getImageName, getMimeType, urlToFile } from '@/functions/images.ts';
 import { useToast } from 'primevue';
 import { useRouter } from 'vue-router';
 import { ADMIN_PLUSHIES_ROUTE } from '@/router/routes-name.ts';
-import type { PlushieCreatorDto } from '@/interfaces/plushie-creator.dto.ts';
+import type { creatorDto } from '@/interfaces/creator.dto.ts';
 import { apiPost } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
-import type { PlushieVariantDto } from '@/interfaces/plushie-variant.dto.ts';
+import type { ProductVariantDto } from '@/interfaces/product-variant.dto.ts';
 
-const variants = ref<PlushieVariantDto[]>([{
+const variants = ref<ProductVariantDto[]>([{
   name: '',
   color: '#000000',
   materials: [],
@@ -120,7 +120,7 @@ const form1IsValid = ref<boolean>(false);
 const form3IsValid = ref<boolean>(true);
 const toast = useToast();
 const router = useRouter();
-const selectedCreator = ref<PlushieCreatorDto>();
+const selectedCreator = ref<creatorDto>();
 const loading = ref<boolean>(false);
 
 const id = ref<number | undefined>(undefined);
@@ -141,20 +141,20 @@ watch(variants, (newVariant) => {
 
 onMounted(async () => {
 
-  if (storeEditPeluche.peluche) {
-    const plushie: PlushieDto = storeEditPeluche.peluche;
-    name.value = plushie.name!;
-    description.value = plushie.description!;
-    videoLinks.value = plushie.links!;
-    collection.value = plushie.collection;
+  if (storeEditPeluche.product) {
+    const product: ProductDto = storeEditPeluche.product;
+    name.value = product.name!;
+    description.value = product.description!;
+    videoLinks.value = product.links!;
+    collection.value = product.collection;
 
 
-    if (plushie.plushieCreator) {
-      selectedCreator.value = plushie.plushieCreator;
+    if (product.creator) {
+      selectedCreator.value = product.creator;
     }
 
-    if (plushie.plushieVariants) {
-      variants.value = plushie.plushieVariants;
+    if (product.productVariants) {
+      variants.value = product.productVariants;
 
 
       for (const variant of variants.value) {
@@ -168,7 +168,7 @@ onMounted(async () => {
     }
 
     storeEditPeluche.updatePeluche(null);
-    id.value = plushie.id;
+    id.value = product.id;
   }
 
 });
@@ -214,14 +214,14 @@ const send = async () => {
   }
 
   if (selectedCreator.value) {
-    formData.append('plushieCreator', JSON.stringify(selectedCreator.value));
+    formData.append('creator', JSON.stringify(selectedCreator.value));
   }
 
-  formData.append('plushieVariants', JSON.stringify(variants.value));
+  formData.append('productVariants', JSON.stringify(variants.value));
 
   const method: 'PATCH' | 'POST' = id.value ? 'PATCH' : 'POST';
   loading.value = true;
-  apiPost(api(env.plushies.crud), method, formData, false, true)
+  apiPost(api(env.products.crud), method, formData, false, true)
       .then(() => {
         toast.add({ severity: 'success', summary: 'Peluche enregistrée', life: 3000 });
         router.push({ name: ADMIN_PLUSHIES_ROUTE });
