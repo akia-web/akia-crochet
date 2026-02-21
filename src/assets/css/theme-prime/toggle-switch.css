@@ -1,0 +1,4 @@
+:root {
+    --p-toggleswitch-checked-background: var(--action-color) !important;
+    --p-toggleswitch-checked-hover-background: var(--action-color) !important;
+}

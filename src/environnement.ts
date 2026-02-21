@@ -23,11 +23,16 @@ export const env = {
     crud: 'creator'
   },
   contact: {
-    send:'contact-message'
+    send: 'contact-message'
   },
   order: {
     crud: 'order',
     updateGuest: 'order/update-guest',
+  },
+  homePage: {
+    crud: 'home-config',
+    adminGet: 'home-config/admin',
+    active: 'home-config/active-home-config',
   },
   shipment: {
     crud: 'shipment',

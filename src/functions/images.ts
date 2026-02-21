@@ -10,14 +10,16 @@ export const getImageName = (url: string): string => {
 
 
 export const getMimeType = (url: string): string => {
-  const ext = url.split('.').pop().toLowerCase();
-  const map = {
-    jpg: 'image/jpeg',
-    jpeg: 'image/jpeg',
-    png: 'image/png',
-    gif: 'image/gif',
-    webp: 'image/webp',
-    svg: 'image/svg+xml'
-  };
-  return map[ext] || 'application/octet-stream';
+  console.warn(url)
+  return ''
+  // const ext = url.split('.').pop().toLowerCase();
+  // const map = {
+  //   jpg: 'image/jpeg',
+  //   jpeg: 'image/jpeg',
+  //   png: 'image/png',
+  //   gif: 'image/gif',
+  //   webp: 'image/webp',
+  //   svg: 'image/svg+xml'
+  // };
+  // return map[ext] || 'application/octet-stream';
 };

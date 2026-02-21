@@ -30,3 +30,5 @@ coverage
 *.tsbuildinfo
 
 .env
+.env.preprod
+.env.prod

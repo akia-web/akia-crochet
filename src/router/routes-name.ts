@@ -8,6 +8,8 @@ export const ADMIN_ADD_PLUSHIES_ROUTE: string = 'AdminAddPlushies';
 export const ADMIN_PATTERN_ROUTE: string = 'AdminPattern';
 export const ADMIN_ORDERS_ROUTE: string = 'AdminOrders';
 export const ADMIN_ETIQUETTES_ROUTE: string = 'AdminEtiquettesRoutes';
+export const ADMIN_UPDATE_HOME_ROUTE: string = 'AdminUpdateHome';
+export const ADMIN_HOME_ROUTE: string = 'AdminHome';
 
 //------------
 export const PRODUCTS_ROUTE: string = 'produits';

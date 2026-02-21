@@ -9,6 +9,7 @@ export default {
         actionColorHover: 'var(--action-color-hover)',
         bgSite: 'var(--bg-site)',
         bgLightGrey: 'var(--very-light-grey)',
+        otherPink: '#CD829F'
       }
     },
   },

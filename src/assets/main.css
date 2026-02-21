@@ -22,6 +22,7 @@
 @import "css/theme-prime/data-table.css";
 @import "css/theme-prime/panel-menu.css";
 @import "css/theme-prime/tabs.css";
+@import "css/theme-prime/toggle-switch.css";
 
 
 @tailwind base;
