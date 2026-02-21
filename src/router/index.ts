@@ -79,9 +79,15 @@ const router = createRouter({
       children: [
         {
           path: '',
-          name:'home',
+          name: 'home',
           component: () => import('@/pages/Home/HomeComponent.vue'),
         },
+        {
+          path: 'error-page',
+          name: 'errorPage',
+          component: () => import('@/pages/ErrorPage/ErrorPage.vue'),
+        },
+
         {
           path: 'produits',
           name: PRODUCTS_ROUTE,
@@ -94,13 +100,13 @@ const router = createRouter({
           props: true
         },
         {
-          path:`${PROFILE_ROUTE}/:step`,
+          path: `${PROFILE_ROUTE}/:step`,
           name: PROFILE_ROUTE,
           component: () => import('../pages/Profile/ProfileComponent.vue'),
           props: true
         },
         {
-          path:`${PROFILE_ROUTE}/commandes/:id`,
+          path: `${PROFILE_ROUTE}/commandes/:id`,
           name: PROFILE_ORDER_ROUTE,
           component: () => import('../pages/Profile/orderDetails/OrderDetails.vue'),
           props: true
@@ -178,9 +184,9 @@ const router = createRouter({
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
-      return savedPosition
+      return savedPosition;
     }
-    return { top: 0, behavior: 'smooth' }
+    return { top: 0, behavior: 'smooth' };
   },
 });
 
@@ -188,8 +194,10 @@ router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore();
 
 
-  if(to.path.startsWith('/profile')|| to.path.startsWith('/admin') || userStore.user === null) {
-    await updatePinia(userStore);
+  if (to.path.startsWith('/profile') || to.path.startsWith('/admin') || userStore.user === null) {
+    if (!to.path.startsWith('/error-page')) {
+      await updatePinia(userStore);
+    }
   }
 
 
