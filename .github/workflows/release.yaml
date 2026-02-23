@@ -21,12 +21,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Détermine le mode selon le tag
       - name: Set build mode
         id: set_mode
         run: |
-          TAG=${GITHUB_REF##*/}
-          if [[ "${TAG}" == refs/tags/release-* ]]; then
+          TAG_NAME=${GITHUB_REF##*/}
+          echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
+          
+          if [[ "${TAG_NAME}" == release-* ]]; then
             echo "MODE=prod" >> $GITHUB_ENV
           else
             echo "MODE=preprod" >> $GITHUB_ENV
@@ -54,3 +55,5 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: dist-${{ env.TAG_NAME }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
