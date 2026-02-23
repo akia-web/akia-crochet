@@ -62,7 +62,9 @@ jobs:
             DEPLOY_PATH=/var/www/html/akialoops-preprod
 
             cd $DEPLOY_PATH
-            mv dist dist_backup_$(date +%Y%m%d%H%M%S) || true
-            rm -rf dist
+            if [ -d "dist" ]; then
+              mv dist dist_backup_$(date +%Y%m%d%H%M%S) || true
+              rm -rf dist
+            fi
             mkdir dist
             unzip -o ./../$ZIP_NAME -d dist
