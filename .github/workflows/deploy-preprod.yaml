@@ -55,16 +55,24 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
-            # Nom du zip téléchargé
-            ZIP_NAME=$(ls dist-*.zip | sort -V | tail -n1)
-
+            # Nom du zip téléchargé dans le runner
+            ZIP_NAME=dist-*.zip
+            
             # Chemin de déploiement
             DEPLOY_PATH=/var/www/html/akialoops-preprod
-
+            
+            # Crée dist si besoin
+            mkdir -p $DEPLOY_PATH
+            
+            # Copie le zip depuis le runner vers le serveur
+            scp ./../$ZIP_NAME ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:$DEPLOY_PATH/
+            
             cd $DEPLOY_PATH
+            
             if [ -d "dist" ]; then
-              mv dist dist_backup_$(date +%Y%m%d%H%M%S) || true
+              mv dist dist_backup_$(date +%Y%m%d%H%M%S)
               rm -rf dist
             fi
+            
             mkdir dist
-            unzip -o ./../$ZIP_NAME -d dist
+            unzip -o $ZIP_NAME -d dist
