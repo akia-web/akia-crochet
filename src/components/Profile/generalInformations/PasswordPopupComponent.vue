@@ -117,7 +117,7 @@ const rules = computed(() => ({
 const loading = ref(false);
 
 const toast = useToast();
-const dialogRef = inject('dialogRef');
+const dialogRef = inject('dialogRef') as any;
 const v$ = useVuelidate(rules, form, { $autoDirty: true });
 
 const updatePassword = async () => {

@@ -165,17 +165,12 @@
 </template>
 <script lang="ts" setup>
 
-import { computed, onMounted, reactive, ref, watch } from 'vue';
+import { computed, onMounted, reactive } from 'vue';
 import { useUserStore } from '@/stores/user.ts';
-import { useRouter } from 'vue-router';
-import { useDialog } from 'primevue';
 import { useVuelidate } from '@vuelidate/core';
 import { email, maxLength, required, requiredIf } from '@vuelidate/validators';
-import RecapCardList from '@/components/paymentFormsComponents/recapCart/recapCardList.vue';
-import ContactInfo from '@/components/paymentFormsComponents/contactInfo.vue';
-import AddressComponent from '@/components/paymentFormsComponents/AddressComponent.vue';
 import { phoneByCountry } from '@/validators/phone-validators.ts';
-import parsePhoneNumberFromString, { type CountryCode } from 'libphonenumber-js';
+import { type CountryCode } from 'libphonenumber-js';
 import StepPanels from 'primevue/steppanels';
 import Step from 'primevue/step';
 import Stepper from 'primevue/stepper';
@@ -191,7 +186,6 @@ import RecapCartView from '@/components/paymentFormsComponents/recapCart/recapCa
 import { apiPost } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
-import { ADMIN_DASHBORD_ROUTE } from '@/router/routes-name.ts';
 import type { CheckoutFormDto } from '@/components/paymentFormsComponents/interfaces/checkoutForm.dto.ts';
 
 const storeUser = useUserStore();
@@ -239,7 +233,7 @@ const form = reactive<CheckoutFormDto>({
       location: {
         city: '',
         country: '',
-        position: { longitude: '', latitude: '' },
+        position: { longitude: 0, latitude: 0 },
         street: '',
         postalCode: ''
       },

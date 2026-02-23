@@ -374,11 +374,11 @@ const openDialog = (index: number) => {
   dialog.open(CropperComponent, {
     props: options,
     data: { file: imagesFiles.value[index].file},
-    onClose: (options: { data?: File }) => {
+    onClose: (options?: { data?: { newImage: File } }) => {
       if (options?.data?.newImage) {
         imagesFiles.value[index].file = options.data.newImage
 
-        images.value = images.value.filter(img => img.url.split('/images/')[1] !== options.data.newImage.name.split('new-').pop());
+        images.value = images.value.filter(img => img.url.split('/images/')[1] !== options.data!.newImage.name.split('new-').pop());
       }
     },
   });

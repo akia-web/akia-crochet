@@ -34,7 +34,6 @@ import ContactInfo from '@/components/paymentFormsComponents/contactInfo.vue';
 import { computed, type PropType } from 'vue';
 import type { ParcelPointDtoBoxtal } from '@/interfaces/parcel-point-dto.boxtal.ts';
 import AddressComponent from '@/components/paymentFormsComponents/AddressComponent.vue';
-import BoxMap2Component from '@/components/BoxMap/BoxMap2Component.vue';
 import FormWithMap from '@/components/paymentFormsComponents/FormWithMap.vue';
 
 const props = defineProps({

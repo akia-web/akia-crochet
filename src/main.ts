@@ -75,7 +75,7 @@ app.use(PrimeVue, {
     dayNamesMin:	['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
     monthNames:	['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
     monthNamesShort:	['Jan', 'Fév', 'Mars', 'Avr', 'Mai', 'Jui', 'Jui', 'Aout', 'Sept', 'Oct', 'Nov', 'Dec'],
-    today:	`Aujourd'hui`,
+    today:`Aujourd'hui`,
   }
 });
 app.use(ToastService);

@@ -55,16 +55,16 @@ import { onMounted, ref } from 'vue';
 import { apiGet } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
-import type { creatorDto } from '@/interfaces/creator.dto.ts';
+import type { CreatorDto } from '@/interfaces/creator.dto.ts';
 import { getMedialSocialIcon } from '@/functions/social-media-icon.ts';
 import { useCreatorEditStore } from '@/stores/edit-creator.ts';
 import type { MenuItem } from 'primevue/menuitem';
 
 const router = useRouter();
-const menuRefs = ref([]);
+const menuRefs = ref<MenuItem>([]);
 const menuItems = ref<MenuItem[]>([]);
 const storeEditCreator = useCreatorEditStore();
-const creators = ref<creatorDto[]>([]);
+const creators = ref<CreatorDto[]>([]);
 
 const goToAddCreator = (): void => {
   router.push({ name: ADMIN_ADD_CREATOR_ROUTE });
@@ -77,7 +77,7 @@ onMounted(async (): Promise<void> => {
       });
 });
 
-const toggle = (event: any, index: number, creator: creatorDto): void => {
+const toggle = (event: any, index: number, creator: CreatorDto): void => {
   menuItems.value = [
     {
       label: 'Éditer',
@@ -94,16 +94,18 @@ const toggle = (event: any, index: number, creator: creatorDto): void => {
   menuRefs.value[index]?.toggle(event);
 };
 
-const editCreator = (creator: creatorDto): void => {
+const editCreator = (creator: CreatorDto): void => {
   storeEditCreator.updateCreator(creator);
   router.push({ name: ADMIN_ADD_CREATOR_ROUTE });
 };
 
-const deleteCreator = (creator: creatorDto) => {
+const deleteCreator = (creator: CreatorDto) => {
   const url = `${api(env.creator.crud)}?id=${creator.id}`;
   apiGet(url, 'DELETE', true)
       .then(response => response.json())
-      .then(creators.value = creators.value.filter((element: creatorDto) => element.id !== creator.id))
+      .then(() => {
+        creators.value = creators.value.filter((element: CreatorDto) => element.id !== creator.id);
+      })
       .catch(error => {
         console.error('Erreur :', error);
       });

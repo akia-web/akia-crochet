@@ -16,7 +16,7 @@ export interface DeliveryAddressDto {
     location: {
       city: string,
       country: string,
-      position: { longitude: string, latitude: string },
+      position: { longitude: number, latitude: number },
       street: string,
       postalCode: string
     },

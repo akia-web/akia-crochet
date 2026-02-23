@@ -19,8 +19,8 @@
     </div>
 
     <div class="flex justify-end gap-2 mt-4">
-      <Button label="Annuler" @click="closeCropper" />
-      <Button label="Valider" @click="confirmCrop" />
+      <Button label="Annuler" @click="closeCropper"/>
+      <Button label="Valider" @click="confirmCrop"/>
     </div>
   </div>
 
@@ -31,7 +31,7 @@ import VueCropper from 'vue-cropperjs';
 import { inject, ref, onUnmounted } from 'vue';
 
 const cropper = ref<any>(null);
-const dialogRef = inject('dialogRef');
+const dialogRef = inject('dialogRef') as any;
 const { file } = dialogRef.value.data;
 
 const cropperSrc = ref<string>(URL.createObjectURL(file));
@@ -87,7 +87,7 @@ const confirmCrop = () => {
     imageSmoothingQuality: 'high',
   });
 
-  canvas.toBlob((blob) => {
+  canvas.toBlob((blob: any) => {
     if (!blob) return;
 
     const croppedFile = new File([blob], `new-${file.name}`, { type: file.type });

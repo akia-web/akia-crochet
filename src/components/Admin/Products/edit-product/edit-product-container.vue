@@ -9,19 +9,19 @@
       <StepPanels>
         <StepPanel v-slot="{ activateCallback }" value="1">
           <div class="p-[10px]">
-            <form1 v-model:name="name"
-                   v-model:description="description"
-                   v-model:selectedCreator="selectedCreator"
-                   v-model:collection="collection"
-                   :isValidName="isValidName"
-                   :isValidDescription="isValidDescription"
+            <form1 v-model:name="form1.name"
+                   v-model:description="form1.description"
+                   v-model:creator="form1.creator"
+                   v-model:collection="form1.collection"
+                   v-model:isVisible="form1.isVisible"
+                   :v$="v1$"
             >
             </form1>
             <div class="flex pt-6 justify-end">
               <Button label="Suivant"
                       icon="pi pi-arrow-right"
                       iconPos="right"
-                      :disabled="!form1IsValid"
+                      :disabled="v1$.$invalid"
                       @click="activateCallback('2')"/>
             </div>
           </div>
@@ -29,7 +29,7 @@
         </StepPanel>
         <StepPanel v-slot="{ activateCallback }" value="2">
           <div class="p-[10px]">
-            <form2 v-model:videoLinks="videoLinks"></form2>
+            <form2 v-model:links="form2.links"></form2>
             <div class="flex pt-6 justify-between">
               <Button label="Précédent" severity="secondary" icon="pi pi-arrow-left" @click="activateCallback('1')"/>
               <Button label="Suivant" icon="pi pi-arrow-right" iconPos="right" @click="activateCallback('3')"/>
@@ -38,7 +38,7 @@
         </StepPanel>
         <StepPanel v-slot="{ activateCallback }" value="3">
           <div class="p-[10px]">
-            <form3 v-model:variants="variants">
+            <form3 v-model:variants="form3.variants">
             </form3>
             <div class="pt-6 flex justify-between">
               <Button label="Précédent"
@@ -76,22 +76,26 @@ import StepPanels from 'primevue/steppanels';
 import Step from 'primevue/step';
 import StepPanel from 'primevue/steppanel';
 import Form1 from '@/components/Admin/Products/edit-product/form-1.vue';
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 import Form2 from '@/components/Admin/Products/edit-product/form-2.vue';
 import type { LinkDto } from '@/interfaces/link.dto.ts';
 import Form3 from '@/components/Admin/Products/edit-product/form-3.vue';
-import { checkInputIsNotNull, checkInputIsNotNullAndANumber } from '@/functions/check-forms.ts';
 import { usePlushieEditStore } from '@/stores/edit-product.ts';
 import type { ProductDto } from '@/interfaces/product.dto.ts';
 import { getImageName, getMimeType, urlToFile } from '@/functions/images.ts';
 import { useToast } from 'primevue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { ADMIN_PLUSHIES_ROUTE } from '@/router/routes-name.ts';
-import type { creatorDto } from '@/interfaces/creator.dto.ts';
-import { apiPost } from '@/services/request-service.ts';
+import { apiGet, apiPost } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
 import type { ProductVariantDto } from '@/interfaces/product-variant.dto.ts';
+import type {
+  Form1EditProductDto
+} from '@/components/Admin/Products/edit-product/interfaces/form1-edit-product.dto.ts';
+import { minLength, required } from '@vuelidate/validators';
+import { useVuelidate } from '@vuelidate/core';
+import type { HomeConfigDto } from '@/interfaces/home-config.dto.ts';
 
 const variants = ref<ProductVariantDto[]>([{
   name: '',
@@ -109,69 +113,112 @@ const variants = ref<ProductVariantDto[]>([{
 }]);
 
 const storeEditPeluche = usePlushieEditStore();
-const name = ref<string>('');
-const description = ref<string>('');
-const collection = ref<boolean>(false);
 const videoLinks = ref<LinkDto[]>([]);
-const isValidName = ref<boolean>(true);
-const isValidDescription = ref<boolean>(true);
 const isValidPrice = ref<boolean>(true);
 const form1IsValid = ref<boolean>(false);
 const form3IsValid = ref<boolean>(true);
 const toast = useToast();
 const router = useRouter();
-const selectedCreator = ref<creatorDto>();
 const loading = ref<boolean>(false);
-
 const id = ref<number | undefined>(undefined);
-
-watch([name, description], ([newName, newDescription]) => {
-  const nameIsValid = checkInputIsNotNull(newName);
-  const descriptionIsValid = checkInputIsNotNull(newDescription);
-  form1IsValid.value = nameIsValid && descriptionIsValid;
-  isValidName.value = nameIsValid;
-  isValidDescription.value = descriptionIsValid;
-});
 
 watch(variants, (newVariant) => {
   form3IsValid.value = newVariant.length > 0 && (newVariant[0].name !== undefined || newVariant[0].name !== '');
 
 });
 
+const route = useRoute();
+
+const form1 = reactive<Form1EditProductDto>({
+  name: '',
+  description: '',
+  creator: undefined,
+  collection: false,
+  isVisible: true,
+});
+
+const rules = computed(() => ({
+  name: { required, minLength: minLength(4) },
+  description: { required, minLength: minLength(4) },
+}));
+
+const form2 = reactive<{ links: LinkDto[] }>({
+  links: [],
+});
+
+const form3 = reactive<{ variants: ProductVariantDto[] }>({
+  variants: [],
+});
+
+const v1$ = useVuelidate(rules, form1, { $autoDirty: true });
 
 onMounted(async () => {
+  if (route.query && route.query.id) {
+    await apiGet(`${api(env.products.byId)}?id=${route.query.id}`, 'GET', true)
+        .then(response => response.json())
+        .then(async (data: ProductDto) => {
+          console.warn(data);
+          form1.name = data.name ? data.name : '';
+          form1.description = data.description ? data.description : '';
+          form1.creator = data.creator;
+          form1.collection = data.collection;
+          form1.isVisible = data.isVisible;
+          form2.links = data.links ? data.links : [];
 
-  if (storeEditPeluche.product) {
-    const product: ProductDto = storeEditPeluche.product;
-    name.value = product.name!;
-    description.value = product.description!;
-    videoLinks.value = product.links!;
-    collection.value = product.collection;
-
-
-    if (product.creator) {
-      selectedCreator.value = product.creator;
-    }
-
-    if (product.productVariants) {
-      variants.value = product.productVariants;
-
-
-      for (const variant of variants.value) {
-        const images = [];
-        for (const image of variant.images) {
-          const newImage = await urlToFile(image.url, getImageName(image.url), getMimeType(image.url));
-          images.push({ file: newImage, row: image.row });
-        }
-        variant.imagesFiles = images;
-      }
-    }
-
-    storeEditPeluche.updatePeluche(null);
-    id.value = product.id;
+          if (data.productVariants) {
+            form3.variants = data.productVariants;
+            for (const variant of variants.value) {
+              const images: { file: File, row: number }[] = [];
+              for (const image of variant.images) {
+                const newImage = await urlToFile(image.url, getImageName(image.url), getMimeType(image.url));
+                images.push({ file: newImage, row: image.row });
+              }
+              variant.imagesFiles = images;
+            }
+          }
+        })
+        .catch(e => {
+          toast.add({
+            severity: 'error',
+            summary: e,
+            life: 3000
+          });
+        });
   }
 
-});
+
+  // if (storeEditPeluche.product) {
+  //   const product: ProductDto = storeEditPeluche.product;
+  //   form1.name = product.name!;
+  //   form1.description = product.description!;
+  //   videoLinks.value = product.links!;
+  //   form1.collection = product.collection;
+  //
+  //
+  //   if (product.creator) {
+  //     form1.creator = product.creator;
+  //   }
+  //
+  //   if (product.productVariants) {
+  //     variants.value = product.productVariants;
+  //
+  //
+  //     for (const variant of variants.value) {
+  //       const images = [];
+  //       for (const image of variant.images) {
+  //         const newImage = await urlToFile(image.url, getImageName(image.url), getMimeType(image.url));
+  //         images.push({ file: newImage, row: image.row });
+  //       }
+  //       variant.imagesFiles = images;
+  //     }
+  //   }
+  //
+  //   storeEditPeluche.updatePeluche(null);
+  //   id.value = product.id;
+  // }
+
+})
+;
 
 
 const send = async () => {
@@ -200,9 +247,9 @@ const send = async () => {
     formData.append('images', file as File);
   });
 
-  formData.append('name', name.value);
-  formData.append('description', description.value);
-  formData.append('collection', collection.value.toString());
+  formData.append('name', form1.name);
+  formData.append('description', form1.description);
+  formData.append('collection', form1.collection.toString());
 
   if (id.value) {
     formData.append('id', id.value.toString());
@@ -213,8 +260,8 @@ const send = async () => {
     formData.append(`links`, JSON.stringify(videoLinks.value));
   }
 
-  if (selectedCreator.value) {
-    formData.append('creator', JSON.stringify(selectedCreator.value));
+  if (form1.creator) {
+    formData.append('creator', JSON.stringify(form1.creator));
   }
 
   formData.append('productVariants', JSON.stringify(variants.value));

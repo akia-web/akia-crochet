@@ -19,7 +19,7 @@
             v-model:name="variant.name"
             v-model:color="variant.color"
             v-model:materials="variant.materials"
-            v-model:imagesFiles="variant.imagesFiles"
+            v-model:imagesFiles="variant.imagesFiles!"
             v-model:images="variant.images"
             v-model:stock="variant.stock"
             v-model:price="variant.price"

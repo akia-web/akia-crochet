@@ -1,6 +1,6 @@
 import type { SocialMediaDto } from '@/interfaces/social-media.dto.ts';
 
-export interface creatorDto {
+export interface CreatorDto {
   id?: number;
   name?: string;
   socialMedia?: SocialMediaDto[];

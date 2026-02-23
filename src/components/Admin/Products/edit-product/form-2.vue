@@ -44,7 +44,7 @@
 
       </div>
       <div>
-        <div v-for="video in videoLinks">
+        <div v-for="video in links">
           <div class="flex items-center">
             <div @click="openDialog(video)">
                  <span v-if="video.type === 'SHORT' || video.type==='VIDEO_YOUTUBE'"
@@ -98,7 +98,7 @@ const iframeNewLink = computed(() => {
 });
 
 const props = defineProps({
-  videoLinks: {
+  links: {
     type: Array as () => LinkDto[],
     default: () => []
   },
@@ -106,7 +106,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits([
-  'update:videoLinks',
+  'update:links',
 ]);
 
 function transformUrl(url: string, typeCode: TypeLinkEnum) {
@@ -126,7 +126,7 @@ watch([selectedType, newVideoLinkUrl], ([newType, newUrl]) => {
   }
 });
 
-watch(props.videoLinks, (newValue) => {
+watch(props.links, (newValue) => {
 
 });
 
@@ -140,7 +140,7 @@ const addNewVideo = () => {
     row: nextRow.value
   };
 
-  emit('update:videoLinks', [...props.videoLinks, newLink]);
+  emit('update:links', [...props.links, newLink]);
   updateNextRow();
   newVideoLinkUrl.value = '';
   selectedType.value = null;
@@ -149,9 +149,9 @@ const addNewVideo = () => {
 
 
 const deleteVideo = (video: LinkDto) => {
-  const filteredVideos = props.videoLinks.filter((e => e.url !== video.url));
+  const filteredVideos = props.links.filter((e => e.url !== video.url));
 
-  emit('update:videoLinks', filteredVideos);
+  emit('update:links', filteredVideos);
 
 };
 
@@ -173,10 +173,10 @@ const openDialog = (video: LinkDto) => {
 };
 
 const getNextRow = () => {
-  if (props.videoLinks.length === 0) {
+  if (props.links.length === 0) {
     nextRow.value = 0;
   } else {
-    const maxObjet = props.videoLinks.reduce((prev, current) => {
+    const maxObjet = props.links.reduce((prev, current) => {
       return (current.row > prev.row) ? current : prev;
     });
     nextRow.value = maxObjet.row + 1;

@@ -3,7 +3,7 @@
   <div class="p-[10px]">
     <div class="flex w-100 row-reverse">
       <Button label="Ajouter"
-              @click="goToAddPeluche"
+              @click="goToAddPeluche(undefined)"
               class="p-button-action mr-2"
               icon="pi pi-plus">
       </Button>
@@ -38,8 +38,8 @@ const router = useRouter();
 
 const products = ref<ProductDto[]>([]);
 
-const goToAddPeluche = () => {
-  router.push({ name: ADMIN_ADD_PLUSHIES_ROUTE });
+const goToAddPeluche = (id?: string | undefined) => {
+  router.push({ name: ADMIN_ADD_PLUSHIES_ROUTE, query: { id } });
 };
 
 onMounted(async () => {
@@ -59,13 +59,13 @@ const getPeluches = async (category: string): Promise<any> => {
 
 const editProduct = (product: ProductDto) => {
   storeEditPeluche.updatePeluche(product);
-  goToAddPeluche();
+  goToAddPeluche(product.id?.toString());
 };
 
 const deletePlushie = (product: ProductDto) => {
   apiGet(`${api(env.products.crud)}?id=${product.id}`, 'DELETE', true)
       .then(response => response.json())
-      .then(products.value = products.value.filter((element) => element.id !== product.id))
+      .then(() => {products.value = products.value.filter((element) => element.id !== product.id);})
       .catch(error => {
         console.error('Erreur :', error);
       });

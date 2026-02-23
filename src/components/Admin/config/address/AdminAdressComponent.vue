@@ -1,6 +1,6 @@
 <template>
   <div class="p-[10px]">
-    <h1>Adresses</h1>
+    <h1 class="bg-actionColor">Adresses</h1>
 
     <div class="mt-8 w-full xl:w-1/2 mx-auto">
       <Tabs value="0">

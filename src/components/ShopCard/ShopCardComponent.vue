@@ -124,11 +124,6 @@ const openDialog = () => {
     data: {
       list: storeProductsCart.listOutOfStocks
     },
-    onClose: (options: { data: SocialMediaDto }) => {
-      if (options?.data) {
-        // mediaUrls.value.push({ type: options.data.type, url: options.data.url });
-      }
-    }
   });
 };
 

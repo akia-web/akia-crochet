@@ -53,7 +53,7 @@
 import { onMounted, ref } from 'vue';
 import { useDialog, useToast } from 'primevue';
 import PopupAddCreator from '@/components/Admin/config/Creators/PopupAddCreator.vue';
-import type { creatorDto } from '@/interfaces/creator.dto.ts';
+import type { CreatorDto } from '@/interfaces/creator.dto.ts';
 import type { SocialMediaDto } from '@/interfaces/social-media.dto.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
@@ -63,6 +63,7 @@ import { apiPost } from '@/services/request-service.ts';
 import { ADMIN_CREATOR_ROUTE } from '@/router/routes-name.ts';
 import { getMedialSocialIcon } from '@/functions/social-media-icon.ts';
 import { useCreatorEditStore } from '@/stores/edit-creator.ts';
+import type { DynamicDialogCloseOptions } from 'primevue/dynamicdialogoptions';
 
 const dialog = useDialog();
 const isValidName = ref<boolean>(true);
@@ -76,9 +77,10 @@ const creatorId = ref<number>();
 const openDialog = () => {
   dialog.open(PopupAddCreator, {
     props: configOpenDialog('Ajouter les liens du créateur'),
-    onClose: (options: { data: SocialMediaDto }) => {
+    onClose: (options?: DynamicDialogCloseOptions) => {
       if (options?.data) {
-        mediaUrls.value.push({ type: options.data.type, url: options.data.url });
+        const data = options.data as SocialMediaDto;
+        mediaUrls.value.push({ type: data.type, url: data.url });
       }
     }
   });
@@ -86,7 +88,7 @@ const openDialog = () => {
 
 onMounted(() => {
   if (storeEditCreator.creator) {
-    const creator: creatorDto = storeEditCreator.creator;
+    const creator: CreatorDto = storeEditCreator.creator;
     creatorId.value = creator.id;
     name.value = creator.name;
     if (creator.socialMedia) {
@@ -100,7 +102,7 @@ const deleteUrl = (item: SocialMediaDto) => {
 };
 
 const save = () => {
-  const newCreator: creatorDto = {
+  const newCreator: CreatorDto = {
     id: creatorId.value ? creatorId.value : undefined,
     name: name.value,
     socialMedia: mediaUrls.value

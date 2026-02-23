@@ -1,15 +1,15 @@
 <template>
   <div class="mt-2">
-        <div v-show="stepMap === 'noSetUp'"
-             class="h-[50vh] w-full flex justify-center items-center bg-[var(--light-grey)]">
-          <div class="flex flex-col items-center">
-            <img src="@/assets/icones/quokka-yeux-fermer-qui-souris.png"
-                 alt="logo quokka qui souris"
-                 class="w-[150px] mb-8">
-            <p class="text-center p-[10px]"> Remplis ton adresse pour chercher un point relais !</p>
+    <div v-show="stepMap === 'noSetUp'"
+         class="h-[50vh] w-full flex justify-center items-center bg-[var(--light-grey)]">
+      <div class="flex flex-col items-center">
+        <img src="@/assets/icones/quokka-yeux-fermer-qui-souris.png"
+             alt="logo quokka qui souris"
+             class="w-[150px] mb-8">
+        <p class="text-center p-[10px]"> Remplis ton adresse pour chercher un point relais !</p>
 
-          </div>
-        </div>
+      </div>
+    </div>
 
     <div v-show="stepMap === 'error'"
          class="h-[50vh] w-full flex justify-center items-center bg-[var(--light-grey)]">
@@ -23,37 +23,37 @@
     </div>
 
 
-        <div v-show="stepMap === 'pending'"
-             class="h-[50vh] w-full flex justify-center items-center bg-[var(--light-grey)]">
-          <div class="flex flex-col items-center">
-            <img src="@/assets/icones/quokka-cookie.gif"
-                 alt="logo quokka qui mange un cookie"
-                 class="w-[150px] mb-8">
-            <p class="text-center"> En attente des données !</p>
+    <div v-show="stepMap === 'pending'"
+         class="h-[50vh] w-full flex justify-center items-center bg-[var(--light-grey)]">
+      <div class="flex flex-col items-center">
+        <img src="@/assets/icones/quokka-cookie.gif"
+             alt="logo quokka qui mange un cookie"
+             class="w-[150px] mb-8">
+        <p class="text-center"> En attente des données !</p>
 
-          </div>
-        </div>
+      </div>
+    </div>
 
     <div id="map"
          style="height:50vh ;width: 100%"
          class="mt-4">
     </div>
-        <div v-show="stepMap==='ok'">
+    <div v-show="stepMap==='ok'">
 
-          <div v-if="selectedParcelPoint && selectedParcelPoint.code !==''"
-               class="mt-4">
-            <p class="underline">point relais selectionné :</p>
-            <p> {{ selectedParcelPoint.name }}</p>
-            <p> {{ selectedParcelPoint.location.street }} - {{ selectedParcelPoint.location.postalCode }} -
-              {{ selectedParcelPoint.location.city }} </p>
-          </div>
-        </div>
+      <div v-if="selectedParcelPoint && selectedParcelPoint.code !==''"
+           class="mt-4">
+        <p class="underline">point relais selectionné :</p>
+        <p> {{ selectedParcelPoint.name }}</p>
+        <p> {{ selectedParcelPoint.location.street }} - {{ selectedParcelPoint.location.postalCode }} -
+          {{ selectedParcelPoint.location.city }} </p>
+      </div>
+    </div>
   </div>
 
 
 </template>
 <script lang="ts" setup>
-import maplibregl, { Marker } from 'maplibre-gl';
+import * as maplibregl from 'maplibre-gl';
 import { computed, onMounted, ref, watch } from 'vue';
 import type { ParcelPointDtoBoxtal, ParcelPointWithDistanceDto } from '@/interfaces/parcel-point-dto.boxtal.ts';
 import { apiGet } from '@/services/request-service.ts';
@@ -164,6 +164,7 @@ const search = async () => {
       ]
     });
 
+    // @ts-ignore: TS2589
     map.value.on('load', () => {
       addMarkers();
     });
@@ -206,11 +207,11 @@ const addMarkers = () => {
     const marker = new maplibregl.Marker()
         .setLngLat(lngLat)
         .setPopup(popup)
-        .addTo(map.value!);
+        .addTo(map.value as maplibregl.Map);
 
     if (selectedParcelPoint.value && selectedParcelPoint.value.code === p.parcelPoint.code) {
       marker.addClassName('marker-actif');
-      popup.addTo(map.value!);
+      popup.addTo(map.value as maplibregl.Map);
     } else {
       marker.addClassName('marker-inactif');
     }

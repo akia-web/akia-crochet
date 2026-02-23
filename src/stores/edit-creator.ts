@@ -1,11 +1,11 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
-import type { creatorDto } from '@/interfaces/creator.dto.ts';
+import type { CreatorDto } from '@/interfaces/creator.dto.ts';
 
 export const useCreatorEditStore = defineStore('edit-creator', () => {
-  const creator = ref<creatorDto | null>(null);
+  const creator = ref<CreatorDto | null>(null);
 
-  function updateCreator(value: creatorDto | null) {
+  function updateCreator(value: CreatorDto | null) {
     creator.value = value;
   }
 

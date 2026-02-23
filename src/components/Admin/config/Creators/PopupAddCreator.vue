@@ -24,12 +24,13 @@
 
 </template>
 <script lang="ts" setup>
-import { inject, ref, watch } from 'vue';
+import { inject, type Ref, ref, watch } from 'vue';
 import { checkInputIsNotNull } from '@/functions/check-forms.ts';
 import { SocialMediaEnum } from '@/enum/social-media.ts';
+import type { Dialog } from 'primevue';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 
-const dialogRef = inject('dialogRef');
-const { data } = dialogRef.value;
+const dialogRef = inject('dialogRef') as any;
 const selectedType = ref();
 const url = ref('');
 const urlIsValid = ref<boolean>(false);

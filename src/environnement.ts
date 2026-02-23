@@ -41,7 +41,8 @@ export const env = {
   products: {
     crud: 'products',
     byName: 'products/by-name',
-    variant: 'products/variant'
+    variant: 'products/variant',
+    byId: 'products/by-id',
   },
 
   stripe: {

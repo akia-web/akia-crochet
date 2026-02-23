@@ -105,6 +105,10 @@ watch(selectedCountry, () => {
   phone.value = '';
 })
 
+const bidule = () => {
+  console.warn('lala')
+}
+
 function normalizePhoneNumber() {
   if (!phone.value) return '';
 
@@ -120,3 +124,4 @@ function normalizePhoneNumber() {
   phone.value = `+${digits}`;
 }
 </script>
+
