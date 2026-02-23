@@ -4,20 +4,16 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag à déployer'
+        description: 'Tag to deploy'
         required: true
-        default: 'v1.0.0'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout repo (optionnel si tu veux juste le workflow)
-      - uses: actions/checkout@v3
-
-      # 2️⃣ Récupère l'asset zip du tag choisi
-      - name: Get asset for selected tag
+      # 1️⃣ Récupérer l'asset
+      - name: Get asset
         id: get_asset
         uses: actions/github-script@v6
         with:
@@ -29,23 +25,36 @@ jobs:
               tag
             });
 
-            // Cherche le premier zip
             const asset = release.data.assets.find(a => a.name.endsWith('.zip'));
-            if (!asset) throw new Error(`Aucun zip trouvé pour le tag ${tag}`);
+            if (!asset) throw new Error(`No zip found for ${tag}`);
 
-            return JSON.stringify({ assetUrl: asset.browser_download_url, assetName: asset.name });
+            return JSON.stringify({
+              assetUrl: asset.browser_download_url,
+              assetName: asset.name
+            });
 
-      # 3️⃣ Télécharge le zip sur le runner et définit ZIP_NAME
-      - name: Download release zip
+      # 2️⃣ Télécharger sur le runner
+      - name: Download zip
         run: |
           ASSET_NAME=$(echo '${{ steps.get_asset.outputs.result }}' | jq -r '. | fromjson | .assetName')
           ASSET_URL=$(echo '${{ steps.get_asset.outputs.result }}' | jq -r '. | fromjson | .assetUrl')
-          echo "Downloading $ASSET_NAME from $ASSET_URL"
+
           curl -L -o "$ASSET_NAME" "$ASSET_URL"
           echo "ZIP_NAME=$ASSET_NAME" >> $GITHUB_ENV
 
-      # 4️⃣ Déploie sur le serveur via SSH
-      - name: Deploy to server
+      # 3️⃣ Envoyer le zip au serveur
+      - name: Copy zip to server
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          source: "${{ env.ZIP_NAME }}"
+          target: "/var/www/html/akialoops-preprod"
+
+      # 4️⃣ Déployer sur le serveur
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -54,22 +63,12 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           script: |
             DEPLOY_PATH=/var/www/html/akialoops-preprod
-
-            # Crée le dossier de déploiement si nécessaire
-            mkdir -p $DEPLOY_PATH
-
-            # Copie le zip depuis le runner vers le serveur
-            scp $ZIP_NAME ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:$DEPLOY_PATH/
-
             cd $DEPLOY_PATH
 
-            # Sauvegarde l'ancien dist seulement s'il existe
             if [ -d "dist" ]; then
               mv dist dist_backup_$(date +%Y%m%d%H%M%S)
-              rm -rf dist
             fi
 
+            rm -rf dist
             mkdir dist
-
-            # Décompresse le zip
             unzip -o $ZIP_NAME -d dist
