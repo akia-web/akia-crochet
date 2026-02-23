@@ -35,13 +35,14 @@ jobs:
 
             return JSON.stringify({ assetUrl: asset.browser_download_url, assetName: asset.name });
 
-      # 3️⃣ Télécharge le zip sur le runner
+      # 3️⃣ Télécharge le zip sur le runner et définit ZIP_NAME
       - name: Download release zip
         run: |
-          ASSET_NAME=$(echo ${{ steps.get_asset.outputs.result }} | jq -r '.assetName')
-          ASSET_URL=$(echo ${{ steps.get_asset.outputs.result }} | jq -r '.assetUrl')
+          ASSET_NAME=$(echo '${{ steps.get_asset.outputs.result }}' | jq -r '.assetName')
+          ASSET_URL=$(echo '${{ steps.get_asset.outputs.result }}' | jq -r '.assetUrl')
           echo "Downloading $ASSET_NAME from $ASSET_URL"
           curl -L -o "$ASSET_NAME" "$ASSET_URL"
+          echo "ZIP_NAME=$ASSET_NAME" >> $GITHUB_ENV
 
       # 4️⃣ Déploie sur le serveur via SSH
       - name: Deploy to server
@@ -53,7 +54,6 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           script: |
             DEPLOY_PATH=/var/www/html/akialoops-preprod
-            ZIP_NAME=${{ steps.get_asset.outputs.result | fromJson | .assetName }}
 
             # Crée le dossier de déploiement si nécessaire
             mkdir -p $DEPLOY_PATH
