@@ -41,4 +41,3 @@ jobs:
             rm -rf dist
             mkdir dist
             unzip -o ./$ZIP_NAME -d dist
-            pm2 restart my-app || true

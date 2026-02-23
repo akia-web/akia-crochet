@@ -57,11 +57,12 @@
      </div>
    </div>
     <hr class="mt-2 border-actionColor">
-      <div class="text-xs text-center mt-4">© 2026 - Akialoops</div>
+      <div class="text-xs text-center mt-4">© 2026 - Akialoops Version : {{ appVersion }}</div>
   </div>
 
 </template>
 <script setup lang="ts">
+const appVersion = __APP_VERSION__;
 </script>
 
 <style scoped>
