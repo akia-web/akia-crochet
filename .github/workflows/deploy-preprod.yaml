@@ -1,57 +1,50 @@
-name: Deploy on Preprod
+name: Deploy Preprod from Tag
 
 on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag de la release à déployer'
+        description: 'Tag à déployer'
         required: true
-        default: 'v1.0.0'
+        default: ''  # laisse vide pour forcer la sélection depuis l'interface
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Récupère le zip correspondant au tag choisi
-      - name: Get asset for selected tag
-        id: get_asset
+      # 1️⃣ Récupère le tag choisi via l'interface
+      - name: Set tag
+        run: |
+          echo "TAG_TO_DEPLOY=${{ github.event.inputs.tag }}" >> $GITHUB_ENV
+
+      # 2️⃣ Récupère la release correspondante
+      - name: Get release for tag
+        id: get_release
         uses: actions/github-script@v6
         with:
           script: |
-            const tag = '${{ github.event.inputs.tag }}';
+            const tag = process.env.TAG_TO_DEPLOY;
             const release = await github.rest.repos.getReleaseByTag({
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag
             });
 
-            // Cherche le zip qui contient exactement le tag
-            const asset = release.data.assets.find(a => a.name.includes(tag) && a.name.endsWith('.zip'));
+            // Cherche le zip associé
+            const asset = release.data.assets.find(a => a.name.endsWith('.zip'));
             if (!asset) throw new Error(`Aucun zip trouvé pour le tag ${tag}`);
 
             return JSON.stringify({ assetUrl: asset.browser_download_url, assetName: asset.name });
 
-      # 2️⃣ Télécharge le zip sur le runner
-      - name: Download selected asset
+      # 3️⃣ Télécharge le zip
+      - name: Download release zip
         run: |
-          ASSET_INFO=$(echo '${{ steps.get_asset.outputs.result }}' | jq -r '.assetName')
-          ASSET_URL=$(echo '${{ steps.get_asset.outputs.result }}' | jq -r '.assetUrl')
-          echo "Downloading $ASSET_INFO from $ASSET_URL"
+          ASSET_INFO=$(echo '${{ steps.get_release.outputs.result }}' | jq -r '.assetName')
+          ASSET_URL=$(echo '${{ steps.get_release.outputs.result }}' | jq -r '.assetUrl')
           curl -L -o "$ASSET_INFO" "$ASSET_URL"
 
-      # 3️⃣ Upload le zip sur le serveur
-      - name: Upload zip to server
-        uses: appleboy/scp-action@v0.1.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          port: ${{ secrets.SERVER_PORT }}
-          source: "${{ steps.get_asset.outputs.result | fromJson | .assetName }}"
-          target: "/var/www/html/akialoops-preprod/"
-
-      # 4️⃣ Déploiement SSH
+      # 4️⃣ Upload et déploiement sur serveur
       - name: Deploy on server
         uses: appleboy/ssh-action@v0.1.8
         with:
@@ -63,10 +56,8 @@ jobs:
             DEPLOY_PATH=/var/www/html/akialoops-preprod
             cd $DEPLOY_PATH
 
-            # Récupère le zip téléchargé
             ZIP_NAME=$(ls dist-*.zip | sort -V | tail -n1)
 
-            # Backup si dist existe
             if [ -d "dist" ]; then
               mv dist dist_backup_$(date +%Y%m%d%H%M%S)
               rm -rf dist
