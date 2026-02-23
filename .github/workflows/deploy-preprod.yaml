@@ -40,8 +40,9 @@ jobs:
       # 3️⃣ Télécharge le zip
       - name: Download release zip
         run: |
-          ASSET_INFO=$(echo '${{ steps.get_release.outputs.result }}' | jq -r '.assetName')
-          ASSET_URL=$(echo '${{ steps.get_release.outputs.result }}' | jq -r '.assetUrl')
+          ASSET_INFO=$(echo ${{ steps.get_release.outputs.result }} | jq -r '.assetName')
+          ASSET_URL=$(echo ${{ steps.get_release.outputs.result }} | jq -r '.assetUrl')
+          echo "Downloading $ASSET_INFO from $ASSET_URL"
           curl -L -o "$ASSET_INFO" "$ASSET_URL"
 
       # 4️⃣ Upload et déploiement sur serveur
