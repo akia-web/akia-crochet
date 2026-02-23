@@ -44,7 +44,7 @@ jobs:
           echo "VITE_CART=$VITE_CART" >> .env
 
       - name: Build project
-        run: npm run build -- --mode $MODE
+        run: npm run build
 
       - name: Zip dist with tag
         run: |
