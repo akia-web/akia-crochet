@@ -38,8 +38,8 @@ jobs:
       # 3️⃣ Télécharge le zip sur le runner et définit ZIP_NAME
       - name: Download release zip
         run: |
-          ASSET_NAME=$(echo '${{ steps.get_asset.outputs.result }}' | jq -r '.assetName')
-          ASSET_URL=$(echo '${{ steps.get_asset.outputs.result }}' | jq -r '.assetUrl')
+          ASSET_NAME=$(echo '${{ steps.get_asset.outputs.result }}' | jq -r '. | fromjson | .assetName')
+          ASSET_URL=$(echo '${{ steps.get_asset.outputs.result }}' | jq -r '. | fromjson | .assetUrl')
           echo "Downloading $ASSET_NAME from $ASSET_URL"
           curl -L -o "$ASSET_NAME" "$ASSET_URL"
           echo "ZIP_NAME=$ASSET_NAME" >> $GITHUB_ENV
