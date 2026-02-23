@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Récupérer l'asset
+      # 1️⃣ Récupérer l'asset correspondant au tag
       - name: Get asset
         id: get_asset
         uses: actions/github-script@v6
@@ -33,7 +33,7 @@ jobs:
               assetName: asset.name
             });
 
-      # 2️⃣ Télécharger sur le runner
+      # 2️⃣ Télécharger le zip sur le runner
       - name: Download zip
         run: |
           ASSET_NAME=$(echo '${{ steps.get_asset.outputs.result }}' | jq -r '. | fromjson | .assetName')
@@ -51,7 +51,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           source: "${{ env.ZIP_NAME }}"
-          target: "/var/www/html/akialoops-preprod"
+          target: "/var/www/html/akialoops-preprod/"
 
       # 4️⃣ Déployer sur le serveur
       - name: Deploy via SSH
@@ -66,18 +66,16 @@ jobs:
             DEPLOY_PATH=/var/www/html/akialoops-preprod
             cd $DEPLOY_PATH
 
-            echo "Current directory:"
-            pwd
-
-            echo "Files in directory:"
-            ls -la
-            
-            echo "ZIP_NAME = $ZIP_NAME"
-  
+            # Backup de l'ancien dist si présent
             if [ -d "dist" ]; then
               mv dist dist_backup_$(date +%Y%m%d%H%M%S)
             fi
 
+            # Suppression propre
             rm -rf dist
-            mkdir dist
-            unzip -o "/var/www/html/akialoops-preprod/$ZIP_NAME" -d dist
+
+            # Extraction (le zip contient déjà un dossier dist/)
+            unzip -o "$ZIP_NAME"
+
+            # Optionnel : supprimer le zip après déploiement
+            rm -f "$ZIP_NAME"
