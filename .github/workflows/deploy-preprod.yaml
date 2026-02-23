@@ -65,10 +65,18 @@ jobs:
             DEPLOY_PATH=/var/www/html/akialoops-preprod
             cd $DEPLOY_PATH
 
+            echo "Current directory:"
+            pwd
+
+            echo "Files in directory:"
+            ls -la
+            
+            echo "ZIP_NAME = $ZIP_NAME"
+  
             if [ -d "dist" ]; then
               mv dist dist_backup_$(date +%Y%m%d%H%M%S)
             fi
 
             rm -rf dist
             mkdir dist
-            unzip -o $ZIP_NAME -d dist
+            unzip -o "/var/www/html/akialoops-preprod/$ZIP_NAME" -d dist
