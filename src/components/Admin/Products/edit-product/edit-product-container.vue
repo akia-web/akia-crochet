@@ -97,35 +97,30 @@ import { minLength, required } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core';
 import type { HomeConfigDto } from '@/interfaces/home-config.dto.ts';
 
-const variants = ref<ProductVariantDto[]>([{
-  name: '',
-  color: '#000000',
-  materials: [],
-  imagesFiles: [],
-  stock: 0,
-  randomId: crypto.randomUUID(),
-  images: [],
-  price: 0,
-  width: 0,
-  height: 0,
-  weight: 0,
-  depth: 0
-}]);
+// const variants = ref<ProductVariantDto[]>([{
+//   name: '',
+//   color: '#000000',
+//   materials: [],
+//   imagesFiles: [],
+//   stock: 0,
+//   randomId: crypto.randomUUID(),
+//   images: [],
+//   price: 0,
+//   width: 0,
+//   height: 0,
+//   weight: 0,
+//   depth: 0
+// }]);
 
 const storeEditPeluche = usePlushieEditStore();
-const videoLinks = ref<LinkDto[]>([]);
-const isValidPrice = ref<boolean>(true);
-const form1IsValid = ref<boolean>(false);
+// const videoLinks = ref<LinkDto[]>([]);
+// const isValidPrice = ref<boolean>(true);
+// const form1IsValid = ref<boolean>(false);
 const form3IsValid = ref<boolean>(true);
 const toast = useToast();
 const router = useRouter();
 const loading = ref<boolean>(false);
 const id = ref<number | undefined>(undefined);
-
-watch(variants, (newVariant) => {
-  form3IsValid.value = newVariant.length > 0 && (newVariant[0].name !== undefined || newVariant[0].name !== '');
-
-});
 
 const route = useRoute();
 
@@ -150,6 +145,11 @@ const form3 = reactive<{ variants: ProductVariantDto[] }>({
   variants: [],
 });
 
+watch(form3.variants, (newVariant) => {
+  form3IsValid.value = newVariant.length > 0 && (newVariant[0].name !== undefined || newVariant[0].name !== '');
+
+});
+
 const v1$ = useVuelidate(rules, form1, { $autoDirty: true });
 
 onMounted(async () => {
@@ -158,6 +158,7 @@ onMounted(async () => {
         .then(response => response.json())
         .then(async (data: ProductDto) => {
           console.warn(data);
+          id.value = data.id;
           form1.name = data.name ? data.name : '';
           form1.description = data.description ? data.description : '';
           form1.creator = data.creator;
@@ -167,7 +168,7 @@ onMounted(async () => {
 
           if (data.productVariants) {
             form3.variants = data.productVariants;
-            for (const variant of variants.value) {
+            for (const variant of form3.variants) {
               const images: { file: File, row: number }[] = [];
               for (const image of variant.images) {
                 const newImage = await urlToFile(image.url, getImageName(image.url), getMimeType(image.url));
@@ -225,7 +226,7 @@ const send = async () => {
   const allImage: File[] = [];
   const formData = new FormData();
 
-  for (const variant of variants.value) {
+  for (const variant of form3.variants) {
     if (variant.imagesFiles) {
       for (const file of variant.imagesFiles) {
         const isAlreadyPresent = variant.images.some(img => {
@@ -250,21 +251,22 @@ const send = async () => {
   formData.append('name', form1.name);
   formData.append('description', form1.description);
   formData.append('collection', form1.collection.toString());
+  formData.append('isVisible', form1.isVisible.toString());
 
   if (id.value) {
     formData.append('id', id.value.toString());
   }
 
 
-  if (videoLinks.value && videoLinks.value.length > 0) {
-    formData.append(`links`, JSON.stringify(videoLinks.value));
+  if (form2.links.length > 0) {
+    formData.append(`links`, JSON.stringify(form2.links));
   }
 
   if (form1.creator) {
     formData.append('creator', JSON.stringify(form1.creator));
   }
 
-  formData.append('productVariants', JSON.stringify(variants.value));
+  formData.append('productVariants', JSON.stringify(form3.variants));
 
   const method: 'PATCH' | 'POST' = id.value ? 'PATCH' : 'POST';
   loading.value = true;

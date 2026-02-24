@@ -12,7 +12,7 @@
 
     </template>
     <template #content>
-      <img :src="selectedVariant.images[0].url" class="image-card" alt="">
+      <img v-if="selectedVariant.images && selectedVariant.images.length>0" :src="selectedVariant.images[0].url" class="image-card" alt="">
 
       <div class="flex gap-2 mt-1">
         <div v-for="(variant, index) in product.productVariants "
