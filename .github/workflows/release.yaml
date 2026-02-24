@@ -38,13 +38,17 @@ jobs:
       # Crée le fichier .env selon le mode
       - name: Create .env file
         run: |
+          echo "MODE=$MODE" > .env
           if [[ "$MODE" == "preprod" ]]; then
-            echo "VITE_BASE_URL_BACK=$VITE_BASE_URL_BACK_PREPROD" >> .env
+            echo "VITE_BASE_URL_BACK=${{ secrets.VITE_BASE_URL_BACK_PREPROD }}" >> .env
           elif [[ "$MODE" == "prod" ]]; then
-            echo "VITE_BASE_URL_BACK=$VITE_BASE_URL_BACK_PROD" >> .env
+            echo "VITE_BASE_URL_BACK=${{ secrets.VITE_BASE_URL_BACK_PROD }}" >> .env
           fi
-          echo "VITE_AUTH_STORAGE=$VITE_AUTH_STORAGE" >> .env
-          echo "VITE_CART=$VITE_CART" >> .env
+          echo "VITE_AUTH_STORAGE=${{ secrets.VITE_AUTH_STORAGE }}" >> .env
+          echo "VITE_CART=${{ secrets.VITE_CART }}" >> .env
+
+      - name: Debug .env
+        run: cat .env
 
       - name: Build project
         run: npm run build
