@@ -29,7 +29,7 @@
 }
 
 
-@media (min-width: 840px) {
+@media (min-width: 768px) {
     .youtube-video {
         width: calc((112.5px * 5) + 17px);
         height: 400px;
