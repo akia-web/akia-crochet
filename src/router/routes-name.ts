@@ -1,6 +1,7 @@
 //--------Admin-------------------
 export const ADMIN_DASHBORD_ROUTE: string = 'AdminDashboard';
 export const ADMIN_CREATOR_ROUTE: string = 'AdminCreator';
+export const ADMIN_BOXTAL_ROUTE: string = 'AdminBoxtal';
 export const ADMIN_ADD_CREATOR_ROUTE: string = 'AdminAddCreator';
 export const ADMIN_PLUSHIES_ROUTE: string = 'AdminPlushies';
 export const ADMIN_ADDRESS_ROUTE: string = 'AdminAddress';

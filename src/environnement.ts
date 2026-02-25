@@ -18,6 +18,7 @@ export const env = {
     mapToken: 'boxtal/token-auth-boxtal-maps',
     createEtiquette: 'boxtal/order-shipping',
     getDocuments: 'boxtal/get-documents',
+    crud: 'boxtal/webhook',
   },
   creator: {
     crud: 'creator'

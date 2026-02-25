@@ -7,6 +7,7 @@ export const adminMenuItems: MenuItem[] = [
   {
     label: 'Config', icon:'pi pi-cog' ,items: [
       { label: 'Adresses', icon: 'pi pi-address-book', url: '/address' },
+      { label: 'Boxtal', icon: 'pi pi-truck', url: '/boxtal' },
       { label: 'Createurs', icon: 'pi pi-crown', url: '/creators' },
       { label: `Page d'accueil`, icon: 'pi pi-image', url: '/home-page' },
       { label: 'Points de livraison', icon: 'pi pi-car', url: '/address' },

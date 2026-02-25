@@ -3,7 +3,31 @@ import { updatePinia } from '@/functions/auth.ts';
 import { useUserStore } from '@/stores/user.ts';
 import type { UserDto } from '@/interfaces/user.dto.ts';
 import { RoleEnum } from '@/enum/role.enum.ts';
-import { ADMIN_ADD_CREATOR_ROUTE, ADMIN_ADD_PLUSHIES_ROUTE, ADMIN_ADDRESS_ROUTE, ADMIN_CREATOR_ROUTE, ADMIN_DASHBORD_ROUTE, ADMIN_ETIQUETTES_ROUTE, ADMIN_HOME_ROUTE, ADMIN_ORDERS_ROUTE, ADMIN_PATTERN_ROUTE, ADMIN_PLUSHIES_ROUTE, ADMIN_UPDATE_HOME_ROUTE, CONFIRM_EMAIL_ROUTE, CONNEXION_ROUTE, CONTACT_ROUTE, INSCRIPTION_ROUTE, PAYMENT_ROUTE, PRODUCTS_DETAILS_ROUTE, PRODUCTS_ROUTE, PROFILE_ORDER_ROUTE, PROFILE_ROUTE, RECAP_CART_ROUTE, SIMULATOR_ROUTE } from '@/router/routes-name.ts';
+import {
+  ADMIN_ADD_CREATOR_ROUTE,
+  ADMIN_ADD_PLUSHIES_ROUTE,
+  ADMIN_ADDRESS_ROUTE,
+  ADMIN_BOXTAL_ROUTE,
+  ADMIN_CREATOR_ROUTE,
+  ADMIN_DASHBORD_ROUTE,
+  ADMIN_ETIQUETTES_ROUTE,
+  ADMIN_HOME_ROUTE,
+  ADMIN_ORDERS_ROUTE,
+  ADMIN_PATTERN_ROUTE,
+  ADMIN_PLUSHIES_ROUTE,
+  ADMIN_UPDATE_HOME_ROUTE,
+  CONFIRM_EMAIL_ROUTE,
+  CONNEXION_ROUTE,
+  CONTACT_ROUTE,
+  INSCRIPTION_ROUTE,
+  PAYMENT_ROUTE,
+  PRODUCTS_DETAILS_ROUTE,
+  PRODUCTS_ROUTE,
+  PROFILE_ORDER_ROUTE,
+  PROFILE_ROUTE,
+  RECAP_CART_ROUTE,
+  SIMULATOR_ROUTE
+} from '@/router/routes-name.ts';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +40,11 @@ const router = createRouter({
           path: 'dashboard',
           name: ADMIN_DASHBORD_ROUTE,
           component: () => import('../components/Admin/Dashboard/AdminDashboardComponent.vue'),
+        },
+        {
+          path: 'boxtal',
+          name: ADMIN_BOXTAL_ROUTE,
+          component: () => import('@/components/Admin/config/Boxtal/BoxtalComponent.vue'),
         },
         {
           path: 'creators',

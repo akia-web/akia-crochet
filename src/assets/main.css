@@ -45,12 +45,24 @@ h1, h2 {
     font-weight: bold;
 }
 
-.marker-actif svg g g{
+.marker-actif svg g g {
     fill: var(--action-color) !important;
 }
 
-.marker-inactif svg g g{
+.marker-inactif svg g g {
     fill: var(--color-grey) !important;
+}
+
+.bg-success {
+    background-color: #15803d;
+}
+
+.bg-warning {
+    background-color: #FFC107;
+}
+
+.bg-danger {
+    background-color: #b91c1c;
 }
 
 :root {
