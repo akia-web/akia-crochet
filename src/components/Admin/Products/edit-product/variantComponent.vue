@@ -377,8 +377,7 @@ const openDialog = (index: number) => {
     onClose: (options?: { data?: { newImage: File } }) => {
       if (options?.data?.newImage) {
         imagesFiles.value[index].file = options.data.newImage
-
-        images.value = images.value.filter(img => img.url.split('/images/')[1] !== options.data!.newImage.name.split('new-').pop());
+        images.value = images.value.filter(img => img.url.split(`/images/${import.meta.env.VITE_PREFIX_CLOUDINARY_FOLDER}/`)[1] !== options.data!.newImage.name.split('new-').pop());
       }
     },
   });

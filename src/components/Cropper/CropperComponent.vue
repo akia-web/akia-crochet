@@ -90,7 +90,9 @@ const confirmCrop = () => {
   canvas.toBlob((blob: any) => {
     if (!blob) return;
 
-    const croppedFile = new File([blob], `new-${file.name}`, { type: file.type });
+    const fileName = file.name.split('/').pop();
+    const newFileName = `new-${fileName}`;
+    const croppedFile = new File([blob], newFileName, { type: file.type });
 
     if (cropperSrc.value) URL.revokeObjectURL(cropperSrc.value);
     dialogRef.value.close({ newImage: croppedFile });

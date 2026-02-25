@@ -90,7 +90,6 @@ const download = async (boxtalId: string) => {
   await apiGet(`${api(env.boxtal.getDocuments)}?id=${boxtalId}`, 'GET', true)
       .then(response => response.json())
       .then((data: any) => {
-        console.warn(data);
         window.open(data.url, '_blank');
       })
       .catch(e => {

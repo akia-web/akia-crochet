@@ -69,7 +69,6 @@ onMounted(async () => {
   loading.value = true;
   await apiGet(`${api(env.order.crud)}/${props.id}`, 'GET', true).then(response => response.json())
       .then(data => {
-        console.warn(data);
         orderDetails.value = data;
       }).catch(error => {
         router.push('/');

@@ -25,7 +25,6 @@ onMounted(async () => {
   apiGet(api(env.homePage.active), 'GET', true)
       .then(response => response.json())
       .then((data: HomeConfigDto) => {
-        console.warn(data);
         config.value = data;
       });
 });

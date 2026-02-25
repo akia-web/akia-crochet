@@ -157,7 +157,6 @@ onMounted(async () => {
     await apiGet(`${api(env.products.byId)}?id=${route.query.id}`, 'GET', true)
         .then(response => response.json())
         .then(async (data: ProductDto) => {
-          console.warn(data);
           id.value = data.id;
           form1.name = data.name ? data.name : '';
           form1.description = data.description ? data.description : '';
@@ -242,7 +241,6 @@ const send = async () => {
     }
 
   }
-
 
   allImage.forEach((file) => {
     formData.append('images', file as File);

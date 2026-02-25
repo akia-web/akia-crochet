@@ -44,8 +44,10 @@ export const env = {
     variant: 'products/variant',
     byId: 'products/by-id',
   },
-
   stripe: {
     checkout: 'stripe/checkout'
+  },
+  newsletter: {
+    crud: 'newsletter',
   }
 };

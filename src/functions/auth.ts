@@ -14,8 +14,6 @@ export const updatePinia = async (storeUser: any): Promise<void> => {
       }
     );
   } catch (error: any) {
-    console.warn('pas ok');
-    console.warn(error.message);
     if (error.message === 'Failed to fetch') {
       window.location.href = '/error-page';
       return;

@@ -67,7 +67,6 @@ const props = defineProps({
 });
 
 const formattedDate = (date: string | Date, hours: boolean = true) => {
-  console.warn(date);
   return new Intl.DateTimeFormat('fr-FR', {
     day: '2-digit',
     month: 'long',

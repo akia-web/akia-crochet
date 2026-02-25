@@ -121,7 +121,6 @@ const createThumbnail = (file: File) => {
 };
 
 const send = async () => {
-  console.warn(form);
   const formData = new FormData();
 
   if (thumbnail.value && !v$.value.$invalid) {

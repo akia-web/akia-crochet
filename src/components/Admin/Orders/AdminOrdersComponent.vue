@@ -213,7 +213,7 @@ onMounted(async () => {
   await apiGet(api(env.shipment.crud), 'GET', true).then(response => response.json())
       .then(data => {
         orders.value = data;
-        console.warn(data);
+
       });
 });
 
