@@ -41,6 +41,7 @@ jobs:
           echo "MODE=$MODE" > .env
           if [[ "$MODE" == "preprod" ]]; then
             echo "VITE_BASE_URL_BACK=${{ secrets.VITE_BASE_URL_BACK_PREPROD }}" >> .env
+            echo "VITE_PREFIX_CLOUDINARY_FOLDER=${{ secrets.VITE_PREFIX_CLOUDINARY_FOLDER_PREPROD }}" >> .env
           elif [[ "$MODE" == "prod" ]]; then
             echo "VITE_BASE_URL_BACK=${{ secrets.VITE_BASE_URL_BACK_PROD }}" >> .env
           fi
