@@ -6,13 +6,15 @@
             class="mt-4">
         <template #title>
           <div class="flex gap-2 items-center">
-            <p class="text-base">{{ hook.eventType }}</p>
+            <p class="text-base" @click="update(hook)">{{ hook.eventType }}</p>
             <p class="w-[15px] h-[15px] rounded-full mb-[5px]" :class="[getStatusColor(hook.status)]"></p>
           </div>
 
         </template>
         <template #content>
           <DateComponent :date="hook.createdAt"/>
+          <p class="text-xs">{{ hook.callbackUrl }}</p>
+          <p class="text-xs">id: {{hook.id}}</p>
           <div class="flex flex-row-reverse">
             <span class="pi pi-times text-actionColor"/>
           </div>
@@ -33,7 +35,7 @@
     </form>
   </div>
 
-
+  <DynamicDialog/>
 </template>
 <script lang="ts" setup>
 
@@ -45,6 +47,9 @@ import { useToast } from 'primevue/usetoast';
 import type { WebhookResponseDto } from '@/components/Admin/config/Boxtal/interface/webhook-response.dto.ts';
 import { StatusWebhookEnum } from '@/enum/status-webhook-enum.ts';
 import DateComponent from '@/components/Admin/Orders/dateComponent.vue';
+import { useDialog } from 'primevue';
+import EditPopupComponent from '@/components/Admin/config/Boxtal/popup/EditPopupComponent.vue';
+import { configOpenDialog } from '@/config/openDialogConfig.ts';
 
 const options = ['DOCUMENT_CREATED', 'TRACKING_CHANGED'];
 const form = reactive({
@@ -53,6 +58,7 @@ const form = reactive({
 });
 const toast = useToast();
 const webhooks = ref<WebhookResponseDto[]>([]);
+const dialog = useDialog();
 
 onMounted(() => {
   apiGet(api(env.boxtal.crud), 'GET', true).then(response => response.json())
@@ -87,5 +93,12 @@ const getStatusColor = (status: StatusWebhookEnum) => {
     case StatusWebhookEnum.SUSPENDED:
       return 'bg-danger';
   }
+};
+
+const update = async (hook: WebhookResponseDto) => {
+  dialog.open(EditPopupComponent, {
+    props: configOpenDialog(`Modifier l'event ${hook.eventType}`),
+    data: hook,
+  });
 };
 </script>

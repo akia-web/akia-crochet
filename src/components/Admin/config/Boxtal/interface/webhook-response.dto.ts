@@ -5,4 +5,5 @@ export interface WebhookResponseDto {
   createdAt: string;
   eventType: string;
   id: string;
+  callbackUrl: string;
 }
