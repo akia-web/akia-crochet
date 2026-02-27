@@ -16,7 +16,7 @@
           <p class="text-xs">{{ hook.callbackUrl }}</p>
           <p class="text-xs">id: {{hook.id}}</p>
           <div class="flex flex-row-reverse">
-            <span class="pi pi-times text-actionColor"/>
+            <span class="pi pi-times text-actionColor" @click="deleteHook(hook)"/>
           </div>
         </template>
       </Card>
@@ -51,7 +51,7 @@ import { useDialog } from 'primevue';
 import EditPopupComponent from '@/components/Admin/config/Boxtal/popup/EditPopupComponent.vue';
 import { configOpenDialog } from '@/config/openDialogConfig.ts';
 
-const options = ['DOCUMENT_CREATED', 'TRACKING_CHANGED'];
+const options = ref(['DOCUMENT_CREATED', 'TRACKING_CHANGED']);
 const form = reactive({
   selectedType: 'DOCUMENT_CREATED',
   checked: false,
@@ -62,15 +62,15 @@ const dialog = useDialog();
 
 onMounted(() => {
   apiGet(api(env.boxtal.crud), 'GET', true).then(response => response.json())
-      .then(data => {
+      .then((data: WebhookResponseDto[]) => {
         webhooks.value = data;
-        console.warn(data);
       });
 });
 
 const createWebhook = async () => {
   apiPost(api(env.boxtal.crud), 'POST', form, false, true)
-      .then(() => {
+      .then((data: WebhookResponseDto) => {
+        webhooks.value.push(data);
         toast.add({ severity: 'success', summary: 'Webhook créer', life: 3000 });
       })
       .catch(e => {
@@ -84,7 +84,6 @@ const createWebhook = async () => {
 };
 
 const getStatusColor = (status: StatusWebhookEnum) => {
-  console.warn(status);
   switch (status) {
     case StatusWebhookEnum.ACTIVE:
       return 'bg-success';
@@ -101,4 +100,16 @@ const update = async (hook: WebhookResponseDto) => {
     data: hook,
   });
 };
+
+const deleteHook = async (hook: WebhookResponseDto) => {
+  const url = `${api(env.boxtal.crud)}?id=${hook.id}`;
+ await apiGet(url, 'DELETE', true)
+      .then(response => response.json())
+      .then(() => {
+        webhooks.value = webhooks.value.filter((element: WebhookResponseDto) => element.id !== hook.id);
+      })
+      .catch(error => {
+        console.error('Erreur :', error);
+      });
+}
 </script>

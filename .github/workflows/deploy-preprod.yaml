@@ -12,20 +12,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout au tag choisi
       - name: Checkout repository at tag
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.tag }}
 
-      # 2️⃣ Setup Node
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'npm'
 
-      # 3️⃣ Install deps
       - name: Install dependencies
         run: npm ci
 
@@ -38,11 +35,9 @@ jobs:
           VITE_CART=${{ secrets.VITE_CART }}
           EOF
 
-      # 4️⃣ Build Vue
       - name: Build project
         run: npm run build
 
-      # 5️⃣ Supprimer l'ancien dist sur le serveur
       - name: Remove old dist
         uses: appleboy/ssh-action@v0.1.8
         with:
@@ -53,7 +48,6 @@ jobs:
           script: |
             rm -rf /var/www/html/akialoops-preprod/dist
 
-      # 6️⃣ Envoyer le nouveau dist
       - name: Copy new dist
         uses: appleboy/scp-action@v0.1.4
         with:
