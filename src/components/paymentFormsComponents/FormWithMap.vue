@@ -12,8 +12,11 @@
                          :name="parcelPoint.name"
                          :value="{name: parcelPoint.name, code: parcelPoint.code, supplement: parcelPoint.supplement}"/>
             <label :for="'parcel-'+index" class="mr-4">{{ parcelPoint.name }}
+              <span v-if="parcelPoint.name === 'Domicile'">
+                avec Colissimo
+              </span>
               <span v-if="parcelPoint.name === 'Domicile'"
-                    class="text-xs italic">+(5 euros)</span>
+                    class="text-xs italic"> (+5 euros)</span>
             </label>
           </div>
         </div>
@@ -36,8 +39,6 @@
                        :city="props.city"
                        operationType="DEPARTURE"
       />
-
-
     </div>
   </div>
 
@@ -96,11 +97,6 @@ const parcelPointsNetwork: { code: string, name: string, supplement: number }[] 
   {
     name: 'Mondial Relais',
     code: 'MONR-CpourToi',
-    supplement: 0
-  },
-  {
-    code: 'CHRP-ChronoShoptoShop',
-    name: 'Chronopost',
     supplement: 0
   },
   {

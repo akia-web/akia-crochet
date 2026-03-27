@@ -1,8 +1,8 @@
-export const configOpenDialog = (header: string, closable:boolean = true) => {
+export const configOpenDialog = (header: string, closable:boolean = true, defaultWidth:string = '100%') => {
   return {
     header,
     style: {
-      width: '100%',
+      width: defaultWidth,
     },
     breakpoints: {
       '960px': '75vw',

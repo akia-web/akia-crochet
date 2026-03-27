@@ -140,7 +140,8 @@
 
               <div class="flex gap-1 mt-8">
                 <Checkbox v-model="form.cguAccepted" binary id="cgu"/>
-                <label for="cgu">J'accepte les conditions de ventes</label>
+                <label for="cgu">J'accepte les <span @click="openDialog"
+                class="text-actionColor">conditions de ventes</span></label>
               </div>
 
 
@@ -187,9 +188,15 @@ import { apiPost } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
 import type { CheckoutFormDto } from '@/components/paymentFormsComponents/interfaces/checkoutForm.dto.ts';
+import type { LinkDto } from '@/interfaces/link.dto.ts';
+import DialogModal from '@/components/dialog-modal/dialog-modal.vue';
+import { useDialog } from 'primevue';
+import CGV from '@/components/DocsAdministratif/CGV.vue';
+import { configOpenDialog } from '@/config/openDialogConfig.ts';
 
 const storeUser = useUserStore();
 const storeProductsCart = useProductsCartStore();
+const dialog = useDialog();
 
 onMounted(() => {
   if (storeProductsCart.openSlider) {
@@ -202,6 +209,12 @@ onMounted(() => {
     form.deliveryAddress.email = storeUser.user.email;
   }
 });
+
+const openDialog = () => {
+  dialog.open(CGV, {
+    props: configOpenDialog('', true, '90%'),
+  });
+};
 
 const productsToSendAfter = computed<ProductShopDto[]>(() =>
     storeProductsCart.productsCart.filter(

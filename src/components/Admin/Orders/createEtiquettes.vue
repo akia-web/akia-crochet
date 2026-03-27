@@ -51,7 +51,7 @@
       <div class="flex mt-3 gap-4">
         <div>
           <p>Date de livraison</p>
-          <DatePicker v-model="form.date" dateFormat="dd/mm/yy" :minDate="minDate"  />
+          <DatePicker v-model="form.date" dateFormat="dd/mm/yy" :minDate="minDate"/>
         </div>
 
         <div class="flex items-center gap-2 ">
@@ -120,7 +120,7 @@ const form = reactive({
     },
     name: '',
   },
-  carrier: 'MONR-CpourToi',
+  carrier: network,
   date: new Date(),
   isInsured: false,
   checked: false,
@@ -161,7 +161,7 @@ const save = () => {
     length: form.length,
     weight: form.weight,
     parcelPoint: form.selectedParcelPoint.code,
-    carrier: 'MONR-CpourToi',
+    carrier: form.carrier,
     isInsured: form.isInsured,
     checked: form.checked,
     date: form.date

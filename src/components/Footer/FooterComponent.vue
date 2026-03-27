@@ -28,28 +28,22 @@
            <RouterLink :to="{name: 'cgv'}" class="hover:underline">Conditions de vente</RouterLink>
          </li>
          <li>
-           <RouterLink :to="{name: 'deliveryPolicy'}" class="hover:underline">Politique de retour</RouterLink>
-         </li>
-         <li>
            <RouterLink :to="{name: 'privacyPolicy'}" class="hover:underline">Politique de confidentialité</RouterLink>
-         </li>
-         <li>
-           <RouterLink :to="{name: 'returnAndRefunds'}" class="hover:underline">Politique de retours et remboursements</RouterLink>
          </li>
        </ul>
      </div>
      <div>
        <h4 class="font-bold text-xs underline">Mes réseaux</h4>
        <div class="flex gap-4 mt-1 items-center">
-         <a href="https://www.youtube.com/@akia-art/featured" target="_blank">
+         <a href="https://www.youtube.com/@akialoops/featured" target="_blank">
            <span class="pi pi-youtube text-red font-size-1_5em mr-0_5"></span>
          </a>
 
-         <a href="https://www.tiktok.com/@akia_art" target="_blank">
+         <a href="https://www.tiktok.com/@akialoops" target="_blank">
            <span class="pi pi-tiktok font-size-1_5em mr-0_5"></span>
          </a>
 
-         <a href="https://www.instagram.com/akia____art/" target="_blank">
+         <a href="https://www.instagram.com/akialoops/" target="_blank">
            <span class="pi pi-instagram font-size-1_5em mr-0_5"></span>
          </a>
        </div>

@@ -188,11 +188,6 @@ const router = createRouter({
           component: () => import('@/components/DocsAdministratif/CGV.vue'),
         },
         {
-          path: 'politique-de-livraison',
-          name: 'deliveryPolicy',
-          component: () => import('@/components/DocsAdministratif/DeliveryPolicy .vue'),
-        },
-        {
           path: 'mentions-legales',
           name: 'legalNotices',
           component: () => import('@/components/DocsAdministratif/LegalNotices.vue'),
@@ -201,11 +196,6 @@ const router = createRouter({
           path: 'politique-de-confidentialite',
           name: 'privacyPolicy',
           component: () => import('@/components/DocsAdministratif/PrivacyPolicy.vue'),
-        },
-        {
-          path: 'politique-de-retours-et-remboursements',
-          name: 'returnAndRefunds',
-          component: () => import('@/components/DocsAdministratif/ReturnsAndRefunds.vue'),
         },
 
       ],
