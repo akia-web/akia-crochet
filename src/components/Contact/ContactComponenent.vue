@@ -1,5 +1,8 @@
 <template>
+<div class="mb-4">
   <h1 class="text-lg">Demande de contact</h1>
+
+  <p>Vous avez une question ou souhaitez faire un devis ?</p>
 
   <form class="mt-4">
     <div class="flex flex-col gap-4">
@@ -31,6 +34,8 @@
             class="mt-4"
     />
   </form>
+
+</div>
 
 </template>
 

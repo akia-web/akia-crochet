@@ -1,9 +1,23 @@
 <template>
-  <div class="flex flex-col mt-2">
+  <div class="border border-black p-2 mb-2 rounded-lg">
+    <div class="flex justify-between items-center">
+    <div class="flex items-center w-[90%]">
+      <span class="pi pi-trash mr-4" @click="deleteVariant"></span>
+      <h2 class="w-full" @click="updateActiveVariant">{{ name }}</h2>
+    </div>
+    <span class="pi" :class="[isActive? 'pi-angle-down' : 'pi-angle-right']" @click="updateActiveVariant"></span>
+    </div>
+    <div class="flex flex-col mt-2" v-if="isActive">
     <label class="text-xs">Nom</label>
     <InputText v-model="name"/>
 
     <br>
+
+      <div class="flex items-center gap-2 mt-3">
+        <Checkbox v-model="isVisible" binary id="isVisible"/>
+        <label for="isVisible">En ligne</label>
+      </div>
+      <br>
 
     <label class="text-xs">Matériaux</label>
     <MultiSelect
@@ -180,13 +194,14 @@
     </draggable>
 
     <DynamicDialog/>
+    </div>
   </div>
+  
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import type { ImagesDto } from '@/interfaces/images.dto.ts';
-import draggable from 'vuedraggable';
 import { useDialog } from 'primevue';
 import CropperComponent from '@/components/Cropper/CropperComponent.vue';
 
@@ -200,11 +215,13 @@ const props = defineProps<{
   images: ImagesDto[];
   stock: number;
   index: number;
-  price: number,
-  width: number,
-  height: number,
-  weight: number,
-  depth: number
+  price: number;
+  width: number;
+  height: number;
+  weight: number;
+  depth: number;
+  isActive: boolean;
+  isVisible: boolean
 }>();
 
 const emit = defineEmits([
@@ -218,13 +235,20 @@ const emit = defineEmits([
   'update:width',
   'update:height',
   'update:weight',
-  'update:depth'
+  'update:depth',
+  'update:isVisible',
+  'updateActiveVariant',
+  'deleteVariant',
 ]);
 
 const name = computed({
   get: () => props.name,
   set: (value) => emit('update:name', value)
 });
+
+const updateActiveVariant = () => {
+  emit('updateActiveVariant', props.isActive ? undefined :  props.index)
+}
 
 const color = computed({
   get: () => props.color,
@@ -240,6 +264,11 @@ const materials = computed({
   get: () => props.materials,
   set: (value) => emit('update:materials', value)
 });
+
+const isVisible = computed({
+  get: () => props.isVisible,
+  set: (value) => emit('update:isVisible', value)
+})
 
 const imagesFiles = computed({
   get: () => props.imagesFiles,
@@ -346,6 +375,11 @@ const getNextRow = (fileIndex?: number) => {
   const maxRow = Math.max(...rows);
   return maxRow + 1;
 };
+
+const deleteVariant = () => {
+  console.warn('je supprime')
+  emit('deleteVariant', props.index)
+}
 
 const updateRows = () => {
   imagesFiles.value.forEach((imageFile, index) => {

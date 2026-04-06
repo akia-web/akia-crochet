@@ -76,4 +76,8 @@ h1, h2 {
     --color-grey-transparent: rgba(107, 114, 128, 0.7);
     --color-grey: rgba(107, 114, 128);
     --very-light-grey: #edebed;
+    --success-light: #d4edcd;
+    --success-dark: #1f4b23;
+    --warning-light: #f6f2c5;
+    --warning-dark: #aea63c;
 }

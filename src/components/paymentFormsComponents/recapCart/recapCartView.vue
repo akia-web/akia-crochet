@@ -78,9 +78,10 @@ const props = defineProps({
 
 const openDialog = () => {
   dialog.open(ListOutOfStockProduct, {
-    props: configOpenDialog('Liste des produits à modifier', false),
+    props: configOpenDialog('Liste des produits à modifier', false, "90%"),
     data: {
-      list: storeProductsCart.listOutOfStocks
+      listOutOfStock: storeProductsCart.listOutOfStocks,
+      listDeletedProduct: storeProductsCart.listDeletedProducts
     },
     onClose: () => {
     }

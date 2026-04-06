@@ -40,6 +40,7 @@ export const env = {
     updateStatus: 'shipment/update-status'
   },
   products: {
+    allAdmin: 'products/all-admin',
     crud: 'products',
     byName: 'products/by-name',
     variant: 'products/variant',

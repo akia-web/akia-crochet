@@ -9,7 +9,11 @@ export default {
         actionColorHover: 'var(--action-color-hover)',
         bgSite: 'var(--bg-site)',
         bgLightGrey: 'var(--very-light-grey)',
-        otherPink: '#CD829F'
+        otherPink: '#CD829F',
+        successLight: 'var(--success-light)',
+        successDark: 'var(--success-dark)',
+        warningLight: 'var(--warning-light)',
+        warningDark: 'var(--warning-dark)',
       }
     },
   },

@@ -15,7 +15,7 @@ export const adminMenuItems: MenuItem[] = [
   },
   {
     label: 'Produits', icon: 'pi pi-book', items: [
-      { label: 'Produits', icon: 'pi pi-camera', url: '/Produits' },
+      { label: 'Produits', icon: 'pi pi-camera', url: '/produits' },
       { label: 'Patrons', icon: 'pi pi-file-edit', url: '/Patrons' },
     ]
   },

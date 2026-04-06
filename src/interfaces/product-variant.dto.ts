@@ -14,4 +14,6 @@ export interface ProductVariantDto {
   width: number;
   weight: number;
   depth: number;
+  row: number;
+  isVisible: boolean
 }

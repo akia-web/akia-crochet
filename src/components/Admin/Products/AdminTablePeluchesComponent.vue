@@ -47,7 +47,7 @@ onMounted(async () => {
 });
 
 const getPeluches = async (category: string): Promise<any> => {
-  apiGet(api(env.products.crud), 'GET')
+  apiGet(api(env.products.allAdmin), 'GET',true)
       .then(response => response.json())
       .then(data => {
         products.value = data;

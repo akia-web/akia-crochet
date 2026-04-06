@@ -2,18 +2,6 @@
   <h1 class="text-center mb-6 text-xl mt-2"> Informations générales</h1>
   <form>
     <div class="flex column mb-6">
-<!--      <label class="font-size-0_8em italic">Titre-->
-<!--        <span v-if="!isValidName"-->
-<!--              class="text-red ml-2">-->
-<!--          Renseignez le nom-->
-<!--        </span>-->
-<!--      </label>-->
-<!--      <InputText-->
-<!--          :value="name"-->
-<!--          @input="emit('update:name', $event.target ? $event.target.value : '')"-->
-<!--          type="text"-->
-<!--          placeholder="nom"-->
-<!--      />-->
       <LabelAndInputText v-model:property="name"
                          inputId="title"
                          label="Titre"
@@ -73,12 +61,13 @@
       </div>
 
       <div class="flex items-center gap-2 mt-3">
-        <Checkbox v-model="isVisible" binary id="isVisible"/>
-        <label for="isVisible">En ligne</label>
+        <Checkbox :modelValue="isVisible"  binary id="isVisible" @click.prevent="updateVisibility($event)"/>
+        <label for="isVisible" @click="updateVisibility($event)">En ligne</label>
       </div>
     </div>
 
   </form>
+    <DynamicDialog/>
 </template>
 
 <script lang="ts" setup>
@@ -88,6 +77,10 @@ import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
 import type { CreatorDto } from '@/interfaces/creator.dto.ts';
 import LabelAndInputText from '@/components/FormComponents/LabelAndInputText.vue';
+import { useDialog } from 'primevue';
+import VisibilityProductDialog from './visibility-product-dialog.vue';
+import { configOpenDialog } from '@/config/openDialogConfig';
+import type { ProductVariantDto } from '@/interfaces/product-variant.dto';
 
 const creatorsList = ref<CreatorDto[]>([]);
 const activeEditorHtml = ref(false);
@@ -105,12 +98,13 @@ const props = defineProps({
   creator: Object,
   collection: Boolean,
   isVisible: Boolean,
+  variants: Object,
   v$: Object,
 });
 
 const root = document.documentElement;
 const actionColor = getComputedStyle(root).getPropertyValue('--action-color').trim();
-
+const dialog = useDialog()
 
 const modules = {
   toolbar: [
@@ -130,6 +124,8 @@ const emit = defineEmits([
   'update:creator',
   'update:collection',
   'update:isVisible',
+  'update:variants'
+  
 ]);
 
 const creator = computed({
@@ -137,15 +133,14 @@ const creator = computed({
   set: value => emit('update:creator', value)
 });
 
-const isVisible = computed({
-  get: () => props.isVisible,
-  set: value => emit('update:isVisible', value)
-});
+const isVisible =computed(() => props.isVisible);
 
 const name = computed({
   get: () => props.name,
   set: value => emit('update:name', value)
 });
+
+const variantsComputed = computed(() => props.variants);
 
 const description = computed({
   get: () => props.description,
@@ -156,5 +151,30 @@ const collection = computed({
   get: () => props.collection,
   set: value => emit('update:collection', value)
 });
+
+
+const updateVisibility = (event:any) => {
+  console.warn(props.isVisible)
+    dialog.open(VisibilityProductDialog, {
+    props: configOpenDialog('Liste des variants', true, "90%"),
+    data: {
+      variants: variantsComputed,
+      nextVisible: !props.isVisible
+    },
+    onClose: (options?: { data?: { variants: ProductVariantDto[] } }) => {
+      if (options?.data?.variants) {
+        let oneVariantIsVisible : boolean = false;
+       emit('update:variants', options.data.variants)
+        options.data.variants.forEach((element)=>{
+          if(element.isVisible){
+            oneVariantIsVisible=true
+            return
+          }
+        })
+        emit('update:isVisible', oneVariantIsVisible)
+      }
+    },
+  });
+}
 
 </script>

@@ -10,6 +10,7 @@
         <StepPanel v-slot="{ activateCallback }" value="1">
           <div class="p-[10px]">
             <form1 v-model:name="form1.name"
+                   v-model:variants="form3.variants"
                    v-model:description="form1.description"
                    v-model:creator="form1.creator"
                    v-model:collection="form1.collection"
@@ -95,27 +96,9 @@ import type {
 } from '@/components/Admin/Products/edit-product/interfaces/form1-edit-product.dto.ts';
 import { minLength, required } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core';
-import type { HomeConfigDto } from '@/interfaces/home-config.dto.ts';
 
-// const variants = ref<ProductVariantDto[]>([{
-//   name: '',
-//   color: '#000000',
-//   materials: [],
-//   imagesFiles: [],
-//   stock: 0,
-//   randomId: crypto.randomUUID(),
-//   images: [],
-//   price: 0,
-//   width: 0,
-//   height: 0,
-//   weight: 0,
-//   depth: 0
-// }]);
 
 const storeEditPeluche = usePlushieEditStore();
-// const videoLinks = ref<LinkDto[]>([]);
-// const isValidPrice = ref<boolean>(true);
-// const form1IsValid = ref<boolean>(false);
 const form3IsValid = ref<boolean>(true);
 const toast = useToast();
 const router = useRouter();
@@ -185,37 +168,6 @@ onMounted(async () => {
           });
         });
   }
-
-
-  // if (storeEditPeluche.product) {
-  //   const product: ProductDto = storeEditPeluche.product;
-  //   form1.name = product.name!;
-  //   form1.description = product.description!;
-  //   videoLinks.value = product.links!;
-  //   form1.collection = product.collection;
-  //
-  //
-  //   if (product.creator) {
-  //     form1.creator = product.creator;
-  //   }
-  //
-  //   if (product.productVariants) {
-  //     variants.value = product.productVariants;
-  //
-  //
-  //     for (const variant of variants.value) {
-  //       const images = [];
-  //       for (const image of variant.images) {
-  //         const newImage = await urlToFile(image.url, getImageName(image.url), getMimeType(image.url));
-  //         images.push({ file: newImage, row: image.row });
-  //       }
-  //       variant.imagesFiles = images;
-  //     }
-  //   }
-  //
-  //   storeEditPeluche.updatePeluche(null);
-  //   id.value = product.id;
-  // }
 
 })
 ;

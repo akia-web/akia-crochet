@@ -12,6 +12,7 @@ export const useProductsCartStore = defineStore('cart', () => {
     const openModal = ref<boolean>(false);
     const openSlider = ref<boolean>(false);
     const listOutOfStocks = ref<ProductShopDto[]>([]);
+    const listDeletedProducts = ref<ProductShopDto[]>([]);
     const productCartLength = ref<number>(0);
     const livraisonPrice = ref<number>(0);
     const tipsPrice = ref<number>(0);
@@ -85,7 +86,7 @@ export const useProductsCartStore = defineStore('cart', () => {
         await searchAllProducts(JSON.parse(storage));
 
 
-        if (listOutOfStocks.value.length > 0) {
+        if (listOutOfStocks.value.length > 0 || listDeletedProducts.value.length > 0) {
           openModal.value = true;
         }
 
@@ -106,9 +107,14 @@ export const useProductsCartStore = defineStore('cart', () => {
           .then(data => {
             item.productVariant = data;
             item.preOrder = data.stock === 0;
+            console.warn(data)
 
             if (item.preOrder && !item.acceptedPreOrder) {
               listOutOfStocks.value.push(item);
+            }
+
+            if(!data.isVisible){
+              listDeletedProducts.value.push(item)
             }
 
             productsCart.value.push(item);
@@ -148,26 +154,6 @@ export const useProductsCartStore = defineStore('cart', () => {
       saveInLocalStorageCart();
     };
 
-    const veryfyOrder = async () => {
-      for (const item of productsCart.value) {
-        await apiGet(`${api(env.products.variant)}?id=${item.productVariant.id}`, 'GET').then(response => response.json())
-          .then(data => {
-            item.productVariant = data;
-            item.preOrder = data.stock === 0;
-
-            if (item.preOrder && !item.acceptedPreOrder) {
-              listOutOfStocks.value.push(item);
-            }
-          });
-      }
-
-
-      if (listOutOfStocks.value.length > 0) {
-        openModal.value = true;
-      }
-    };
-
-
-    return { productsCart, totalPrice, updateCart, deleteProduct, getLocalStorageCart, openModal, openSlider, updateVisibility, listOutOfStocks, getProductsCartLength, productCartLength, calculateAmount, updateTips, updateLivraisonPrice, livraisonPrice, tipsPrice, deleteCart, veryfyOrder };
+    return { productsCart, totalPrice, updateCart, deleteProduct, getLocalStorageCart, openModal, openSlider, updateVisibility, listOutOfStocks, listDeletedProducts, getProductsCartLength, productCartLength, calculateAmount, updateTips, updateLivraisonPrice, livraisonPrice, tipsPrice, deleteCart };
   })
 ;

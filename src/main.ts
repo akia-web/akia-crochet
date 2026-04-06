@@ -59,6 +59,7 @@ import {
 } from 'primevue';
 import Editor from 'primevue/editor';
 import { Form, FormField } from '@primevue/forms';
+import draggable from 'vuedraggable';
 
 const app = createApp(App);
 
@@ -130,6 +131,7 @@ const components = {
   Textarea,
   Toast,
   Tag,
+  draggable
 };
 
 Object.entries(components).forEach(([name, component]) => {

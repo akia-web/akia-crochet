@@ -11,7 +11,7 @@
   <Transition @enter="enterTransition"
               @leave="leaveTransition">
     <div v-if="clicked" ref="content" class="pl-8">
-      <p class="text-xs">Nos peluches amigurumi sont réalisées à la main en coton, acrylique ou laine chenille, et
+      <p class="text-sm">Nos peluches amigurumi sont réalisées à la main en coton, acrylique ou laine chenille, et
         rembourrées avec un garnissage doux.
         <br>
         Afin de préserver leur qualité, leur douceur et leur forme, nous vous recommandons de suivre les conseils
@@ -20,8 +20,8 @@
         Les couleurs peuvent légèrement varier avec le temps et les lavages. <br>
       </p>
       <div class="mt-2">
-        <span class="text-xs font-bold">Lavage :</span>
-        <ul class="text-xs">
+        <span class="text-sm font-bold">Lavage :</span>
+        <ul class="text-sm">
           <li>- À la main avec de l'eau froide (30°C maximum) recommandé</li>
           <li>- Lavage en machine possible occasionnellement : programme délicat, dans un filet</li>
           <li>- Lessive ou savon doux</li>
@@ -31,8 +31,8 @@
 
 
       <div class="mt-2">
-        <span class="text-xs font-bold">Séchage :</span>
-        <ul class="text-xs">
+        <span class="text-sm font-bold">Séchage :</span>
+        <ul class="text-sm">
           <li>- À l'air libre uniquement</li>
           <li>- Presser doucement pour retirer l’excédent d’eau et remodeler la peluche si nécessaire</li>
           <li>- Éviter toute source de chaleur directe (radiateur, soleil)</li>
@@ -40,8 +40,8 @@
       </div>
 
       <div class="mt-2">
-        <span class="text-xs font-bold">ּÀ éviter</span>
-        <ul class="text-xs">
+        <span class="text-sm font-bold">ּÀ éviter</span>
+        <ul class="text-sm">
           <li>- Eau chaude</li>
           <li>- Produits blanchissants ou javel</li>
         </ul>

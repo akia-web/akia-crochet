@@ -122,7 +122,8 @@ const openDialog = () => {
   dialog.open(ListOutOfStockProduct, {
     props: configOpenDialog('Liste des produits à modifier', false),
     data: {
-      list: storeProductsCart.listOutOfStocks
+      listOutOfStock: storeProductsCart.listOutOfStocks,
+      listDeletedProduct: storeProductsCart.listDeletedProducts
     },
   });
 };

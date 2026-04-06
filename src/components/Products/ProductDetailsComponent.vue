@@ -1,5 +1,5 @@
 <template>
-  <div class="flex mt-8 flex-col lg:flex-row gap-2 bg-white rounded-lg" v-if="product && selectedVariant">
+  <div class="flex mt-8  mb-4 flex-col lg:flex-row gap-2 bg-white rounded-lg" v-if="product && selectedVariant">
     <div class="flex flex-col lg:flex-row gap-2 mx-auto pt-8 lg:pl-[50px] w-full lg:w-[40%] md:min-w-[500px]">
       <div class="flex gap-1 justify-center md:justify-normal lg:flex-col">
         <div v-for="image in selectedVariant.images"
@@ -23,66 +23,79 @@
           productName
         }}{{ product.productVariants && product.productVariants.length > 1 ? ` - ` + selectedVariant.name : `` }}</h1>
 
-      <div class="flex items-center mt-4 gap-2">
-        <img src="@/assets/icones/doc.svg" alt="">
-        <h2 class="font-semibold mt-1">Description du produit :</h2>
-      </div>
-
-      <p class="pl-8" v-html="product.description"></p>
-
-      <div class="mt-4">
-        <div class="flex items-center gap-2">
-          <img src="@/assets/icones/cut.svg" alt="">
-          <h2 class="font-semibold">Matériaux :</h2>
-        </div>
-
-        <div class="flex gap-2 flex-wrap mt-1  pl-8">
-          <Tag v-for="material in selectedVariant.materials" :value="material" severity="secondary"></Tag>
-        </div>
-      </div>
-
-      <div class="flex items-center mt-5 gap-1">
-        <div class="flex items-center gap-2">
-          <img src="@/assets/icones/piggy-bank.svg" alt="">
-          <h2 class="font-semibold">Prix :</h2>
-        </div>
-
-        <p>{{ price }} €</p>
-      </div>
 
 
-      <div v-if="selectedVariant.height && selectedVariant.width" class="flex items-center gap-1 mt-4">
-        <div class="flex items-center gap-2">
-          <img src="@/assets/icones/zoom-out-1.svg" alt="">
-          <h2 class="font-semibold mt-1">Dimension :</h2>
-        </div>
+        <div class="flex flex-col md:flex-row-reverse justify-between">
+          <div class=" w-full md:self-start md:w-[49%] mt-4 
+          text-center p-[10px] border"
+          :class="[selectedVariant.stock && selectedVariant.stock > 0 ? 'bg-successLight border-successDark':'bg-warningLight border-warningDark']">  
+                Produit expédié au transporteur <br>
+                            sous {{ expeditionsTime }}
+          </div>
+          <div class=" md:border-r-2 md:w-[49%] md:mt-4">
+            <div class="flex items-center mt-4 gap-2 ">
+                    <img src="@/assets/icones/doc.svg" alt="">
+                    <h2 class="font-semibold mt-1">Description du produit :</h2>
+            </div>
+            
+            <p class="pl-8" v-html="product.description"></p>
 
-        <p class="mt-1">H. {{ selectedVariant.height }} cm - L. {{ selectedVariant.width }} cm</p>
-      </div>
+            <div class="mt-4">
+              <div class="flex items-center gap-2">
+                <img src="@/assets/icones/cut.svg" alt="">
+                <h2 class="font-semibold">Matériaux :</h2>
+              </div>
+
+              <div class="flex gap-2 flex-wrap mt-1  pl-8">
+                <Tag v-for="material in selectedVariant.materials" :value="material" severity="secondary"></Tag>
+              </div>
+            </div>
+
+            <div class="flex items-center mt-5 gap-1">
+              <div class="flex items-center gap-2">
+                <img src="@/assets/icones/piggy-bank.svg" alt="">
+                <h2 class="font-semibold">Prix :</h2>
+              </div>
+
+              <p class="mt-[5px]">{{ price }} €</p>
+            </div>
 
 
-      <div class="mt-4" v-if="product.productVariants && product.productVariants.length >1">
-        <div class="flex items-center gap-1">
-          <img src="@/assets/icones/paint-bucket.svg" alt="">
-          <h2 class="font-semibold">Couleur :</h2>
-        </div>
+            <div v-if="selectedVariant.height && selectedVariant.width" class="flex items-center gap-1 mt-4">
+              <div class="flex items-center gap-2">
+                <img src="@/assets/icones/zoom-out-1.svg" alt="">
+                <h2 class="font-semibold mt-1">Dimension :</h2>
+              </div>
 
-        <div class="flex gap-2 mt-1 pl-8">
-          <div v-for="(variant, index) in product.productVariants">
-            <div class="w-[20px] h-[20px] rounded-full cursor-pointer"
-                 :style="{ background: variant.color, border: selectedVariant.color === variant.color?'2px solid black' : 'transparent' }"
-                 @click="updateVariant(index)">
+              <p class="mt-[5px]">H. {{ selectedVariant.height }} cm - L. {{ selectedVariant.width }} cm</p>
+            </div>
+
+
+            <div class="mt-4" v-if="product.productVariants && product.productVariants.length >1">
+              <div class="flex items-center gap-1">
+                <img src="@/assets/icones/paint-bucket.svg" alt="">
+                <h2 class="font-semibold">Couleur :</h2>
+              </div>
+
+              <div class="flex gap-2 mt-1 pl-8">
+                <div v-for="(variant, index) in product.productVariants">
+                  <div class="w-[20px] h-[20px] rounded-full cursor-pointer"
+                      :style="{ background: variant.color, border: selectedVariant.color === variant.color?'2px solid black' : 'transparent' }"
+                      @click="updateVariant(index)">
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="mt-8">
+              <MaintenanceTipsComponent/>
             </div>
           </div>
-
         </div>
-      </div>
-      <div class="mt-8">
-        <MaintenanceTipsComponent/>
-      </div>
+     
 
 
-      <Button :label="selectedVariant.stock >0? 'Ajouter': 'Pré-commander'"
+      <Button :label="selectedVariant.stock >0? 'Ajouter au panier': 'Pré-commander'"
               icon="pi pi-cart-plus"
               class="mt-8"
               :disabled="disabled"
@@ -171,4 +184,6 @@ const addCart = (preOrder: boolean): void => {
   }
 };
 
+
+const expeditionsTime = computed(() => selectedVariant.value?.stock && selectedVariant.value?.stock > 0 ? '3 jours' : '3 semaines');
 </script>
