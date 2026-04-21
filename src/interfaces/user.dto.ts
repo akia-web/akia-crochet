@@ -1,4 +1,4 @@
-import type {RoleEnum} from '@/enum/role.enum.ts';
+import type { RoleEnum } from '@/enum/role.enum.ts';
 
 export interface UserDto {
   id: number;

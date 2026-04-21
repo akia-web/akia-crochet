@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 import LabelAndInputText from '@/components/FormComponents/LabelAndInputText.vue';
 import DropDownPhone from '@/components/DropDownPhone/DropDownPhone.vue';
 

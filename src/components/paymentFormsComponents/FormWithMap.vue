@@ -24,10 +24,21 @@
     </Card>
 
     <div v-show="showRelayDetails">
+      <div class="mt-4 bg-gray-50 p-[10px]" v-if="activatedActiveSearch">
+        <p>Vous pouvez choisir un relais dans une autre ville que celle précédemment saisie en renseignant les champs ci-dessous :</p>
+        <div class="flex flex-wrap gap-2 mt-4">
+          <LabelAndInputText v-model:property="city"
+                             label="Ville"/>
+          <LabelAndInputText v-model:property="postalCode"
+                             label="Code postal"/>
+        </div>
+
+      </div>
       <Button label="Rechercher un relais"
               @click="search"
               :disabled="!validForm"
-              class="w-full mt-1"/>
+              class="w-full mt-4"/>
+
 
       <BoxMapComponent :livraisonOption="livraisonOption?.code"
                        country="fr"
@@ -35,8 +46,8 @@
                        v-model:activeSearch="activeSearch"
                        :street="props.street"
                        :numberStreet="props.numberStreet"
-                       :postalCode="props.postalCode"
-                       :city="props.city"
+                       :postalCode="getBoxtalPostalCode"
+                       :city="getBoxtalCity"
                        operationType="DEPARTURE"
       />
     </div>
@@ -44,18 +55,10 @@
 
 </template>
 <script lang="ts" setup>
-import { computed, onMounted, reactive, ref, watch } from 'vue';
-import { apiGet, apiPost } from '@/services/request-service.ts';
-import { api } from '@/functions/api.ts';
-import { env } from '@/environnement.ts';
-import maplibregl, { Marker } from 'maplibre-gl';
-
-
-import { useVuelidate } from '@vuelidate/core';
-import { required } from '@vuelidate/validators';
-import type { ParcelPointDtoBoxtal, ParcelPointWithDistanceDto } from '@/interfaces/parcel-point-dto.boxtal.ts';
+import { computed, ref, watch } from 'vue';
 import { useProductsCartStore } from '@/stores/productsCart.ts';
 import BoxMapComponent from '@/components/BoxMap/BoxMapComponent.vue';
+import LabelAndInputText from '@/components/FormComponents/LabelAndInputText.vue';
 
 const token = ref();
 
@@ -67,6 +70,12 @@ const validForm = computed(() => {
   return props.street !== '' && props.city !== '' && props.postalCode !== '';
 });
 
+const city = ref('');
+const postalCode = ref('');
+
+//if button is already pressed
+const activatedActiveSearch = ref(false);
+
 const props = defineProps({
   livraisonOption: Object,
   deliveryAddressCountry: Object,
@@ -77,6 +86,9 @@ const props = defineProps({
   city: String,
   isSendTogether: Boolean,
 });
+
+const getBoxtalPostalCode = computed(() => postalCode.value || props.postalCode);
+const getBoxtalCity = computed(() => city.value || props.city);
 
 const emit = defineEmits([
   'update:livraisonOption',
@@ -114,9 +126,9 @@ const showRelayDetails = computed(() => {
 });
 
 const search = () => {
-
+  activatedActiveSearch.value = true;
   activeSearch.value = true;
-}
+};
 
 watch(livraisonOption, async (newValue) => {
       if (newValue) {

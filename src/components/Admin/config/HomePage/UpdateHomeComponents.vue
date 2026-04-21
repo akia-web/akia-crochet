@@ -50,7 +50,7 @@ import { minLength, required } from '@vuelidate/validators';
 import { apiGet, apiPost } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
-import { ADMIN_DASHBORD_ROUTE, ADMIN_HOME_ROUTE } from '@/router/routes-name.ts';
+import { ADMIN_HOME_ROUTE } from '@/router/routes-name.ts';
 import { useToast } from 'primevue/usetoast';
 import { useRoute, useRouter } from 'vue-router';
 import { getImageName, getMimeType, urlToFile } from '@/functions/images.ts';

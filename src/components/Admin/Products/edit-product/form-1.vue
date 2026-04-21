@@ -71,7 +71,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { apiGet } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
@@ -154,7 +154,6 @@ const collection = computed({
 
 
 const updateVisibility = (event:any) => {
-  console.warn(props.isVisible)
     dialog.open(VisibilityProductDialog, {
     props: configOpenDialog('Liste des variants', true, "90%"),
     data: {

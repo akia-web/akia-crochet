@@ -24,11 +24,9 @@
 
 </template>
 <script lang="ts" setup>
-import { inject, type Ref, ref, watch } from 'vue';
+import { inject, ref, watch } from 'vue';
 import { checkInputIsNotNull } from '@/functions/check-forms.ts';
 import { SocialMediaEnum } from '@/enum/social-media.ts';
-import type { Dialog } from 'primevue';
-import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
 
 const dialogRef = inject('dialogRef') as any;
 const selectedType = ref();

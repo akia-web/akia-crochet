@@ -200,7 +200,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import type { ImagesDto } from '@/interfaces/images.dto.ts';
 import { useDialog } from 'primevue';
 import CropperComponent from '@/components/Cropper/CropperComponent.vue';
@@ -377,7 +377,6 @@ const getNextRow = (fileIndex?: number) => {
 };
 
 const deleteVariant = () => {
-  console.warn('je supprime')
   emit('deleteVariant', props.index)
 }
 

@@ -10,6 +10,9 @@ export const env = {
     boxTal: 'auth/auth-boxtal',
     updateProfile: 'auth/update-profile',
     updatePassword: 'auth/update-password',
+    passwordResetRequest: 'auth/password-reset-request',
+    resetPasswordCodeIsValid:'auth/password-reset-code-isValid',
+    resetPasswordForNotLoggedAccount:'auth/password-reset-for-not-logged-account'
   },
   config: {
     address: 'address/config',

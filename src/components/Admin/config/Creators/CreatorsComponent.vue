@@ -50,7 +50,7 @@
 </template>
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
-import { ADMIN_ADD_CREATOR_ROUTE, ADMIN_ADD_PLUSHIES_ROUTE } from '@/router/routes-name.ts';
+import { ADMIN_ADD_CREATOR_ROUTE } from '@/router/routes-name.ts';
 import { onMounted, ref } from 'vue';
 import { apiGet } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';

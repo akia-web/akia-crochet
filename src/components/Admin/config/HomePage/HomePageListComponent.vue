@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { ADMIN_HOME_ROUTE, ADMIN_UPDATE_HOME_ROUTE } from '@/router/routes-name.ts';
+import { ADMIN_UPDATE_HOME_ROUTE } from '@/router/routes-name.ts';
 import { useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import type { HomeConfigDto } from '@/interfaces/home-config.dto.ts';

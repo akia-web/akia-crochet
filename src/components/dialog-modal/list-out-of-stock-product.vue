@@ -35,7 +35,7 @@
 
 </template>
 <script lang="ts" setup>
-import { inject, ref, watch } from 'vue';
+import { inject, ref } from 'vue';
 import { useProductsCartStore } from '@/stores/productsCart.ts';
 import type { ProductShopDto } from '@/interfaces/product-shop.dto.ts';
 import { divideBy100 } from '@/functions/convertions.ts';

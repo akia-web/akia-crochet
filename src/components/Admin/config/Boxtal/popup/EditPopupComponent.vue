@@ -27,7 +27,6 @@ onMounted(() => {
 });
 
 const update = () => {
-  console.warn(webhook.value);
   apiPost(api(env.boxtal.crud), 'PATCH', webhook.value, false, true).then(() => {
     toast.add({
       severity: 'success',

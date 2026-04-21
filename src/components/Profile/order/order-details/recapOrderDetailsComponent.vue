@@ -33,7 +33,6 @@
 </template>
 <script lang="ts" setup>
 import type { PropType } from 'vue';
-import type { ItemsPackageBoxtalDto } from '@/interfaces/order-detail.dto.ts';
 import type { ItemsOrderDTO } from '@/interfaces/items-order.dto.ts';
 
 const props = defineProps({

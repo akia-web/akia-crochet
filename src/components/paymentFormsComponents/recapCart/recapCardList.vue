@@ -42,7 +42,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, type PropType, reactive, ref } from 'vue';
+import { type PropType } from 'vue';
 import { divideBy100 } from '@/functions/convertions.ts';
 import type { ProductShopDto } from '@/interfaces/product-shop.dto.ts';
 import { useProductsCartStore } from '@/stores/productsCart.ts';

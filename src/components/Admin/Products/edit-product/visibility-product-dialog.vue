@@ -29,7 +29,7 @@
 <script lang="ts" setup>
 import type { ImagesDto } from '@/interfaces/images.dto';
 import type { ProductVariantDto } from '@/interfaces/product-variant.dto';
-import { inject, onMounted, ref, watch } from 'vue';
+import { inject, ref } from 'vue';
 
 const dialogRef = inject<any>('dialogRef');
 const variantList = ref<ProductVariantDto[]>([]);
@@ -40,10 +40,6 @@ if (dialogRef?.value?.data) {
   variantList.value = dialogRef.value.data.variants;
   nextVisible.value = dialogRef.value.data.nextVisible 
 }
-
-onMounted(()=> {
-    console.warn(variantList.value) 
-})
 
 const close = () => {
     dialogRef.value.close();

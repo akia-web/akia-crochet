@@ -22,7 +22,6 @@
 </template>
 
 <script lang="ts" setup>
-import { PRODUCTS_ROUTE } from '@/router/routes-name.ts';
 
 const props = defineProps<{
   step: string,

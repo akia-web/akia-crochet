@@ -20,7 +20,6 @@ import type { ProductDto } from '@/interfaces/product.dto.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
 import ProductCardComponent from '@/components/Products/ProductCardComponent.vue';
-import { PRODUCTS_DETAILS_ROUTE } from '@/router/routes-name.ts';
 import { useProductsCartStore } from '@/stores/productsCart.ts';
 
 const products = ref<ProductDto[]>([]);

@@ -6,19 +6,19 @@
             alt="logo Akia"
             src="../../assets/logo.png">
      </RouterLink>
-     <div class="text-xs">
+     <div class="text-sm">
        <h4 class="underline font-bold">Informations</h4>
        <ul>
+<!--         <li>-->
+<!--           <RouterLink to="" class="hover:underline">À propos</RouterLink>-->
+<!--         </li>-->
          <li>
-           <RouterLink to="" class="hover:underline">À propos</RouterLink>
-         </li>
-         <li>
-           <RouterLink to="" class="hover:underline">Contact</RouterLink>
+           <RouterLink :to="{name:'contact'}" class="hover:underline">Contact</RouterLink>
          </li>
        </ul>
 
      </div>
-     <div class="text-xs">
+     <div class="text-sm">
        <h4 class="underline font-bold">Informations légales</h4>
        <ul>
          <li>
@@ -33,7 +33,7 @@
        </ul>
      </div>
      <div>
-       <h4 class="font-bold text-xs underline">Mes réseaux</h4>
+       <h4 class="font-bold text-sm underline">Mes réseaux</h4>
        <div class="flex gap-4 mt-1 items-center">
          <a href="https://www.youtube.com/@akialoops/featured" target="_blank">
            <span class="pi pi-youtube text-red font-size-1_5em mr-0_5"></span>
@@ -51,7 +51,7 @@
      </div>
    </div>
     <hr class="mt-2 border-actionColor">
-      <div class="text-xs text-center mt-4">© 2026 - Akialoops Version : {{ appVersion }}</div>
+      <div class="text-sm text-center mt-4">© 2026 - Akialoops Version : {{ appVersion }}</div>
   </div>
 
 </template>
@@ -61,6 +61,6 @@ const appVersion = __APP_VERSION__;
 
 <style scoped>
 .logo{
-  width: 100px;
+  width: 150px;
 }
 </style>

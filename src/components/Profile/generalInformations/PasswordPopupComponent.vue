@@ -96,7 +96,6 @@ import { useVuelidate } from '@vuelidate/core';
 import { apiPost } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
-import type { OrderDto } from '@/interfaces/order.dto.ts';
 import { useToast } from 'primevue/usetoast';
 import Loader from '@/components/Loader/Loader.vue';
 

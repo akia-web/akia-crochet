@@ -20,13 +20,14 @@ import {
   CONNEXION_ROUTE,
   CONTACT_ROUTE,
   INSCRIPTION_ROUTE,
+  PASSWORD_RESET_REQUEST_NAME,
   PAYMENT_ROUTE,
   PRODUCTS_DETAILS_ROUTE,
   PRODUCTS_ROUTE,
   PROFILE_ORDER_ROUTE,
   PROFILE_ROUTE,
   RECAP_CART_ROUTE,
-  SIMULATOR_ROUTE
+  RESET_PASSWORD_NAME
 } from '@/router/routes-name.ts';
 
 const router = createRouter({
@@ -143,7 +144,7 @@ const router = createRouter({
         {
           path: CONNEXION_ROUTE,
           name: CONNEXION_ROUTE,
-          component: () => import('../components/Connexion/ConnexionComponent.vue'),
+          component: () => import('@/pages/Connexion/ConnexionComponent.vue'),
         },
         {
           path: INSCRIPTION_ROUTE,
@@ -170,7 +171,16 @@ const router = createRouter({
           name: RECAP_CART_ROUTE,
           component: () => import('@/pages/recapCart/RecapCartPage.vue'),
         },
-
+        {
+          path: 'password-reset-request',
+          name: PASSWORD_RESET_REQUEST_NAME,
+          component: () => import('@/pages/PasswordResetRequest/PasswordResetRequest.vue'),
+        },
+        {
+          path: `reset-password`,
+          name: RESET_PASSWORD_NAME,
+          component: () => import('@/pages/ResetPassword/ResetPassword.vue'),
+        },
         {
           path: 'sucess-paiement',
           name: 'sucess-paiement',

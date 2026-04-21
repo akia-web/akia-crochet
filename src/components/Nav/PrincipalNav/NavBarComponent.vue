@@ -56,12 +56,10 @@
 }
 </style>
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref } from 'vue';
 import type { UserDto } from '@/interfaces/user.dto.ts';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user.ts';
-import { api } from '@/functions/api.ts';
-import { env } from '@/environnement.ts';
 import ShopCard from '@/components/ShopCard/ShopCardComponent.vue';
 import LinkComponent from '@/components/Nav/PrincipalNav/linkComponent.vue';
 import { ADMIN_PLUSHIES_ROUTE, PROFILE_ROUTE } from '@/router/routes-name.ts';

@@ -37,7 +37,7 @@
 
 </template>
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import VariantComponent from '@/components/Admin/Products/edit-product/variantComponent.vue';
 import type { ProductVariantDto } from '@/interfaces/product-variant.dto.ts';
 

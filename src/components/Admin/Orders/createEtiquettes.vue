@@ -78,21 +78,16 @@
 
 </template>
 <script lang="ts" setup>
-import { computed, inject, onMounted, reactive, ref, watch } from 'vue';
-import { checkInputIsNotNull } from '@/functions/check-forms.ts';
-import { SocialMediaEnum } from '@/enum/social-media.ts';
-import LabelAndInputText from '@/components/FormComponents/LabelAndInputText.vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import LabelAndInputNumber from '@/components/FormComponents/LabelAndInputNumber.vue';
 import BoxMapComponent from '@/components/BoxMap/BoxMapComponent.vue';
 import { useRoute, useRouter } from 'vue-router';
-import { email, maxLength, minValue, required, requiredIf } from '@vuelidate/validators';
-import { phoneByCountry } from '@/validators/phone-validators.ts';
-import type { CountryCode } from 'libphonenumber-js';
+import { minValue, required } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core';
 import { apiPost } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
-import { ADMIN_ORDERS_ROUTE, ADMIN_PLUSHIES_ROUTE } from '@/router/routes-name.ts';
+import { ADMIN_ORDERS_ROUTE } from '@/router/routes-name.ts';
 import { useToast } from 'primevue/usetoast';
 
 const route = useRoute();

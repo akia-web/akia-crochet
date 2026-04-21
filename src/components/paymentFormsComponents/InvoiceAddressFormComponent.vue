@@ -1,12 +1,12 @@
 <template>
-  <div v-if="props.livraisonOption?.name === 'Domicile' && !isAdmin">
+  <div v-if="!isAdmin">
     <div class="flex items-center gap-2 mt-4">
       <Checkbox v-model="sameAddressForDeliveryAndInvoice" binary id="sameAddress"/>
       <label for="sameAddress">Utiliser la même adresse pour la facturation</label>
     </div>
   </div>
 
-  <div v-if="(props.livraisonOption?.name ==='Domicile' && !sameAddressForDeliveryAndInvoice) || (props.livraisonOption?.name !=='Domicile')">
+  <div v-if="!sameAddressForDeliveryAndInvoice">
     <ContactInfo v-model:deliveryAddressLastName="invoiceAddressLastName"
                  v-model:deliveryAddressFirstName="invoiceAddressFirstName"
                  v-model:email="invoiceAddressEmail"
@@ -38,7 +38,7 @@
 
 </template>
 <script lang="ts" setup>
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
 import ContactInfo from '@/components/paymentFormsComponents/contactInfo.vue';
 import AddressComponent from '@/components/paymentFormsComponents/AddressComponent.vue';
 import LabelAndInputText from '@/components/FormComponents/LabelAndInputText.vue';

@@ -49,11 +49,9 @@ import { apiGet } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
 import type { OrderDetailDto } from '@/interfaces/order-detail.dto.ts';
-import RecapAddressComponent from '@/components/RecapAddress/RecapAddressComponent.vue';
 import ShipmentsTimelineComponent from '@/components/Profile/order/order-details/shipmentsTimelineComponent.vue';
 import AddressOrderDetailComponent from '@/components/Profile/order/order-details/AddressOrderDetailComponent.vue';
-import RecapOrderDetailsComponent
-  from '@/components/Profile/order/order-details/recapOrderDetailsComponent.vue';
+import RecapOrderDetailsComponent from '@/components/Profile/order/order-details/recapOrderDetailsComponent.vue';
 import { useRouter } from 'vue-router';
 import Loader from '@/components/Loader/Loader.vue';
 

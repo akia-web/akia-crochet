@@ -24,3 +24,5 @@ export const CONFIRM_EMAIL_ROUTE: string = 'confirm-email'
 export const PAYMENT_ROUTE: string = 'Payment'
 export const CONTACT_ROUTE: string = 'contact'
 export const RECAP_CART_ROUTE: string = 'recap-panier'
+export const PASSWORD_RESET_REQUEST_NAME: string = 'passwordResetRequest';
+export const RESET_PASSWORD_NAME: string = 'resetPassword';

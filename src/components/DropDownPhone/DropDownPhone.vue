@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import countries from 'world-countries';
 
 export type CountryItem = {

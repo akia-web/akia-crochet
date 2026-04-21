@@ -1,11 +1,11 @@
 <template>
   <div v-if="props.form">
-    <div v-if="props.form.sameAddressForDeliveryAndInvoice && props.form.deliveryAddress.livraisonOption.name === 'Domicile'">
+    <div v-if="props.form.sameAddressForDeliveryAndInvoice">
       <p>Même adresse que celle de la livraison</p>
     </div>
 
     <div
-        v-if="!props.form.sameAddressForDeliveryAndInvoice ||(props.form.sameAddressForDeliveryAndInvoice && props.form.deliveryAddress.livraisonOption.name !== 'Domicile') ">
+        v-if="!props.form.sameAddressForDeliveryAndInvoice">
       <p>Email: {{ props.form.invoiceAddress.email }}</p>
       <RecapAddressComponent :company="props.form.invoiceAddress.company"
                              :firstName="props.form.invoiceAddress.firstName"

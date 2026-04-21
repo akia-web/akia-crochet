@@ -188,8 +188,6 @@ import { apiPost } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
 import type { CheckoutFormDto } from '@/components/paymentFormsComponents/interfaces/checkoutForm.dto.ts';
-import type { LinkDto } from '@/interfaces/link.dto.ts';
-import DialogModal from '@/components/dialog-modal/dialog-modal.vue';
 import { useDialog } from 'primevue';
 import CGV from '@/components/DocsAdministratif/CGV.vue';
 import { configOpenDialog } from '@/config/openDialogConfig.ts';
@@ -305,33 +303,32 @@ const rules = computed(() => ({
   },
   invoiceAddress: {
     firstName: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.name !== 'Domicile')),
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice ),
     },
     lastName: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.name !== 'Domicile'))
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice)
     },
     numberStreet: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.name !== 'Domicile')),
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice  ),
       maxLength: maxLength(12)
     },
     street: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.name !== 'Domicile'))
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice )
     },
     city: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.name !== 'Domicile'))
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice  )
     },
     postalCode: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.name !== 'Domicile')),
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice ),
       maxLength: maxLength(10)
     },
     email: {
       required: requiredIf(() =>
-          !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.name !== 'Domicile')
-      ),
+          !form.sameAddressForDeliveryAndInvoice ),
       email
     },
     country: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice || (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.name !== 'Domicile'))
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice)
     },
 
   }
@@ -343,7 +340,7 @@ const finalizePayment = () => {
 
   form.products = storeProductsCart.productsCart;
 
-  if (form.sameAddressForDeliveryAndInvoice && form.deliveryAddress.livraisonOption.name === 'Domicile') {
+  if (form.sameAddressForDeliveryAndInvoice) {
     form.invoiceAddress.numberStreet = form.deliveryAddress.numberStreet;
     form.invoiceAddress.country.name = form.deliveryAddress.country.name;
     form.invoiceAddress.street = form.deliveryAddress.street;

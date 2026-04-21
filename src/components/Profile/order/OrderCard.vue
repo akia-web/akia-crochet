@@ -76,7 +76,6 @@ import {
   traductOrderStatusEnum,
   traductShipmentStateEnum
 } from '@/functions/enum-to-francais.ts';
-import { ShipmentStatusEnum } from '@/enum/shipment-status-enum.ts';
 import { OrderStatusEnum } from '@/enum/orders-status-enum.ts';
 
 const props = defineProps({

@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 import { useProductsCartStore } from '@/stores/productsCart.ts';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import type { ProductShopDto } from '@/interfaces/product-shop.dto.ts';
 import RecapCardList from '@/components/paymentFormsComponents/recapCart/recapCardList.vue';
 import ListOutOfStockProduct from '@/components/dialog-modal/list-out-of-stock-product.vue';

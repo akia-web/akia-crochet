@@ -58,12 +58,12 @@
 <script lang="ts" setup>
 
 import type { ShipmentDto } from '@/interfaces/shipment.dto.ts';
-import { ADMIN_ETIQUETTES_ROUTE, ADMIN_ORDERS_ROUTE } from '@/router/routes-name.ts';
+import { ADMIN_ETIQUETTES_ROUTE } from '@/router/routes-name.ts';
 import { type PropType } from 'vue';
 import { ShipmentStatusEnum } from '@/enum/shipment-status-enum.ts';
 import { useRouter } from 'vue-router';
 import DateComponent from '@/components/Admin/Orders/dateComponent.vue';
-import { apiGet, apiPost } from '@/services/request-service.ts';
+import { apiGet } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
 import { useToast } from 'primevue/usetoast';

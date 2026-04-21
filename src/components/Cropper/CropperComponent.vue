@@ -28,7 +28,7 @@
 
 <script lang="ts" setup>
 import VueCropper from 'vue-cropperjs';
-import { inject, ref, onUnmounted } from 'vue';
+import { inject, onUnmounted, ref } from 'vue';
 
 const cropper = ref<any>(null);
 const dialogRef = inject('dialogRef') as any;

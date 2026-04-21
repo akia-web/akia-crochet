@@ -19,7 +19,7 @@
 </template>
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { CONTACT_ROUTE, PRODUCTS_ROUTE } from '@/router/routes-name.ts';
 
 const emit = defineEmits(['closeDrawer']);

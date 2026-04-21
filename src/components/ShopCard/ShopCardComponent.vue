@@ -73,12 +73,11 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import type { ProductShopDto } from '@/interfaces/product-shop.dto.ts';
 import { useProductsCartStore } from '@/stores/productsCart.ts';
 import { divideBy100 } from '@/functions/convertions.ts';
 import { configOpenDialog } from '@/config/openDialogConfig.ts';
-import type { SocialMediaDto } from '@/interfaces/social-media.dto.ts';
 import { useDialog } from 'primevue';
 import { storeToRefs } from 'pinia';
 import ListOutOfStockProduct from '@/components/dialog-modal/list-out-of-stock-product.vue';

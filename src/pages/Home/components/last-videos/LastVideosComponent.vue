@@ -78,12 +78,11 @@
 import { useToast } from 'primevue';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { apiGet, apiPost } from '@/services/request-service.ts';
-import { email, minLength, required } from '@vuelidate/validators';
+import { email, required } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core';
 import LabelAndInputText from '@/components/FormComponents/LabelAndInputText.vue';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
-import { ADMIN_HOME_ROUTE } from '@/router/routes-name.ts';
 
 const toast = useToast();
 const videos = ref<any>([]);

@@ -168,7 +168,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { onMounted, ref } from 'vue';
 import { FilterMatchMode } from '@primevue/core/api';
 import { useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
@@ -179,7 +179,6 @@ import { getSeverityShipmentStatus, traductShipmentStateEnum } from '@/functions
 import { apiGet, apiPost } from '@/services/request-service.ts';
 import { api } from '@/functions/api.ts';
 import { env } from '@/environnement.ts';
-import { ADMIN_ETIQUETTES_ROUTE } from '@/router/routes-name.ts';
 import type { ShipmentDto } from '@/interfaces/shipment.dto.ts';
 import LabelActions from '@/components/Admin/Orders/columns/LabelActions.vue';
 

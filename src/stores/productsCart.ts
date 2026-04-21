@@ -107,7 +107,6 @@ export const useProductsCartStore = defineStore('cart', () => {
           .then(data => {
             item.productVariant = data;
             item.preOrder = data.stock === 0;
-            console.warn(data)
 
             if (item.preOrder && !item.acceptedPreOrder) {
               listOutOfStocks.value.push(item);
