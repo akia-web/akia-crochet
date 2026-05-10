@@ -21,7 +21,10 @@ app.use(createPinia());
 app.use(router);
 app.use(PrimeVue, {
   theme: {
-    preset: Aura
+    preset: Aura,
+    options: {
+      darkModeSelector: 'none'
+    }
   },
   locale: {
     firstDayOfWeek: 1,
@@ -31,7 +34,8 @@ app.use(PrimeVue, {
     monthNames:	['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
     monthNamesShort:	['Jan', 'Fév', 'Mars', 'Avr', 'Mai', 'Jui', 'Jui', 'Aout', 'Sept', 'Oct', 'Nov', 'Dec'],
     today:`Aujourd'hui`,
-  }
+  },
+
 });
 app.use(ToastService);
 app.use(DialogService);

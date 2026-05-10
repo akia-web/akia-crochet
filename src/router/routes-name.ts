@@ -26,3 +26,4 @@ export const CONTACT_ROUTE: string = 'contact'
 export const RECAP_CART_ROUTE: string = 'recap-panier'
 export const PASSWORD_RESET_REQUEST_NAME: string = 'passwordResetRequest';
 export const RESET_PASSWORD_NAME: string = 'resetPassword';
+export const ADMIN_DELIVERY_PRICE_NAME: string = 'AdminDeliveryPrice';

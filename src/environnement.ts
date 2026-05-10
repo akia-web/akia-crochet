@@ -14,6 +14,10 @@ export const env = {
     resetPasswordCodeIsValid:'auth/password-reset-code-isValid',
     resetPasswordForNotLoggedAccount:'auth/password-reset-for-not-logged-account'
   },
+  transporter:{
+    crud: 'transporter',
+    price: 'transporter/price'
+  },
   config: {
     address: 'address/config',
   },

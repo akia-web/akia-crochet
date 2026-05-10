@@ -9,7 +9,7 @@ import {
   ADMIN_ADDRESS_ROUTE,
   ADMIN_BOXTAL_ROUTE,
   ADMIN_CREATOR_ROUTE,
-  ADMIN_DASHBORD_ROUTE,
+  ADMIN_DASHBORD_ROUTE, ADMIN_DELIVERY_PRICE_NAME,
   ADMIN_ETIQUETTES_ROUTE,
   ADMIN_HOME_ROUTE,
   ADMIN_ORDERS_ROUTE,
@@ -56,6 +56,11 @@ const router = createRouter({
           path: 'address',
           name: ADMIN_ADDRESS_ROUTE,
           component: () => import('../components/Admin/config/address/AdminAdressComponent.vue'),
+        },
+        {
+          path: 'livraison-prix',
+          name: ADMIN_DELIVERY_PRICE_NAME,
+          component: () => import('../components/Admin/config/DeliveryPrice/DeliveryPriceComponent.vue'),
         },
         {
           path: 'home-page',

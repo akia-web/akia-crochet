@@ -45,6 +45,7 @@ import { Card } from 'primevue';
 import { computed, onMounted, ref } from 'vue';
 import type { ProductVariantDto } from '@/interfaces/product-variant.dto.ts';
 import { useProductsCartStore } from '@/stores/productsCart.ts';
+import { PRODUCTS_DETAILS_ROUTE } from '@/router/routes-name.ts';
 
 const props = defineProps<{
   product: ProductDto

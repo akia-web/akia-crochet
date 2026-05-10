@@ -1,4 +1,5 @@
 import type { MenuItem } from 'primevue/menuitem';
+import { ADMIN_DELIVERY_PRICE_NAME } from '@/router/routes-name.ts';
 
 export const adminMenuItems: MenuItem[] = [
   { label: 'Dashboard', icon: 'pi pi-chart-line', url: '/Dashboard' },
@@ -7,10 +8,10 @@ export const adminMenuItems: MenuItem[] = [
   {
     label: 'Config', icon:'pi pi-cog' ,items: [
       { label: 'Adresses', icon: 'pi pi-address-book', url: '/address' },
-      { label: 'Boxtal', icon: 'pi pi-truck', url: '/boxtal' },
       { label: 'Createurs', icon: 'pi pi-crown', url: '/creators' },
       { label: `Page d'accueil`, icon: 'pi pi-image', url: '/home-page' },
-      { label: 'Points de livraison', icon: 'pi pi-car', url: '/address' },
+      { label: 'Prix livraison', icon: 'pi pi-car', url: '/livraison-prix' },
+      { label: 'Boxtal webhook', icon: 'pi pi-truck', url: '/boxtal' },
     ]
   },
   {
