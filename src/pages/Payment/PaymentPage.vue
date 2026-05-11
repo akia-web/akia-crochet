@@ -88,7 +88,7 @@
 
               <RecapDeliveryAddress :form="form.deliveryAddress"></RecapDeliveryAddress>
 
-              <Textarea v-if="form.deliveryAddress.livraisonOption.name === 'Domicile'"
+              <Textarea v-if="form.deliveryAddress.livraisonOption.code === 'POFR-ColissimoAccess'"
                         v-model="form.deliveryAddress.additionalInformation"
                         class="w-full mt-4"
                         placeholder="Ajouter une information pour le livreur"></Textarea>
@@ -111,12 +111,23 @@
               <div v-if="productsToSendAfter.length > 0 && productsToSendImmediately.length>0">
                 <hr class="mt-4 border-actionColor">
                 <h2 class="font-bold mt-2">Choix nombre de colis</h2>
-                <p>
-                  Votre commande comprend des articles en précommande.
-                  <br>
-                  Vous avez le choix entre une livraison unique dans 3 semaines ou une première livraison des articles
-                  disponibles dès maintenant, suivie des précommandes dans 3 semaines.
-                </p>
+                <div class="bg-yellow-50 p-[10px] mt-2">
+                  <p>
+                    Votre commande comprend des articles en précommande.
+                    <br>
+                    <span class="underline">Vous avez le choix entre :</span>
+                  </p>
+                  <ul class="list-disc pl-5">
+                    <li>
+                      une livraison unique de l’ensemble de votre commande dans 3 semaines ;
+                    </li>
+                    <li>
+                      une première livraison des articles disponibles immédiatement, puis une seconde livraison des
+                      articles en précommande dans 3 semaines.
+                    </li>
+                  </ul>
+                </div>
+
                 <div class="flex items-center gap-2 mt-3">
                   <RadioButton v-model="form.isSendTogether"
                                inputId="together"
@@ -131,8 +142,9 @@
                                name="separate"
                                :value="false"
                                @click="handleUpdateLivraisonPrice($event)"/>
-                  <label for="separate" class="mr-4">Je veux deux livraisons
-                    {{ form.deliveryAddress.livraisonOption.name === 'Domicile' ? ' (+5 €)' : '' }}</label>
+                  <label for="separate" class="mr-4">Je veux deux livraisons (Première :
+                    {{ twoLivraisonsPrices.first.toFixed(2) }} €, seconde : {{ twoLivraisonsPrices.second.toFixed(2) }}
+                    €)</label>
                 </div>
 
               </div>
@@ -141,7 +153,7 @@
               <div class="flex gap-1 mt-8">
                 <Checkbox v-model="form.cguAccepted" binary id="cgu"/>
                 <label for="cgu">J'accepte les <span @click="openDialog"
-                class="text-actionColor">conditions de ventes</span></label>
+                                                     class="text-actionColor">conditions de ventes</span></label>
               </div>
 
 
@@ -166,7 +178,7 @@
 </template>
 <script lang="ts" setup>
 
-import { computed, onMounted, reactive } from 'vue';
+import { computed, onMounted, reactive, watch } from 'vue';
 import { useUserStore } from '@/stores/user.ts';
 import { useVuelidate } from '@vuelidate/core';
 import { email, maxLength, required, requiredIf } from '@vuelidate/validators';
@@ -191,6 +203,7 @@ import type { CheckoutFormDto } from '@/components/paymentFormsComponents/interf
 import { useDialog } from 'primevue';
 import CGV from '@/components/DocsAdministratif/CGV.vue';
 import { configOpenDialog } from '@/config/openDialogConfig.ts';
+import { calculateLivraisonPrice } from '@/components/paymentFormsComponents/functions/calculate-livraison-price.ts';
 
 const storeUser = useUserStore();
 const storeProductsCart = useProductsCartStore();
@@ -201,11 +214,25 @@ onMounted(() => {
     storeProductsCart.updateVisibility(false);
   }
 
-  if(storeUser.user){
+  if (storeUser.user) {
     form.deliveryAddress.firstName = storeUser.user.firstName;
     form.deliveryAddress.lastName = storeUser.user.lastName;
     form.deliveryAddress.email = storeUser.user.email;
   }
+
+  form.deliveryAddress.livraisonOption = {
+    name: '',
+    code: '',
+    weightPrice: []
+  };
+
+  storeProductsCart.updateLivraisonPrice(0, 'first');
+  storeProductsCart.updateLivraisonPrice(0, 'second');
+});
+
+const twoLivraisonsPrices = reactive({
+  first: 0,
+  second: 0
 });
 
 const openDialog = () => {
@@ -251,9 +278,9 @@ const form = reactive<CheckoutFormDto>({
       name: '',
     },
     livraisonOption: {
-      code: 'MONR-CpourToi',
-      name: 'Mondial Relais',
-      supplement: 0
+      name: '',
+      code: '',
+      weightPrice: []
     },
   },
   invoiceAddress: {
@@ -293,9 +320,9 @@ const rules = computed(() => ({
 
     email: { required, email },
     selectedParcelPoint: {
-      isRequired: requiredIf(() => form.deliveryAddress.livraisonOption.name !== 'Domicile'),
+      isRequired: requiredIf(() => form.deliveryAddress.livraisonOption.code !== 'POFR-ColissimoAccess'),
       notEmptyObject: (value: any) => {
-        if (form.deliveryAddress.livraisonOption.name === 'Domicile') return true;
+        if (form.deliveryAddress.livraisonOption.code === 'POFR-ColissimoAccess') return true;
         return value && value.code && value.code !== '';
       }
     },
@@ -303,28 +330,28 @@ const rules = computed(() => ({
   },
   invoiceAddress: {
     firstName: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice ),
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice),
     },
     lastName: {
       required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice)
     },
     numberStreet: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice  ),
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice),
       maxLength: maxLength(12)
     },
     street: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice )
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice)
     },
     city: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice  )
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice)
     },
     postalCode: {
-      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice ),
+      required: requiredIf(() => !form.sameAddressForDeliveryAndInvoice),
       maxLength: maxLength(10)
     },
     email: {
       required: requiredIf(() =>
-          !form.sameAddressForDeliveryAndInvoice ),
+          !form.sameAddressForDeliveryAndInvoice),
       email
     },
     country: {
@@ -363,8 +390,6 @@ const finalizePayment = () => {
       }
   );
 };
-
-
 const canGoToStep2 = computed(() => !v$.value.deliveryAddress.$invalid);
 const canGoToStep3 = computed(() => !v$.value.deliveryAddress.$invalid && !v$.value.invoiceAddress.$invalid);
 const canPayed = computed(() => !v$.value.deliveryAddress.$invalid && !v$.value.invoiceAddress.$invalid && form.cguAccepted);
@@ -372,13 +397,40 @@ const canPayed = computed(() => !v$.value.deliveryAddress.$invalid && !v$.value.
 
 const handleUpdateLivraisonPrice = (event: any) => {
 
+  const productsToSendImmediately = storeProductsCart.productsCart.filter(product => !product.preOrder);
+  const productsToSendAfter = storeProductsCart.productsCart.filter(product => product.preOrder && product.acceptedPreOrder);
+
   if (event.target.value === 'false') {
-    storeProductsCart.updateLivraisonPrice(form.deliveryAddress.livraisonOption.supplement * 2);
+    const livraisonPriceBefore = calculateLivraisonPrice(productsToSendImmediately, form.deliveryAddress.livraisonOption);
+    const livraisonOptionPriceAfter = calculateLivraisonPrice(productsToSendAfter, form.deliveryAddress.livraisonOption);
+    storeProductsCart.updateLivraisonPrice(livraisonPriceBefore, 'first');
+    storeProductsCart.updateLivraisonPrice(livraisonOptionPriceAfter, 'second');
   } else {
-    storeProductsCart.updateLivraisonPrice(form.deliveryAddress.livraisonOption.supplement);
+    const livraisonOptionPrice = calculateLivraisonPrice(storeProductsCart.productsCart, form.deliveryAddress.livraisonOption);
+    storeProductsCart.updateLivraisonPrice(livraisonOptionPrice, 'first');
   }
 
 };
+
+watch(
+    () => form.deliveryAddress.livraisonOption,
+    (newLivraisonOption) => {
+      const productsToSendImmediately = storeProductsCart.productsCart.filter(product => !product.preOrder);
+      const productsToSendAfter = storeProductsCart.productsCart.filter(product => product.preOrder && product.acceptedPreOrder);
+      const livraisonPriceBefore = calculateLivraisonPrice(productsToSendImmediately, newLivraisonOption);
+      const livraisonOptionPriceAfter = calculateLivraisonPrice(productsToSendAfter, newLivraisonOption);
+      twoLivraisonsPrices.first = livraisonPriceBefore;
+      twoLivraisonsPrices.second = livraisonOptionPriceAfter;
+
+      if (!form.isSendTogether) {
+        storeProductsCart.updateLivraisonPrice(livraisonPriceBefore, 'first');
+        storeProductsCart.updateLivraisonPrice(livraisonOptionPriceAfter, 'second');
+      } else {
+        const livraisonOptionPrice = calculateLivraisonPrice(storeProductsCart.productsCart, form.deliveryAddress.livraisonOption);
+        storeProductsCart.updateLivraisonPrice(livraisonOptionPrice, 'first');
+      }
+    }
+);
 
 
 </script>

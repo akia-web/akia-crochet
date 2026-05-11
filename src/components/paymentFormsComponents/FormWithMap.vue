@@ -1,8 +1,8 @@
 <template>
-  <div class="mb-4">
+  <div class="mb-4" v-if="storeProductsCart.productsCart.length > 0">
     <Card class="mt-4">
       <template #title>
-        Option de livraison
+        Options de livraison
       </template>
       <template #content>
         <div class="flex flex-wrap gap-2">
@@ -10,13 +10,9 @@
             <RadioButton v-model="livraisonOption"
                          :inputId="'parcel-'+index"
                          :name="parcelPoint.name"
-                         :value="{name: parcelPoint.name, code: parcelPoint.code, supplement: parcelPoint.supplement}"/>
+                         :value="parcelPoint"/>
             <label :for="'parcel-'+index" class="mr-4">{{ parcelPoint.name }}
-              <span v-if="parcelPoint.name === 'Domicile'">
-                avec Colissimo
-              </span>
-              <span v-if="parcelPoint.name === 'Domicile'"
-                    class="text-xs italic"> (+5 euros)</span>
+              <span>{{calculatePriceParcelPoint(parcelPoint)}} €</span>
             </label>
           </div>
         </div>
@@ -25,7 +21,8 @@
 
     <div v-show="showRelayDetails">
       <div class="mt-4 bg-gray-50 p-[10px]" v-if="activatedActiveSearch">
-        <p>Vous pouvez choisir un relais dans une autre ville que celle précédemment saisie en renseignant les champs ci-dessous :</p>
+        <p>Vous pouvez choisir un relais dans une autre ville que celle précédemment saisie en renseignant les champs
+          ci-dessous :</p>
         <div class="flex flex-wrap gap-2 mt-4">
           <LabelAndInputText v-model:property="city"
                              label="Ville"/>
@@ -55,19 +52,24 @@
 
 </template>
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useProductsCartStore } from '@/stores/productsCart.ts';
 import BoxMapComponent from '@/components/BoxMap/BoxMapComponent.vue';
 import LabelAndInputText from '@/components/FormComponents/LabelAndInputText.vue';
+import type { TransporterDto } from '@/interfaces/transporter.dto.ts';
+import { apiGet } from '@/services/request-service.ts';
+import { api } from '@/functions/api.ts';
+import { env } from '@/environnement.ts';
+import { calculateLivraisonPrice } from '@/components/paymentFormsComponents/functions/calculate-livraison-price.ts';
 
 const token = ref();
 
-const { updateLivraisonPrice } = useProductsCartStore();
+const storeProductsCart = useProductsCartStore();
 
 const activeSearch = ref<boolean>(false);
 
 const validForm = computed(() => {
-  return props.street !== '' && props.city !== '' && props.postalCode !== '';
+  return props.street !== '' && props.city !== '' && props.postalCode !== '' && props.livraisonOption?.code;
 });
 
 const city = ref('');
@@ -105,23 +107,24 @@ const selectedParcelPoint = computed({
   set: value => emit('update:selectedParcelPoint', value)
 });
 
-const parcelPointsNetwork: { code: string, name: string, supplement: number }[] = [
-  {
-    name: 'Mondial Relais',
-    code: 'MONR-CpourToi',
-    supplement: 0
-  },
-  {
-    code: 'POFR-ColissimoAccess',
-    name: 'Domicile',
-    supplement: 5
-  },
-];
+const parcelPointsNetwork = ref<TransporterDto[]>([]);
+
+onMounted(async () => {
+  await apiGet(api(env.transporter.crud), 'GET', true).then(response => response.json())
+      .then((data: TransporterDto[]) => {
+        parcelPointsNetwork.value = data;
+      });
+});
+
+const calculatePriceParcelPoint = (parcelPoint: TransporterDto) => {
+  return calculateLivraisonPrice(storeProductsCart.productsCart, parcelPoint)
+}
+
 
 const showRelayDetails = computed(() => {
   return (
-      !!livraisonOption.value?.name &&
-      livraisonOption.value.name !== 'Domicile'
+      !!livraisonOption.value?.code &&
+      livraisonOption.value.code !== 'POFR-ColissimoAccess'
   );
 });
 
@@ -129,14 +132,5 @@ const search = () => {
   activatedActiveSearch.value = true;
   activeSearch.value = true;
 };
-
-watch(livraisonOption, async (newValue) => {
-      if (newValue) {
-        const priceLivraison = newValue.supplement;
-        const priceTogether = !props.isSendTogether ? newValue.supplement : 0;
-        updateLivraisonPrice(priceLivraison + priceTogether);
-      }
-    }
-);
 
 </script>

@@ -1,11 +1,10 @@
 <template>
   <div v-if="props.form">
-    <div v-if="props.form.sameAddressForDeliveryAndInvoice">
+    <div v-if="props.form.sameAddressForDeliveryAndInvoice && props.form.deliveryAddress.livraisonOption.code === 'POFR-ColissimoAccess'">
       <p>Même adresse que celle de la livraison</p>
     </div>
 
-    <div
-        v-if="!props.form.sameAddressForDeliveryAndInvoice">
+    <div v-if="!props.form.sameAddressForDeliveryAndInvoice">
       <p>Email: {{ props.form.invoiceAddress.email }}</p>
       <RecapAddressComponent :company="props.form.invoiceAddress.company"
                              :firstName="props.form.invoiceAddress.firstName"
@@ -17,6 +16,20 @@
                              :country="props.form.invoiceAddress.country.name"/>
 
     </div>
+    <div v-if="props.form.sameAddressForDeliveryAndInvoice && props.form.deliveryAddress.livraisonOption.code !== 'POFR-ColissimoAccess'">
+      <p>Email: {{ props.form.deliveryAddress.email }}</p>
+      <RecapAddressComponent
+          :company="props.form.deliveryAddress.company"
+          :firstName="props.form.deliveryAddress.firstName"
+          :lastName="props.form.deliveryAddress.lastName"
+          :numberStreet="props.form.deliveryAddress.numberStreet"
+          :street="props.form.deliveryAddress.street"
+          :postalCode="props.form.deliveryAddress.postalCode"
+          :city="props.form.deliveryAddress.city"
+          :country="props.form.deliveryAddress.country.name"/>
+    </div>
+
+
 
     <hr class="mt-4 border-actionColor">
 

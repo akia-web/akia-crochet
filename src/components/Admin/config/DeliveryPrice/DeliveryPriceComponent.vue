@@ -1,7 +1,7 @@
 <template>
   <div class="p-[10px]">
     <div class="flex justify-between">
-      <h1 class="text-xl">Point de livraison</h1>
+      <h1 class="text-xl">Points de livraison</h1>
       <div>
         <Button label="Ajouter un transporteur"
                 @click="addTransporter(undefined)"/>

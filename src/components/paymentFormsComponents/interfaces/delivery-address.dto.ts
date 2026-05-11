@@ -1,10 +1,12 @@
+import type { TransporterDto } from '@/interfaces/transporter.dto.ts';
+
 export interface DeliveryAddressDto {
   additionalInformation: string;
   company: string;
   email: string;
   firstName: string;
   lastName: string;
-  livraisonOption: { name: string, code: string, supplement: number };
+  livraisonOption: TransporterDto;
   numberStreet: string;
   phone: string;
   postalCode: string;

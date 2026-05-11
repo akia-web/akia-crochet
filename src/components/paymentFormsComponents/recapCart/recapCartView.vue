@@ -12,11 +12,12 @@
     <hr class="mt-4 mb-4 border-actionColor">
 
     <div v-if="!props.isRecapPage">
-      <p v-if="livraison !== 0">Livraison : {{ livraison }}€</p>
+      <p v-if="firstLivraisonPrice > 0">{{secondLivraisonPrice > 0 ? `Premiere l`: `L`}}ivraison : {{ firstLivraisonPrice.toFixed(2) }}€</p>
+      <p v-if="secondLivraisonPrice > 0">Deuxième livraison : {{ secondLivraisonPrice.toFixed(2) }}€</p>
       <p v-if="tips !== 0">Pourboires : {{ tips }}€</p>
     </div>
 
-    <p class="mt-4 text-right">Total: {{ totalPrice }} €</p>
+    <p class="mt-4 text-right">Total: {{ totalPrice.toFixed(2) }} €</p>
   </div>
 
   <DynamicDialog/>
@@ -48,7 +49,8 @@ watch(openModal, (newVal) => {
 
 });
 
-const livraison = computed(() => storeProductsCart.livraisonPrice);
+const firstLivraisonPrice = computed(() => storeProductsCart.firstLivraisonPrice);
+const secondLivraisonPrice = computed(() => storeProductsCart.secondLivraisonPrice);
 const tips = computed(() => storeProductsCart.tipsPrice);
 
 const productsToSendImmediately = computed<ProductShopDto[]>(() =>
@@ -65,7 +67,7 @@ const productsToSendAfter = computed<ProductShopDto[]>(() =>
 
 const totalPrice = computed(() => {
   if (!props.isRecapPage) {
-    return storeProductsCart.totalPrice + storeProductsCart.tipsPrice + storeProductsCart.livraisonPrice;
+    return storeProductsCart.totalPrice + storeProductsCart.tipsPrice + storeProductsCart.firstLivraisonPrice + storeProductsCart.secondLivraisonPrice;
   }else{
     return storeProductsCart.totalPrice;
   }

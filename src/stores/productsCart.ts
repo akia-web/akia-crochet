@@ -14,7 +14,8 @@ export const useProductsCartStore = defineStore('cart', () => {
     const listOutOfStocks = ref<ProductShopDto[]>([]);
     const listDeletedProducts = ref<ProductShopDto[]>([]);
     const productCartLength = ref<number>(0);
-    const livraisonPrice = ref<number>(0);
+    const firstLivraisonPrice = ref<number>(0);
+    const secondLivraisonPrice = ref<number>(0);
     const tipsPrice = ref<number>(0);
 
     const updateCart = async (value: ProductShopDto): Promise<void> => {
@@ -64,7 +65,8 @@ export const useProductsCartStore = defineStore('cart', () => {
         localStorage.setItem(import.meta.env.VITE_CART, JSON.stringify(productsCart.value));
       } else {
         localStorage.removeItem(import.meta.env.VITE_CART);
-        livraisonPrice.value = 0;
+        firstLivraisonPrice.value = 0;
+        secondLivraisonPrice.value = 0;
         tipsPrice.value = 0;
         openModal.value = false;
         openSlider.value = false;
@@ -112,8 +114,8 @@ export const useProductsCartStore = defineStore('cart', () => {
               listOutOfStocks.value.push(item);
             }
 
-            if(!data.isVisible){
-              listDeletedProducts.value.push(item)
+            if (!data.isVisible) {
+              listDeletedProducts.value.push(item);
             }
 
             productsCart.value.push(item);
@@ -143,8 +145,12 @@ export const useProductsCartStore = defineStore('cart', () => {
       calculateAmount();
     };
 
-    const updateLivraisonPrice = (value: number) => {
-      livraisonPrice.value = value;
+    const updateLivraisonPrice = (price: number, type: 'first' | 'second') => {
+      if (type === 'first') {
+        firstLivraisonPrice.value = price;
+      } else if (type === 'second') {
+        secondLivraisonPrice.value = price;
+      }
       calculateAmount();
     };
 
@@ -153,6 +159,6 @@ export const useProductsCartStore = defineStore('cart', () => {
       saveInLocalStorageCart();
     };
 
-    return { productsCart, totalPrice, updateCart, deleteProduct, getLocalStorageCart, openModal, openSlider, updateVisibility, listOutOfStocks, listDeletedProducts, getProductsCartLength, productCartLength, calculateAmount, updateTips, updateLivraisonPrice, livraisonPrice, tipsPrice, deleteCart };
+    return { productsCart, totalPrice, updateCart, deleteProduct, getLocalStorageCart, openModal, openSlider, updateVisibility, listOutOfStocks, listDeletedProducts, getProductsCartLength, productCartLength, calculateAmount, updateTips, updateLivraisonPrice, firstLivraisonPrice, secondLivraisonPrice, tipsPrice, deleteCart };
   })
 ;
