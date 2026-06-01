@@ -58,5 +58,9 @@ export const env = {
   },
   newsletter: {
     crud: 'newsletter',
+  },
+  notice: {
+    canNotice: 'notice-order/can-notice',
+    crud: 'notice-order',
   }
 };

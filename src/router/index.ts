@@ -212,6 +212,11 @@ const router = createRouter({
           name: 'privacyPolicy',
           component: () => import('@/components/DocsAdministratif/PrivacyPolicy.vue'),
         },
+        {
+          path: 'avis-commande',
+          name: 'orderNotice',
+          component: () => import('@/pages/OrderNotice/OrderNoticesComponent.vue'),
+        },
 
       ],
     },

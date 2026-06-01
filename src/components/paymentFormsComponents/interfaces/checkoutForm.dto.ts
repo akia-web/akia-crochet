@@ -13,4 +13,6 @@ export interface CheckoutFormDto {
   products: ProductShopDto[];
   isSendTogether: boolean;
   user?: UserDto;
+  livraisonPrice: number;
+  addLivraisonPrice: number;
 }

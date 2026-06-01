@@ -20,6 +20,7 @@
         <RecapOrderDetailsComponent :itemsList="orderDetails.orderItems"
                                     :tips="orderDetails.tips"
                                     :addingLivraisonPrice="orderDetails.addingLivraisonPrice"
+                                    :livraisonPrice="orderDetails.livraisonPrice"
                                     :totalAmount="orderDetails.totalAmount"
                                     :orderId="orderDetails.orderId"
                                     class="min-w-[300px]"/>

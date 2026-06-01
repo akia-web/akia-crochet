@@ -9,6 +9,7 @@ export interface OrderDetailDto {
   orderPackages: PackageBoxtalDto[] | null;
   tips: number;
   addingLivraisonPrice: number;
+  livraisonPrice: number;
   isGuest: boolean;
   orderItems: ItemsOrderDTO[];
   orderId: number;

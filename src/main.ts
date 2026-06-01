@@ -10,7 +10,54 @@ import App from './App.vue';
 import router from './router';
 import { PrimeVue } from '@primevue/core';
 import Button from 'primevue/button';
-import { Accordion, AccordionContent, AccordionHeader, AccordionPanel, Card, Checkbox, Chip, ColorPicker, Column, DataTable, DatePicker, Dialog, DialogService, Divider, Drawer, DynamicDialog, InputGroup, InputGroupAddon, InputNumber, InputOtp, InputText, Menu, Message, MultiSelect, PanelMenu, Password, Popover, RadioButton, Select, SelectButton, Step, StepList, Stepper, Tab, TabList, TabPanel, TabPanels, Tabs, Tag, Textarea, Timeline, Toast, ToastService, ToggleSwitch, Tooltip } from 'primevue';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionHeader,
+  AccordionPanel,
+  Card,
+  Checkbox,
+  Chip,
+  ColorPicker,
+  Column,
+  DataTable,
+  DatePicker,
+  Dialog,
+  DialogService,
+  Divider,
+  Drawer,
+  DynamicDialog,
+  InputGroup,
+  InputGroupAddon,
+  InputNumber,
+  InputOtp,
+  InputText,
+  Menu,
+  Message,
+  MultiSelect,
+  PanelMenu,
+  Password,
+  Popover,
+  RadioButton,
+  Rating,
+  Select,
+  SelectButton,
+  Step,
+  StepList,
+  Stepper,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Tag,
+  Textarea,
+  Timeline,
+  Toast,
+  ToastService,
+  ToggleSwitch,
+  Tooltip
+} from 'primevue';
 import Editor from 'primevue/editor';
 import { Form, FormField } from '@primevue/forms';
 import draggable from 'vuedraggable';
@@ -74,6 +121,7 @@ const components = {
   Password,
   Popover,
   RadioButton,
+  Rating,
   Select,
   SelectButton,
   Step,

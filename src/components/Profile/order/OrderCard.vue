@@ -49,7 +49,7 @@
       </div>
       <div class="flex justify-between mb-4 mt-1">
         <p class="mt-2 text-sm">{{ order.imageItem.length }} article{{ order.imageItem.length > 1 ? 's' : '' }}</p>
-        <p class="mt-2 font-bold">{{ order.totalAmount / 100 }} €</p>
+        <p class="mt-2 font-bold">{{ (order.totalAmount / 100).toFixed(2) }} €</p>
       </div>
 
       <div class="flex justify-center flex-col gap-1">

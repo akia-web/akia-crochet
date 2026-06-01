@@ -22,9 +22,10 @@
       </div>
 
       <div class="w-full flex flex-col border-t border-actionColor pt-[10px]">
-          <p v-if="addingLivraisonPrice">Supplément de livraison : {{ addingLivraisonPrice / 100 }}€</p>
-          <p v-if="tips">Pourboires : {{ tips / 100 }}€</p>
-          <p>Total : {{ totalAmount / 100 }}€</p>
+          <p v-if="livraisonPrice">Livraison : {{ (livraisonPrice / 100).toFixed(2) }}€</p>
+          <p v-if="addingLivraisonPrice">Supplément de livraison : {{ (addingLivraisonPrice / 100).toFixed(2) }}€</p>
+          <p v-if="tips">Pourboires : {{ (tips / 100).toFixed(2) }}€</p>
+          <p>Total : {{ (totalAmount / 100).toFixed(2) }}€</p>
       </div>
     </div>
 
@@ -43,6 +44,7 @@ const props = defineProps({
   tips: Number,
   orderId: Number,
   addingLivraisonPrice: Number,
+  livraisonPrice: Number,
   totalAmount: {
     required: true,
     type: Number,

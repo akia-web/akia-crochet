@@ -301,6 +301,8 @@ const form = reactive<CheckoutFormDto>({
   products: [],
   isSendTogether: true,
   user: storeUser.user ? storeUser.user : undefined,
+  livraisonPrice: 0,
+  addLivraisonPrice: 0,
 });
 
 const rules = computed(() => ({
@@ -378,6 +380,9 @@ const finalizePayment = () => {
     form.invoiceAddress.firstName = form.deliveryAddress.firstName;
     form.invoiceAddress.lastName = form.deliveryAddress.lastName;
   }
+
+  form.livraisonPrice = storeProductsCart.firstLivraisonPrice;
+  form.addLivraisonPrice = storeProductsCart.secondLivraisonPrice;
 
   apiPost(api(env.stripe.checkout), 'POST', form, false, !!storeUser.user).then((data: any) => {
     window.location.href = data.url;
