@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white p-[20px] rounded-lg">
     <div class="flex justify-between mb-4">
-      <h2 class="text-xl font-semibold">Historique de livraison colis {{ index + 1 }} </h2>
+      <h2 class="text-xl font-semibold">Historique de livraison colis {{ index as number + 1 }} </h2>
       <a :href="props.trackingUrl" target="_blank" class="text-actionColor underline">Suivre le colis</a>
     </div>
     <p class="mb-4">Numéro de suivi chez le transporteur : {{ props.refBoxtal }} </p>

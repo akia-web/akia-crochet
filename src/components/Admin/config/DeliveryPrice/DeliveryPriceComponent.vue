@@ -11,7 +11,7 @@
 
     <Tabs v-if="transporters.length > 0" value="0" class="mt-4">
       <TabList>
-        <Tab v-for="transporter in transporters" :key="transporter.id" :value="transporter.value">
+        <Tab v-for="transporter in transporters" :key="transporter.id" :value="transporter.value as string">
           <div class="flex items-center gap-2">
             <h2> {{ transporter.name }}</h2>
             <Button icon="pi pi-pencil" class="h-[25px] p-button-text-action-color-bg-white"
@@ -21,7 +21,7 @@
         </Tab>
       </TabList>
       <TabPanels>
-        <TabPanel v-for="transporter in transporters" :key="transporter.id" :value="transporter.value">
+        <TabPanel v-for="transporter in transporters" :key="transporter.id" :value="transporter.value as string">
           <div class="p-[10px]">
             <form class="flex gap-2 items-center">
               <LabelAndInputNumber v-model:property="form.weight"
@@ -150,7 +150,7 @@ const addPrice = async (transporter: TransporterDto) => {
     weight: form.weight,
     price: Math.round(form.price * 100),
     checked: form.checked,
-    transporter: transporter.id
+    transporter: transporter.id as number
   };
   await apiPost(api(env.transporter.price), 'POST', newPrice, false, true)
       .then(async () => {

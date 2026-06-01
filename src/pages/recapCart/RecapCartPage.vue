@@ -45,7 +45,7 @@ onMounted(() => {
   if (storeProductsCart.openSlider) {
     storeProductsCart.updateVisibility(false);
   }
-  storeProductsCart.updateLivraisonPrice(0);
+  storeProductsCart.updateLivraisonPrice(0, 'first');
   storeProductsCart.updateTips(0);
 });
 </script>
