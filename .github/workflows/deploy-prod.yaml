@@ -1,0 +1,59 @@
+name: Deploy Preprod
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to deploy'
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository at tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create .env file
+        run: |
+          cat <<EOF > .env
+          VITE_BASE_URL_BACK=${{ secrets.VITE_BASE_URL_BACK_PREPROD }}
+          VITE_PREFIX_CLOUDINARY_FOLDER=${{ secrets.VITE_PREFIX_CLOUDINARY_FOLDER_PREPROD }}
+          VITE_AUTH_STORAGE=${{ secrets.VITE_AUTH_STORAGE }}
+          VITE_CART=${{ secrets.VITE_CART }}
+          EOF
+
+      - name: Build project
+        run: npm run build
+
+      - name: Remove old dist
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            rm -rf /var/www/html/akialoops-prod/dist
+
+      - name: Copy new dist
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          source: "dist"
+          target: "/var/www/html/akialoops-prod/"
