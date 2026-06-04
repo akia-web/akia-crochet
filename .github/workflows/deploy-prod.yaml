@@ -29,8 +29,8 @@ jobs:
       - name: Create .env file
         run: |
           cat <<EOF > .env
-          VITE_BASE_URL_BACK=${{ secrets.VITE_BASE_URL_BACK_PREPROD }}
-          VITE_PREFIX_CLOUDINARY_FOLDER=${{ secrets.VITE_PREFIX_CLOUDINARY_FOLDER_PREPROD }}
+          VITE_BASE_URL_BACK=${{ secrets.VITE_BASE_URL_BACK_PROD }}
+          VITE_PREFIX_CLOUDINARY_FOLDER=${{ secrets.VITE_PREFIX_CLOUDINARY_FOLDER_PROD }}
           VITE_AUTH_STORAGE=${{ secrets.VITE_AUTH_STORAGE }}
           VITE_CART=${{ secrets.VITE_CART }}
           EOF
