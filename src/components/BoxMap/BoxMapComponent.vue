@@ -126,7 +126,7 @@ const fetchParcelPoints = async () => {
     });
 
 
-    const url = `https://api.boxtal.build/shipping/v3.2/parcel-point-by-shipping-offer?${params}`;
+    const url = `${import.meta.env.VITE_BOXTAL_BASE_URL}shipping/v3.2/parcel-point-by-shipping-offer?${params}`;
 
     try {
       const response = await fetch(url, {

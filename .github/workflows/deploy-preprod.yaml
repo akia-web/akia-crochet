@@ -33,6 +33,7 @@ jobs:
           VITE_PREFIX_CLOUDINARY_FOLDER=${{ secrets.VITE_PREFIX_CLOUDINARY_FOLDER_PREPROD }}
           VITE_AUTH_STORAGE=${{ secrets.VITE_AUTH_STORAGE }}
           VITE_CART=${{ secrets.VITE_CART }}
+          VITE_BOXTAL_BASE_URL=${{ secrets.VITE_BOXTAL_BASE_URL_PREPROD }}
           EOF
 
       - name: Build project

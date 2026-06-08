@@ -38,7 +38,7 @@
                     <h2 class="font-semibold mt-1">Description du produit :</h2>
             </div>
             
-            <p class="pl-8" v-html="product.description"></p>
+            <p class="pl-8 pr-8" v-html="product.description"></p>
 
             <div class="mt-4">
               <div class="flex items-center gap-2">
@@ -86,6 +86,10 @@
                 </div>
 
               </div>
+            </div>
+
+            <div v-if="product.creator" class="mt-8">
+              <p>Patron de : @{{product.creator.name}} </p>
             </div>
             <div class="mt-8">
               <MaintenanceTipsComponent/>
