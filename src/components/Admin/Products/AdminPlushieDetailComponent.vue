@@ -17,7 +17,7 @@
       <div class="flex gap-2 mt-1">
         <div v-for="(variant, index) in product.productVariants "
              class="w-[20px] h-[20px] rounded-full cursor-pointer"
-             :style="{ background: variant.color, border: selectedVariant.color === variant.color?'1px solid black' : 'transparent' }"
+             :style="{ boxShadow: selectedVariant.color === variant.color? 'none' : '0 1px 5px rgba(0, 0, 0, 0.40)', background: variant.color, border: selectedVariant.color === variant.color?'1px solid black' : 'transparent' }"
              @click="selectedVariant = props.product.productVariants![index]">
         </div>
       </div>

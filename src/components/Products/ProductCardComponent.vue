@@ -21,7 +21,7 @@
       <div class="flex gap-1" v-if="product && product.productVariants && product.productVariants.length>1">
         <div v-for="(variant, index) in product.productVariants">
           <div class="w-[20px] h-[20px] rounded-full cursor-pointer"
-               :style="{ background: variant.color, border: selectedVariant.color === variant.color?'1px solid black' : 'transparent' }"
+               :style="{ background: variant.color, border: selectedVariant.color === variant.color?'1px solid black' : 'transparent', boxShadow: selectedVariant.color === variant.color? 'none' : '0 1px 5px rgba(0, 0, 0, 0.40)' }"
                @click="updateVariant(index)">
           </div>
         </div>

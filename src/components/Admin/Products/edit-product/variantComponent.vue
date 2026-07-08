@@ -43,7 +43,7 @@
         <label class="text-xs">Couleur du variant</label>
         <div class="flex ">
           <div class="relative">
-            <ColorPicker v-model="color"/>
+            <ColorPicker v-model="color" style="box-shadow: 0 1px 5px rgba(0, 0, 0, 0.40); border-radius: 6px"/>
             <div class="absolute bottom-[2px] left-[4px]">
               <p class="text-xs font-bold"
                  :style="{ color: getContrastColor() }">{{ color }}</p>
