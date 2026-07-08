@@ -76,7 +76,7 @@ const addVariant = () => {
 
 const nextRow = () => {
   const rows = variantsComputed.value.map(variant => variant.row);
-  const maxRow = Math.max(...rows);
+  const maxRow = rows.length ? Math.max(...rows) : -1;
   return maxRow + 1;
 }
 
